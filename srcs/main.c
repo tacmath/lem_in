@@ -42,17 +42,32 @@ int		room_realloc(t_map *map, char *line)
 		return (0);
 	n = -1;
 	while (++n < map->nb_room - 1)
-	{
 		tmp[n].name = map->room[n].name;
-		tmp[n].connection = map->room[n].connection;
-	}
 	if (!(tmp[n].name = get_room_name(line)))
 		return (0);
-	if (!(tmp[n].connection = ft_memalloc(1)))
-		return (0);
-	tmp[n].connection[0] = -1;
 	free(map->room);
 	map->room = tmp;
+	return (1);
+}
+
+int		rooms_init(t_map *map)
+{
+	int n;
+
+	n = -1;
+	while (++n < map->nb_room)
+	{
+			
+		if (!(map->room[n].connection = malloc(sizeof(int))))
+			return (0);
+		map->room[n].connection[0] = -1;
+		map->room[n].heat = -1;
+		map->room[n].hype = 0;
+		map->room[n].ant = 0;	
+	}
+	n = -1;
+	while (++n < map->nb_ant)
+		map->ant[n] = map->start;
 	return (1);
 }
 
@@ -64,13 +79,13 @@ int		*connection_realloc(int *connection, int new_co)
 	n = -1;
 	while (connection[++n] != -1)
 		;
-	if (!(tmp = malloc(sizeof(int) * (n + 1))))
+	if (!(tmp = malloc(sizeof(int) * (n + 2))))
 		return (0);
 	n = -1;
 	while (connection[++n] != -1)
 		tmp[n] = connection[n];
 	tmp[n] = new_co;
-	tmp[++n] = -1;
+	tmp[n + 1] = -1;
 	free(connection);
 	return (tmp);
 }
@@ -85,10 +100,10 @@ int		get_connection(t_map *map, char *line)
 	while (line[++len] != '-')
 		;
 	co1 = -1;
-	while (ft_strncmp(map->room[++co1].name, line, len - 1) && co1 < map->nb_room - 1)
+	while (ft_strncmp(map->room[++co1].name, line, len) && co1 < map->nb_room)
 		;
 	co2 = -1;
-	while (ft_strcmp(map->room[++co2].name, &(line[len + 1])) && co2 < map->nb_room - 1)
+	while (ft_strcmp(map->room[++co2].name, &(line[len + 1])) && co2 < map->nb_room)
 		;
 	if (!(map->room[co1].connection = connection_realloc(map->room[co1].connection, co2)))
 		return (0);
@@ -101,6 +116,8 @@ int		get_connection(t_map *map, char *line)
 
 int		get_all_connection(t_map *map, char *line)
 {
+	if (!rooms_init(map))
+		return (0);
 	if (!get_connection(map, line))
 		return (0);
 	while (get_next_line(0, &line) == 1)
@@ -160,6 +177,21 @@ int		get_room(t_map *map)
 	return (1);
 }
 
+void	get_room_heat(t_map *map, int room, int heat)
+{
+	int n;
+	int co;
+	
+	map->room[room].heat = heat;
+	n = -1;
+	while (map->room[room].connection[++n] != -1)
+	{
+		co = map->room[room].connection[n];
+		if (map->room[co].heat == -1 || map->room[co].heat > heat + 1)
+			get_room_heat(map, co, heat + 1);
+	}
+}
+
 void	print_room_info(t_map *map)
 {
 	int n;
@@ -178,9 +210,9 @@ void	print_room_info(t_map *map)
 		m = -1;
 		while (map->room[n].connection[++m] != -1)
 		{
-			ft_putnbr(n);
+			ft_putstr(map->room[n].name);
 			ft_putstr("-");
-			ft_putnbr(map->room[n].connection[m]);
+			ft_putstr(map->room[map->room[n].connection[m]].name);
 			ft_putendl("");
 		}
 	}
@@ -191,6 +223,31 @@ void	print_room_info(t_map *map)
 	ft_putstr("end :   ");
 	ft_putnbr(map->end);
 	ft_putendl("");
+	ft_putendl("");
+	ft_putendl("heat :");
+	n = -1;
+	while (++n < map->nb_room)
+	{
+		ft_putstr(map->room[n].name);
+		ft_putstr(" - ");
+		ft_putnbr(map->room[n].heat);
+		ft_putendl("");
+	}
+}
+
+void		free_map(t_map *map)
+{
+	int n;
+
+	n = -1;
+	while (++n < map->nb_room)
+	{
+		free(map->room[n].name);
+		free(map->room[n].connection);
+	}
+	free(map->ant);
+	free(map->room);
+	free(map);
 }
 
 int		main(void)
@@ -210,6 +267,8 @@ int		main(void)
 	map->room = 0;
 	if (!get_room(map))
 		return (-1);
+	get_room_heat(map, map->end, 0);
 	print_room_info(map);
+	free_map(map);
 	return (0);
 }
