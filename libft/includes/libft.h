@@ -19,6 +19,7 @@
 # include <string.h>
 # include <stdint.h>
 # include <wchar.h>
+# include <sys/types.h>
 # include "ft_printf.h"
 
 typedef struct			s_list

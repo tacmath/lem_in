@@ -25,16 +25,16 @@ INC = $(addprefix $(INCDIR),$(INCFILES)) libft/includes/libft.h
 OBJ = $(SRC:.c=.o)
 FLAG = -Wall -Werror -Wextra -I includes -I libft/includes
 
-all: $(NAME)
+all: lib $(NAME)
 
 %.o: %.c $(INC)
 	gcc -c -o $@ $< $(FLAG)
 
-$(LIB): $(LIBDIR)
-	make -C $(LIBDIR)
+lib: $(LIBDIR)
+	@make -C $(LIBDIR)
 
 $(NAME): $(LIB) $(OBJ) $(INC)
-	gcc -o $@ $(LIB) $(OBJ) $(FLAG) 
+	gcc -o $@ $(OBJ) $(FLAG) $(LIB) 
 
 clean:
 	rm -f $(OBJ)
@@ -42,5 +42,6 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
+	rm -f $(LIB)
 
 re: fclean all

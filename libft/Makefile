@@ -28,7 +28,7 @@ SRC= $(addprefix $(SRCDIRLC),$(FILESLC)) $(addprefix $(SRCDIRSU),$(FILESSU)) $(a
 INC= $(addprefix $(INCDIR),$(FILESINC))
 OBJ= $(SRC:.c=.o)
 NAME= libft.a
-CFLAGS= -Wall -Werror -Wextra
+CFLAGS= #-Wall -Werror -Wextra
 CC= gcc
 
 all: $(NAME)
