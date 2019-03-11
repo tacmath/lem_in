@@ -6,14 +6,49 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 15:34:46 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/02/22 15:35:18 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/11 17:19:40 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-char	*get_room_name(char *line)
+int		add_to_output(char ***output, char *new_line)
+{
+	int len;
+	char **tmp;
+	int n;
+
+	len = -1;
+	while ((*output)[++len] != 0)
+		;
+	if (!(tmp = malloc(sizeof(char*) * (len + 2))))
+		return (0);
+	n = -1;
+	while (++n < len)
+		tmp[n] = (*output)[n];
+	tmp[n] = new_line;
+	tmp[n + 1] = 0;
+	free(*output);
+	*output = tmp;
+	return (1);
+}
+
+void		write_output(char **output)
+{
+	int n;
+
+	n = -1;
+	while (output[++n] != 0)
+	{
+		ft_putendl(output[n]);
+		free(output[n]);
+	}
+	free(output);
+	output = 0;
+}
+
+char	*get_room_name(char *line, char ***output)
 {
 	int		n;
 	char	*name;
@@ -27,12 +62,12 @@ char	*get_room_name(char *line)
 	while (line[++n] != ' ')
 		name[n] = line[n];
 	name[n] = '\0';
-	ft_putendl(line);
-	free(line);
+	if (!add_to_output(output, line))
+		return (0);
 	return (name);
 }
 
-int		room_realloc(t_map *map, char *line)
+int		room_realloc(t_map *map, char *line, char ***output)
 {
 	int		n;
 	t_room	*tmp;
@@ -43,7 +78,7 @@ int		room_realloc(t_map *map, char *line)
 	n = -1;
 	while (++n < map->nb_room - 1)
 		tmp[n].name = map->room[n].name;
-	if (!(tmp[n].name = get_room_name(line)))
+	if (!(tmp[n].name = get_room_name(line, output)))
 		return (0);
 	free(map->room);
 	map->room = tmp;
@@ -90,7 +125,7 @@ int		*connection_realloc(int *connection, int new_co)
 	return (tmp);
 }
 
-int		get_connection(t_map *map, char *line)
+int		get_connection(t_map *map, char *line, char ***output)
 {
 	int co1;
 	int co2;
@@ -109,22 +144,22 @@ int		get_connection(t_map *map, char *line)
 		return (0);
 	if (!(map->room[co2].connection = connection_realloc(map->room[co2].connection, co1)))
 		return (0);
-	ft_putendl(line);
-	free(line);
+	if (!add_to_output(output, line))
+		return (0);
 	return (1);
 }
 
-int		get_all_connection(t_map *map, char *line)
+int		get_all_connection(t_map *map, char *line, char ***output)
 {
 	if (!rooms_init(map))
 		return (0);
-	if (!get_connection(map, line))
+	if (!get_connection(map, line, output))
 		return (0);
 	while (get_next_line(0, &line) == 1)
 	{
 		if (ft_strchr(line, '-'))
 		{
-			if (!get_connection(map, line))
+			if (!get_connection(map, line, output))
 				return (0);
 		}
 		else
@@ -133,7 +168,32 @@ int		get_all_connection(t_map *map, char *line)
 	return (1);
 }
 
-int		get_room(t_map *map)
+int		get_start_and_end(t_map *map, char *line, char ***output)
+{
+	if (!ft_strcmp(line, "##start"))
+	{
+		if (!add_to_output(output, line))
+			return (0);
+		if (get_next_line(0, &line) < 1)
+			return (0);
+		map->start = map->nb_room;
+		if (!room_realloc(map, line, output))
+			return (0);
+	}
+	else
+	{
+		if (!add_to_output(output, line))
+			return (0);
+		if (get_next_line(0, &line) < 1)
+			return (0);
+		map->end = map->nb_room;
+		if (!room_realloc(map, line, output))
+			return (0);
+	}
+	return (1);
+}
+
+int		get_room(t_map *map, char ***output)
 {
 	char	*line;
 
@@ -144,27 +204,12 @@ int		get_room(t_map *map)
 	{
 		if (line [0] != '#')
 		{
-			if (!room_realloc(map, line))
+			if (!room_realloc(map, line, output))
 				return (0);
 		}
-		else if (!ft_strcmp(line, "##start"))
+		else if (!ft_strcmp(line, "##start") || !ft_strcmp(line, "##end"))
 		{
-			ft_putendl(line);
-			free(line);
-			if (get_next_line(0, &line) < 1)
-				return (0);
-			map->start = map->nb_room;
-			if (!room_realloc(map, line))
-				return (0);
-		}
-		else if (!ft_strcmp(line, "##end"))
-		{
-			ft_putendl(line);
-			free(line);
-			if (get_next_line(0, &line) < 1)
-				return (0);
-			map->end = map->nb_room;
-			if (!room_realloc(map, line))
+			if (!get_start_and_end(map, line, output))
 				return (0);
 		}
 		else
@@ -172,7 +217,7 @@ int		get_room(t_map *map)
 		if (get_next_line(0, &line) < 1)
 			return (0);
 	}
-	if (!get_all_connection(map, line))
+	if (!get_all_connection(map, line, output))
 		return (0);
 	return (1);
 }
@@ -250,24 +295,84 @@ void		free_map(t_map *map)
 	free(map);
 }
 
+int		get_error(t_map *map)
+{
+	if (map->nb_room == 0)
+	{
+		free(map->ant);
+		free(map);
+		ft_putendl("ERROR");
+		return (0);
+	}
+	else if (map->start == -1 || map->end == -1)
+	{
+			free_map(map);
+			ft_putendl("ERROR");
+			return (0);
+	}
+	get_room_heat(map, map->end, 0);
+	if (map->room[map->start].heat == -1)
+	{
+			free_map(map);
+			ft_putendl("ERROR");
+			return (0);
+	}
+	return (1);
+}
+
+int		init_struct(t_map *map, char ***output)
+{
+	char *line;
+
+	if (!(*output = malloc(sizeof(char*))))
+		return (-1);
+	*(output)[0] = 0;
+	if (get_next_line(0, &line) < 1)
+		return (0);
+	map->nb_ant = ft_atoi(line);
+	if (!(add_to_output(output, line)))
+		return (0);
+	if (map->nb_ant <= 0)
+	{
+		free(*(output)[0]);
+		free(*output);
+		free(map);
+		ft_putendl("ERROR");
+		return (0);
+	}
+	if (!(map->ant = malloc(sizeof(int) * map->nb_ant)))
+	{
+		free(map);
+		return (0);
+	}
+	map->room = 0;
+	map->start = -1;
+	map->end = -1;
+	return (1);
+}
+
 int		main(void)
 {
 	t_map	*map;
-	char	*line;
+	char	**output;
+	int		n;
 
+	output = 0;
 	if (!(map = malloc(sizeof(t_map))))
 		return (-1);
-	if (get_next_line(0, &line) < 1)
+	if (!init_struct(map, &output))
 		return (-1);
-	map->nb_ant = ft_atoi(line);
-	ft_putendl(line);
-	free(line);
-	if (!(map->ant = malloc(sizeof(int) * map->nb_ant)))
+	if (!get_room(map, &output))
 		return (-1);
-	map->room = 0;
-	if (!get_room(map))
+	n = -1;
+	if (!get_error(map))
+	{
+		while (output[++n] != 0)
+			free(output[n]);
+		free(output);
 		return (-1);
-	get_room_heat(map, map->end, 0);
+	}
+	write_output(output);
 	print_room_info(map);
 	free_map(map);
 	return (0);
