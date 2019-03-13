@@ -6,7 +6,7 @@
 #    By: lperron <marvin@le-101.fr>                 +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2018/08/13 13:17:34 by lperron      #+#   ##    ##    #+#        #
-#    Updated: 2019/02/21 15:00:22 by mtaquet     ###    #+. /#+    ###.fr      #
+#    Updated: 2019/03/13 16:07:59 by lperron     ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -28,7 +28,7 @@ SRC= $(addprefix $(SRCDIRLC),$(FILESLC)) $(addprefix $(SRCDIRSU),$(FILESSU)) $(a
 INC= $(addprefix $(INCDIR),$(FILESINC))
 OBJ= $(SRC:.c=.o)
 NAME= libft.a
-CFLAGS= #-Wall -Werror -Wextra
+CFLAGS= -Wall -Wextra #-Werror
 CC= gcc
 
 all: $(NAME)
