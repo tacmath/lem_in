@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 15:34:46 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/11 17:19:40 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/13 16:35:31 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -125,7 +125,8 @@ int		*connection_realloc(int *connection, int new_co)
 	return (tmp);
 }
 
-int		get_connection(t_map *map, char *line, char ***output)
+int		get_connection(t_map *map, char *line, char ***output) //securite!!!!!!
+																//double connections
 {
 	int co1;
 	int co2;
