@@ -6,14 +6,14 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:21:16 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/14 14:24:02 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/14 14:43:29 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-int		add_to_output(char ***output, char *new_line)
+int			add_to_output(char ***output, char *new_line)
 {
 	int		len;
 	char	**tmp;
@@ -63,7 +63,7 @@ void		free_map(t_map *map)
 	free(map);
 }
 
-int		get_error(t_map *map)
+int			get_error(t_map *map)
 {
 	if (map->nb_room == 0)
 	{
