@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 14:09:06 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/11 16:07:09 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/14 13:51:13 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -20,8 +20,9 @@
 struct					s_room
 {
 	int					*connection;
+	int					nb_connection;
 	char				*name;
-	int					hype;
+	float				hype;
 	int					heat;
 	char				ant;
 };

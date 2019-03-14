@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 15:34:46 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/13 16:35:31 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/14 13:05:33 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -15,9 +15,9 @@
 
 int		add_to_output(char ***output, char *new_line)
 {
-	int len;
-	char **tmp;
-	int n;
+	int		len;
+	char	**tmp;
+	int		n;
 
 	len = -1;
 	while ((*output)[++len] != 0)
@@ -92,13 +92,13 @@ int		rooms_init(t_map *map)
 	n = -1;
 	while (++n < map->nb_room)
 	{
-			
 		if (!(map->room[n].connection = malloc(sizeof(int))))
 			return (0);
 		map->room[n].connection[0] = -1;
 		map->room[n].heat = -1;
 		map->room[n].hype = 0;
-		map->room[n].ant = 0;	
+		map->room[n].ant = 0;
+		map->room[n].nb_connection = 0;
 	}
 	n = -1;
 	while (++n < map->nb_ant)
@@ -126,7 +126,7 @@ int		*connection_realloc(int *connection, int new_co)
 }
 
 int		get_connection(t_map *map, char *line, char ***output) //securite!!!!!!
-																//double connections
+	//double connections
 {
 	int co1;
 	int co2;
@@ -139,15 +139,18 @@ int		get_connection(t_map *map, char *line, char ***output) //securite!!!!!!
 	while (ft_strncmp(map->room[++co1].name, line, len) && co1 < map->nb_room)
 		;
 	co2 = -1;
-	while (ft_strcmp(map->room[++co2].name, &(line[len + 1])) && co2 < map->nb_room)
+	while (ft_strcmp(map->room[++co2].name, &(line[len + 1])) &&
+			co2 < map->nb_room)
 		;
-	if (!(map->room[co1].connection = connection_realloc(map->room[co1].connection, co2)))
+	if (!(map->room[co1].connection =
+				connection_realloc(map->room[co1].connection, co2)))
 		return (0);
-	if (!(map->room[co2].connection = connection_realloc(map->room[co2].connection, co1)))
+	if (!(map->room[co2].connection =
+				connection_realloc(map->room[co2].connection, co1)))
 		return (0);
-	if (!add_to_output(output, line))
-		return (0);
-	return (1);
+	(map->room[co1].nb_connection)++;
+	(map->room[co2].nb_connection)++;
+	return (!add_to_output(output, line) ? 0 : 1);
 }
 
 int		get_all_connection(t_map *map, char *line, char ***output)
@@ -203,7 +206,7 @@ int		get_room(t_map *map, char ***output)
 		return (0);
 	while (ft_strchr(line, ' ') || line[0] == '#')
 	{
-		if (line [0] != '#')
+		if (line[0] != '#')
 		{
 			if (!room_realloc(map, line, output))
 				return (0);
@@ -225,9 +228,9 @@ int		get_room(t_map *map, char ***output)
 
 void	get_room_heat(t_map *map, int room, int heat)
 {
-	int n;
-	int co;
-	
+	int	n;
+	int	co;
+
 	map->room[room].heat = heat;
 	n = -1;
 	while (map->room[room].connection[++n] != -1)
@@ -307,16 +310,16 @@ int		get_error(t_map *map)
 	}
 	else if (map->start == -1 || map->end == -1)
 	{
-			free_map(map);
-			ft_putendl("ERROR");
-			return (0);
+		free_map(map);
+		ft_putendl("ERROR");
+		return (0);
 	}
 	get_room_heat(map, map->end, 0);
 	if (map->room[map->start].heat == -1)
 	{
-			free_map(map);
-			ft_putendl("ERROR");
-			return (0);
+		free_map(map);
+		ft_putendl("ERROR");
+		return (0);
 	}
 	return (1);
 }
@@ -325,9 +328,8 @@ int		init_struct(t_map *map, char ***output)
 {
 	char *line;
 
-	if (!(*output = malloc(sizeof(char*))))
+	if (!(*output = ft_memalloc(sizeof(char*))))
 		return (-1);
-	*(output)[0] = 0;
 	if (get_next_line(0, &line) < 1)
 		return (0);
 	map->nb_ant = ft_atoi(line);
@@ -342,10 +344,7 @@ int		init_struct(t_map *map, char ***output)
 		return (0);
 	}
 	if (!(map->ant = malloc(sizeof(int) * map->nb_ant)))
-	{
-		free(map);
-		return (0);
-	}
+		return (ft_super_free(1, map));
 	map->room = 0;
 	map->start = -1;
 	map->end = -1;
