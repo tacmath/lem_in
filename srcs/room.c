@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:13:45 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/14 14:17:22 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/14 14:44:14 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -75,7 +75,7 @@ static int	get_start_and_end(t_map *map, char *line, char ***output)
 	return (1);
 }
 
-int		get_room(t_map *map, char ***output)
+int			get_room(t_map *map, char ***output)
 {
 	char	*line;
 
@@ -104,7 +104,7 @@ int		get_room(t_map *map, char ***output)
 	return (1);
 }
 
-void	get_room_heat(t_map *map, int room, int heat)
+void		get_room_heat(t_map *map, int room, int heat)
 {
 	int	n;
 	int	co;
