@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 14:09:06 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/14 14:35:09 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/14 14:39:38 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -43,14 +43,15 @@ typedef struct s_map	t_map;
 
 
 
-int		get_room(t_map *map, char ***output);
-int        rooms_init(t_map *map);
-int		get_all_connection(t_map *map, char *line, char ***output);
-int        init_struct(t_map *map, char ***output);
-int        add_to_output(char ***output, char *new_line);
-void        write_output(char **output);
-void        free_map(t_map *map);
-int        get_error(t_map *map);
-void	get_room_heat(t_map *map, int room, int heat);
-
+int						get_room(t_map *map, char ***output);
+int						rooms_init(t_map *map);
+int						get_all_connection(t_map *map, char *line,
+						char ***output);
+int						init_struct(t_map *map, char ***output);
+int						add_to_output(char ***output, char *new_line);
+void					write_output(char **output);
+void					free_map(t_map *map);
+int						get_error(t_map *map);
+void					get_room_heat(t_map *map, int room, int heat);
+void					kylie_jenner(t_map *map);
 #endif
