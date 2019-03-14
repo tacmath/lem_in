@@ -6,19 +6,20 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:26:27 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/14 15:24:55 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/14 16:28:35 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-int		put_moving_ant(t_map *map, int ant, int room)
+void		put_moving_ant(t_map *map, int ant, int room)
 {
 	ft_putchar('L');
 	ft_putnbr(ant + 1);
 	ft_putchar('-');
 	ft_putstr(map->room[room].name);
+	ft_putchar(' ');
 }
 
 void	move_ant(t_map	*map)
@@ -36,8 +37,8 @@ void	move_ant(t_map	*map)
 		hype_max = -1;
 		room = &(map->room[map->ant[ant]]);
 		while (++i < room->nb_connection)
-			if (room->connection[i].hype >
-					hype_max && room->connection[i].ant == 0)
+			if (map->room[room->connection[i]].hype >
+					hype_max && map->room[room->connection[i]].ant == 0)
 				best_room = i;
 		put_moving_ant(map, ant, room->connection[best_room]);
 		map->room[room->connection[best_room]].ant = 1;

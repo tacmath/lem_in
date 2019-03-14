@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 15:34:46 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/14 13:05:33 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/14 16:52:18 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -122,6 +122,15 @@ void	print_room_info(t_map *map)
 	}
 }
 
+void	reset_hype(t_map *map)
+{
+	int n;
+
+	n = -1;
+	while (++n < map->nb_room)
+		map->room[n].hype = 0;
+}
+
 int		main(void)
 {
 	t_map	*map;
@@ -144,7 +153,17 @@ int		main(void)
 		return (-1);
 	}
 	write_output(output);
-	print_room_info(map);
+	ft_putchar('\n');
+	n = -1;
+	while (++n < map->nb_ant)
+		if (map->ant[n] != map->end)
+		{
+			reset_hype(map);
+			kylie_jenner(map);
+			move_ant(map);
+			n--;
+		}
+	//print_room_info(map);
 	free_map(map);
 	return (0);
 }

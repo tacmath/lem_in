@@ -6,10 +6,12 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 13:41:02 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/14 14:39:57 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/14 15:30:02 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
+
+#include "lem_in.h"
 
 void	kylie_jenner(t_map *map)
 {
@@ -27,6 +29,6 @@ void	kylie_jenner(t_map *map)
 	}
 	i = -1;
 	while (++i < map->nb_room)
-		if (i != end)
+		if (i != map->end)
 			map->room[i].hype /= map->room[i].heat;
 }

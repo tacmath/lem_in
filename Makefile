@@ -6,7 +6,7 @@
 #    By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2018/11/05 12:24:50 by mtaquet      #+#   ##    ##    #+#        #
-#    Updated: 2019/03/14 14:31:26 by mtaquet     ###    #+. /#+    ###.fr      #
+#    Updated: 2019/03/14 15:27:23 by mtaquet     ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -20,6 +20,8 @@ SRCFILES = main.c\
 		   room.c\
 		   utils.c\
 		   init.c\
+		   resol.c\
+		   hype.c\
 
 INCFILES = lem_in.h
 LIB = $(addprefix $(LIBDIR),$(LIBFILES))
