@@ -35,15 +35,20 @@ void	move_ant(t_map	*map)
 	{
 		i = -1;
 		hype_max = -1;
+		best_room = -1;
 		room = &(map->room[map->ant[ant]]);
 		while (++i < room->nb_connection)
 			if (map->room[room->connection[i]].hype >
 					hype_max && map->room[room->connection[i]].ant == 0)
 				best_room = i;
-		put_moving_ant(map, ant, room->connection[best_room]);
-		map->room[room->connection[best_room]].ant = 1;
-		room->ant = 0;
-		map->ant[ant] = room->connection[best_room];
+		if (best_room != -1)
+		{
+			put_moving_ant(map, ant, room->connection[best_room]);
+			if (room->connection[best_room] != map->end)
+				map->room[room->connection[best_room]].ant = 1;
+			room->ant = 0;
+			map->ant[ant] = room->connection[best_room];
+		}
 	}
 	ft_putchar('\n');
 }
