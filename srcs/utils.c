@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:21:16 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/14 14:43:29 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/15 17:06:20 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -61,6 +61,56 @@ void		free_map(t_map *map)
 	free(map->ant);
 	free(map->room);
 	free(map);
+}
+
+static int			gou_lag(t_map *map, int room1, int room2)
+{
+	int n;
+	int m;
+	int i;
+	int *tmp;
+
+	map->room[room1].nb_connection--;
+	n = map->room[room1].nb_connection;
+	if (!(tmp = malloc(sizeof(n))))
+		return (0);
+	m = -1;
+	i = 0;
+	while (++m < n + 1)
+		if (map->room[room1].connection[m] != room2)
+		{
+			tmp[m - i] = map->room[room1].connection[m];
+			i++;
+		}
+	free(map->room[room1].connection);
+	map->room[room1].connection = tmp;
+	return (1);
+}
+
+int			sta_line(t_map *map, int room1, int room2)
+{
+	int n;
+	int m;
+	int i;
+	int *tmp;
+
+	map->room[room1].nb_connection--;
+	n = map->room[room1].nb_connection;
+	if (!(tmp = malloc(sizeof(n))))
+		return (0);
+	m = -1;
+	i = 0;
+	while (++m < n + 1)
+		if (map->room[room1].connection[m] != room2)
+		{
+			tmp[m - i] = map->room[room1].connection[m];
+			i++;
+		}
+	free(map->room[room1].connection);
+	map->room[room1].connection = tmp;
+	if (!gou_lag(map, room2, room1))
+		return (0);
+	return (1);
 }
 
 int			get_error(t_map *map)

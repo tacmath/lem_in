@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 15:34:46 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/15 13:58:34 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/15 17:05:21 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -131,6 +131,18 @@ void	reset_hype(t_map *map)
 		map->room[n].hype = 0;
 }
 
+int		remove_useless_co(t_map *map)
+{
+	int n;
+
+	n = -1;
+	while (++n < map->room[map->start].nb_connection)
+		if (map->room[map->room[map->start].connection[n]].heat == -1)
+			if (!sta_line(map, map->start, map->room[map->start].connection[n]))
+				return (0);
+	return (1);
+}
+
 int		main(void)
 {
 	t_map	*map;
@@ -154,6 +166,8 @@ int		main(void)
 	}
 	write_output(output);
 	ft_putchar('\n');
+	if (!remove_useless_co(map))
+		return (-1);
 	n = -1;
 	while (++n < map->nb_ant)
 		//while (map->ant[map->nb_ant - 1] != map->end)

@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:13:45 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/14 14:44:14 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/15 17:12:48 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -110,6 +110,8 @@ void		get_room_heat(t_map *map, int room, int heat)
 	int	co;
 
 	map->room[room].heat = heat;
+	if (room == map->start)
+		return ;
 	n = -1;
 	while (map->room[room].connection[++n] != -1)
 	{
