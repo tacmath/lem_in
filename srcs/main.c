@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 15:34:46 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/15 12:33:09 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/15 12:59:18 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -161,7 +161,7 @@ int		main(void)
 			reset_hype(map);
 	//		ft_putendl("!!!!!!!!!!!!!1");
 			kylie_jenner(map);
-			ft_printf("%%%%%%%f\n",map->room[map->end].hype);
+	//		ft_printf("%%%%%%%f\n",map->room[map->end].hype);
 	//		ft_putendl("!!!!!!!!!!!!!2");
 
 			move_ant(map);

@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:26:27 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/15 12:34:15 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/15 12:58:21 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -35,7 +35,6 @@ void	move_ant(t_map	*map)
 	{
 		if (map->ant[ant] != map->end)
 		{
-<<<<<<< HEAD
 		i = -1;
 		hype_max = 999999999;
 		best_room = -1;
@@ -62,25 +61,6 @@ void	move_ant(t_map	*map)
 		map->ant[ant] = room->connection[best_room];
 		}
 	}
-=======
-			i = -1;
-			hype_max = -1;
-			best_room = -1;
-			room = &(map->room[map->ant[ant]]);
-			while (++i < room->nb_connection)
-				if (map->room[room->connection[i]].hype >
-						hype_max && map->room[room->connection[i]].ant == 0)
-					best_room = i;
-			if (best_room != -1)
-			{
-				put_moving_ant(map, ant, room->connection[best_room]);
-				if (room->connection[best_room] != map->end)
-					map->room[room->connection[best_room]].ant = 1;
-				room->ant = 0;
-				map->ant[ant] = room->connection[best_room];
-			}
-		}
->>>>>>> 21da66c93503443b04966896cbbcf08048bd8574
 	}
 	ft_putchar('\n');
 }
