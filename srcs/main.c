@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 15:34:46 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/14 16:52:18 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/15 12:33:09 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -155,13 +155,19 @@ int		main(void)
 	write_output(output);
 	ft_putchar('\n');
 	n = -1;
-	while (++n < map->nb_ant)
-		if (map->ant[n] != map->end)
+//	while (++n < map->nb_ant)
+		while (map->ant[map->nb_ant - 1] != map->end)
 		{
 			reset_hype(map);
+	//		ft_putendl("!!!!!!!!!!!!!1");
 			kylie_jenner(map);
+			ft_printf("%%%%%%%f\n",map->room[map->end].hype);
+	//		ft_putendl("!!!!!!!!!!!!!2");
+
 			move_ant(map);
-			n--;
+//			ft_putendl("!!!!!!!!!!!!!3");
+
+	//		n--;
 		}
 	//print_room_info(map);
 	free_map(map);
