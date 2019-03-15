@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 15:34:46 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/15 12:59:18 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/15 13:58:34 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -155,8 +155,9 @@ int		main(void)
 	write_output(output);
 	ft_putchar('\n');
 	n = -1;
-//	while (++n < map->nb_ant)
-		while (map->ant[map->nb_ant - 1] != map->end)
+	while (++n < map->nb_ant)
+		//while (map->ant[map->nb_ant - 1] != map->end)
+		if (map->ant[n] != map->end)
 		{
 			reset_hype(map);
 	//		ft_putendl("!!!!!!!!!!!!!1");
@@ -167,7 +168,7 @@ int		main(void)
 			move_ant(map);
 //			ft_putendl("!!!!!!!!!!!!!3");
 
-	//		n--;
+			n--;
 		}
 	//print_room_info(map);
 	free_map(map);

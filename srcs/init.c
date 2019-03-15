@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:24:10 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/14 14:26:19 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/15 14:21:17 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -30,7 +30,10 @@ int		rooms_init(t_map *map)
 	}
 	n = -1;
 	while (++n < map->nb_ant)
+	{
 		map->ant[n] = map->start;
+		map->last_room[n] = map->start;
+	}
 	return (1);
 }
 
