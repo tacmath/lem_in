@@ -58,6 +58,8 @@ int		init_struct(t_map *map, char ***output)
 	}
 	if (!(map->ant = malloc(sizeof(int) * map->nb_ant)))
 		return (ft_super_free(1, map));
+	if (!(map->last_room = malloc(sizeof(int) * map->nb_ant)))
+		return (ft_super_free(1, map));
 	map->room = 0;
 	map->start = -1;
 	map->end = -1;

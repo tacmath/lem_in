@@ -59,6 +59,7 @@ void		free_map(t_map *map)
 		free(map->room[n].connection);
 	}
 	free(map->ant);
+	free(map->last_room);
 	free(map->room);
 	free(map);
 }
@@ -72,16 +73,15 @@ static int			gou_lag(t_map *map, int room1, int room2)
 
 	map->room[room1].nb_connection--;
 	n = map->room[room1].nb_connection;
-	if (!(tmp = malloc(sizeof(n))))
+	if (!(tmp = malloc(sizeof(int) * n)))
 		return (0);
 	m = -1;
 	i = 0;
 	while (++m < n + 1)
 		if (map->room[room1].connection[m] != room2)
-		{
 			tmp[m - i] = map->room[room1].connection[m];
+		else
 			i++;
-		}
 	free(map->room[room1].connection);
 	map->room[room1].connection = tmp;
 	return (1);
@@ -96,16 +96,15 @@ int			sta_line(t_map *map, int room1, int room2)
 
 	map->room[room1].nb_connection--;
 	n = map->room[room1].nb_connection;
-	if (!(tmp = malloc(sizeof(n))))
+	if (!(tmp = malloc(sizeof(int) * n)))
 		return (0);
 	m = -1;
 	i = 0;
 	while (++m < n + 1)
 		if (map->room[room1].connection[m] != room2)
-		{
 			tmp[m - i] = map->room[room1].connection[m];
+		else
 			i++;
-		}
 	free(map->room[room1].connection);
 	map->room[room1].connection = tmp;
 	if (!gou_lag(map, room2, room1))
