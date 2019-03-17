@@ -131,6 +131,34 @@ void	reset_hype(t_map *map)
 		map->room[n].hype = 0;
 }
 
+int	test_maps(t_map *map, int room)
+{
+	int n;
+	int co;
+
+//	ft_putendl(map->room[room].name);
+	if (room == map->start || room == map->end)
+		return (1);
+	map->room[room].hype = 1;
+	n = -1;
+	co = 0;
+	while (++n < map->room[room].nb_connection)
+	{
+		if (map->room[map->room[room].connection[n]].hype != 1)
+			if (test_maps(map, map->room[room].connection[n]))
+				co++;
+	}
+	map->room[room].hype = 0;
+	if (co != 0)
+		return (1);
+	n = -1;
+	while (++n < map->room[room].nb_connection)
+		if (map->room[map->room[room].connection[n]].hype == 1)
+			sta_line(map, room, map->room[room].connection[n]);
+//	map->room[room].hype = 0;
+	return (0);
+}
+
 int		remove_useless_co(t_map *map)
 {
 	int n;
@@ -138,8 +166,12 @@ int		remove_useless_co(t_map *map)
 	n = -1;
 	while (++n < map->room[map->start].nb_connection)
 		if (map->room[map->room[map->start].connection[n]].heat == -1)
+		{
 			if (!sta_line(map, map->start, map->room[map->start].connection[n]))
 				return (0);
+		}
+		else
+			test_maps(map, map->room[map->start].connection[n]);
 	return (1);
 }
 
