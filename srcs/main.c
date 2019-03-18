@@ -6,34 +6,35 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 15:34:46 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/18 15:44:16 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/18 16:49:14 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-int		*connection_realloc(int *connection, int new_co)
+int		*connection_realloc(int *connection, int *nb_co, int new_co)
 {
 	int n;
 	int *tmp;
 
 	n = -1;
-	while (connection[++n] != -1)
-		;
-	if (!(tmp = malloc(sizeof(int) * (n + 2))))
+	while (++n < *nb_co)
+		if (connection[n] == new_co)
+			return (connection);
+	ft_putstr("ok");
+	(*nb_co)++;
+	if (!(tmp = malloc(sizeof(int) * (*nb_co))))
 		return (0);
 	n = -1;
-	while (connection[++n] != -1)
+	while (++n < (*nb_co - 1))
 		tmp[n] = connection[n];
 	tmp[n] = new_co;
-	tmp[n + 1] = -1;
 	free(connection);
 	return (tmp);
 }
 
-int		get_connection(t_map *map, char *line, char ***output) //securite!!!!!!
-	//double connections
+int		get_connection(t_map *map, char *line, char ***output) //securise
 {
 	int co1;
 	int co2;
@@ -49,14 +50,16 @@ int		get_connection(t_map *map, char *line, char ***output) //securite!!!!!!
 	while (ft_strcmp(map->room[++co2].name, &(line[len + 1])) &&
 			co2 < map->nb_room)
 		;
+	if (ft_strncmp(map->room[co1].name, line, len) || ft_strcmp(map->room[++co2].name, &(line[len + 1])))
+		return (0);
 	if (!(map->room[co1].connection =
-				connection_realloc(map->room[co1].connection, co2)))
+				connection_realloc(map->room[co1].connection,
+					&(map->room[co1].nb_connection), co2)))
 		return (0);
 	if (!(map->room[co2].connection =
-				connection_realloc(map->room[co2].connection, co1)))
+				connection_realloc(map->room[co2].connection,
+					(&map->room[co2].nb_connection), co1)))
 		return (0);
-	(map->room[co1].nb_connection)++;
-	(map->room[co2].nb_connection)++;
 	return (!add_to_output(output, line) ? 0 : 1);
 }
 
@@ -227,6 +230,7 @@ int		main(void)
 	if (!get_room(map, &output))
 		return (-1);
 	n = -1;
+	ft_putstr("ok");
 	if (!get_error(map))
 	{
 		while (output[++n] != 0)

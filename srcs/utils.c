@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:21:16 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/18 15:45:17 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/18 16:17:04 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -87,6 +87,19 @@ static int			gou_lag(t_map *map, int room1, int room2)
 	return (1);
 }
 
+void ok(int  *co, int nb_co)
+{
+	int n;
+
+	n = -1;
+	while (++n < nb_co)
+	{
+		ft_putnbr(co[n]);
+		ft_putstr(" ");
+	}
+	ft_putstr("\n");
+}
+
 int			sta_line(t_map *map, int room1, int room2)
 {
 	int n;
@@ -94,6 +107,7 @@ int			sta_line(t_map *map, int room1, int room2)
 	int i;
 	int *tmp;
 
+	ok(map->room[room1].connection, map->room[room1].nb_connection);
 	map->room[room1].nb_connection--;
 	n = map->room[room1].nb_connection;
 	if (!(tmp = malloc(sizeof(int) * (n))))
@@ -109,6 +123,7 @@ int			sta_line(t_map *map, int room1, int room2)
 		else
 			i++;
 	}
+	ok(tmp, map->room[room1].nb_connection);
 	free(map->room[room1].connection);
 	map->room[room1].connection = tmp;
 	if (!gou_lag(map, room2, room1))

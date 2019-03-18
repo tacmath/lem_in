@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:24:10 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/15 14:21:17 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/18 16:29:44 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -20,9 +20,7 @@ int		rooms_init(t_map *map)
 	n = -1;
 	while (++n < map->nb_room)
 	{
-		if (!(map->room[n].connection = malloc(sizeof(int))))
-			return (0);
-		map->room[n].connection[0] = -1;
+		map->room[n].connection = 0;
 		map->room[n].heat = -1;
 		map->room[n].hype = 0;
 		map->room[n].ant = 0;
