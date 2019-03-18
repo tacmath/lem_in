@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 15:34:46 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/15 17:05:21 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/18 15:44:16 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -159,6 +159,43 @@ int	test_maps(t_map *map, int room)
 	return (0);
 }
 
+int	other_test_maps(t_map *map, int room)
+{
+	int n;
+
+	if (room == map->start || room == map->end)
+		return (1);
+	map->room[room].hype = 1;
+	n = -1;
+	while (++n < map->room[room].nb_connection)
+	{
+		if (map->room[map->room[room].connection[n]].hype != 1)
+			if (other_test_maps(map, map->room[room].connection[n]))
+				return (1);
+	}
+	return (0);
+}
+
+void test_all_maps(t_map *map)
+{
+	int n;
+	int m;
+
+	n = -1;
+	while (++n < map->nb_room)
+	{
+		reset_hype(map);
+		map->room[n].hype = 1;
+		m = -1;
+		while (++m < map->room[n].nb_connection)
+				if (!other_test_maps(map, map->room[n].connection[m]))
+				{
+					sta_line(map, n, map->room[n].connection[m]);
+					//m = -1;
+				}
+	}
+}
+
 int		remove_useless_co(t_map *map)
 {
 	int n;
@@ -170,8 +207,9 @@ int		remove_useless_co(t_map *map)
 			if (!sta_line(map, map->start, map->room[map->start].connection[n]))
 				return (0);
 		}
-		else
-			test_maps(map, map->room[map->start].connection[n]);
+		/*else
+			test_maps(map, map->room[map->start].connection[n]);*/
+	test_all_maps(map);
 	return (1);
 }
 
