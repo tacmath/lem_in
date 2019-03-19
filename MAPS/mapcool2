@@ -1,0 +1,17 @@
+10
+##start
+start 23 3
+two 21 21
+three 22 22
+##end
+end 9 5
+start-two
+start-three
+two-end
+three-end
+#
+#   [end]
+#   /   \
+#  [1]  [2]
+#   \   /
+#  [start]

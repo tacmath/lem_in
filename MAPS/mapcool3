@@ -1,0 +1,22 @@
+5
+##start
+start 23 3
+two 21 21
+three 22 22
+for 54 54 
+five 87 87 
+##end
+end 9 5
+start-two
+start-three
+start-for
+two-end
+three-five
+five-end
+for-end
+#
+#   [end] -[5]
+#   /   \    \
+#  [1]  [2] [3]
+#   \   /    |
+#    [0]  - /
