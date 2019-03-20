@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 15:34:46 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/20 14:52:09 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/20 15:12:44 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -42,6 +42,7 @@ int		get_connection(t_map *map, char *line, char ***output) //securise
 	int len;
 
 	len = -1;
+	ft_printf("!!!%s\n", line);
 	while (line[++len] != '-')
 		;
 	co1 = -1;
@@ -51,8 +52,8 @@ int		get_connection(t_map *map, char *line, char ***output) //securise
 	while (ft_strcmp(map->room[++co2].name, &(line[len + 1])) &&
 			co2 < map->nb_room)
 		;
-//	if (ft_strncmp(map->room[co1].name, line, len) || ft_strcmp(map->room[co2].name, &(line[len + 1])))
-//		return (0);
+	if (ft_strncmp(map->room[co1].name, line, len) || ft_strcmp(map->room[co2].name, &(line[len + 1])))
+		return (0);
 	if (!(map->room[co1].connection =
 				connection_realloc(map->room[co1].connection,
 					&(map->room[co1].nb_connection), co2)))
@@ -72,7 +73,7 @@ int		get_all_connection(t_map *map, char *line, char ***output)
 		return (0);
 	while (get_next_line(0, &line) == 1)
 	{
-		if (ft_strchr(line, '-'))
+		if (ft_strchr(line, '-') && line[0] != '#')
 		{
 			if (!get_connection(map, line, output))
 				return (0);
