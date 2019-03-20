@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:13:45 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/20 14:43:05 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/20 16:36:32 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -150,7 +150,7 @@ int 		get_way(t_map *map, int room, int heat, int **way)
 	while (++n < map->room[room].nb_connection)
 	{
 		co = map->room[room].connection[n];
-		if (map->room[co].heat == -1 || map->room[co].heat > heat + 1)
+		if ((map->room[co].heat == -1 || map->room[co].heat > heat + 1) && (heat + 1 < map->room[map->end].heat || map->room[map->end].heat == -1))
 			if (get_way(map, co, heat + 1, way))
 				ret++;
 	}
@@ -175,22 +175,102 @@ void put_co(int *co, t_map *map)
 	ft_putendl("");
 }
 
-void get_all_way(t_map *map)
+int *no_comp_realloc(int *comp, int new_comp)
 {
 	int n;
-	int **way;
+	int *tmp;
+
+	n = -1;
+	while (comp[++n] != -1)
+		if (comp[n] == new_comp)
+			return (comp);
+	if (!(tmp = malloc(sizeof(int) * (n + 2))))
+		return (0);
+	n = -1;
+	while (comp[++n] != -1)
+		tmp[n] = comp[n];
+	tmp[n++] = new_comp;
+	tmp[n] = -1;
+	free(comp);
+	return (tmp);
+}
+
+int test_all_way(t_map *map)
+{
+	int n;
+	int m;
+	int i;
+	int j;
 	int nb_way;
 
 	nb_way = map->room[map->start].nb_connection;
-	way = malloc(sizeof(int*) * nb_way);
+	map->comp = malloc(sizeof(int*) * nb_way);
+	n = -1;
+	while (++n < nb_way)
+	{
+		map->comp[n] = malloc(sizeof(int));
+		map->comp[n][0] = -1;
+	}
+	n = -1;
+	while (++n < nb_way)
+	{
+		m = -1;
+		while (map->way[n] != 0 && map->way[n][++m] != -1)
+		{
+
+			i = n;
+			while (++i < nb_way)
+			{
+				j = -1;
+				while (map->way[i] != 0 && map->way[i][++j] != -1)
+					if (map->way[n][m] == map->way[i][j])
+					{
+						map->comp[n] = no_comp_realloc(map->comp[n] , i);
+						map->comp[i] = no_comp_realloc(map->comp[i] , n);
+						break ;
+					}
+			}
+		}
+	}
+	return (1);
+}
+
+void	put_comp(t_map *map)
+{
+	int n;
+	int m;
+
+	n = -1;
+	while (++n < map->room[map->start].nb_connection)
+	{
+		m = -1;
+		while (map->comp[n][++m] != -1)
+		{
+			ft_putnbr(map->comp[n][m]);
+			ft_putchar(' ');
+		}
+		ft_putendl("");
+	}
+}
+
+void get_all_way(t_map *map)
+{
+	int n;
+	int nb_way;
+
+	nb_way = map->room[map->start].nb_connection;
+	map->way = malloc(sizeof(int*) * nb_way);
 	n = -1;
 	while (++n < nb_way)
 	{
 		reset_heat(map);
 		map->room[map->start].heat = 0;
-		way[n] = 0;
-		get_way(map, map->room[map->start].connection[n], 1, &(way[n]));
-		if (way[n] != 0)
-			put_co(way[n], map);
-	}	
+		map->way[n] = 0;
+		//map->way;
+		get_way(map, map->room[map->start].connection[n], 1, &(map->way[n]));
+		if (map->way[n] != 0)
+			put_co(map->way[n], map);
+	}
+	test_all_way(map);
+	put_comp(map);
 }

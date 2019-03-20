@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 14:09:06 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/19 14:35:49 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/20 15:06:52 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -33,6 +33,7 @@ struct					s_map
 {
 	t_room				*room;
 	int					**way;
+	int 				**comp;
 	int					*ant;
 	int					*last_room;
 	int					nb_room;
