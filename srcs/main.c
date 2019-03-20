@@ -6,12 +6,14 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 15:34:46 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/18 16:49:14 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/20 14:52:09 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+void		get_all_way(t_map *map);
 
 int		*connection_realloc(int *connection, int *nb_co, int new_co)
 {
@@ -22,7 +24,6 @@ int		*connection_realloc(int *connection, int *nb_co, int new_co)
 	while (++n < *nb_co)
 		if (connection[n] == new_co)
 			return (connection);
-	ft_putstr("ok");
 	(*nb_co)++;
 	if (!(tmp = malloc(sizeof(int) * (*nb_co))))
 		return (0);
@@ -50,8 +51,8 @@ int		get_connection(t_map *map, char *line, char ***output) //securise
 	while (ft_strcmp(map->room[++co2].name, &(line[len + 1])) &&
 			co2 < map->nb_room)
 		;
-	if (ft_strncmp(map->room[co1].name, line, len) || ft_strcmp(map->room[++co2].name, &(line[len + 1])))
-		return (0);
+//	if (ft_strncmp(map->room[co1].name, line, len) || ft_strcmp(map->room[co2].name, &(line[len + 1])))
+//		return (0);
 	if (!(map->room[co1].connection =
 				connection_realloc(map->room[co1].connection,
 					&(map->room[co1].nb_connection), co2)))
@@ -162,7 +163,7 @@ int	test_maps(t_map *map, int room)
 	return (0);
 }
 
-int	other_test_maps(t_map *map, int room)
+int	test_room(t_map *map, int room)
 {
 	int n;
 
@@ -173,7 +174,7 @@ int	other_test_maps(t_map *map, int room)
 	while (++n < map->room[room].nb_connection)
 	{
 		if (map->room[map->room[room].connection[n]].hype != 1)
-			if (other_test_maps(map, map->room[room].connection[n]))
+			if (test_room(map, map->room[room].connection[n]))
 				return (1);
 	}
 	return (0);
@@ -181,22 +182,22 @@ int	other_test_maps(t_map *map, int room)
 
 void test_all_maps(t_map *map)
 {
-	int n;
+//	int n;
 	int m;
 
-	n = -1;
+/*	n = -1;
 	while (++n < map->nb_room)
 	{
 		reset_hype(map);
-		map->room[n].hype = 1;
+		map->room[n].hype = 1;*/
 		m = -1;
-		while (++m < map->room[n].nb_connection)
-				if (!other_test_maps(map, map->room[n].connection[m]))
+		while (++m < map->room[map->end].nb_connection)
+				if (!test_room(map, map->room[map->end].connection[m]))
 				{
-					sta_line(map, n, map->room[n].connection[m]);
-					//m = -1;
+					sta_line(map, map->end, map->room[map->end].connection[m]);
+		//			m = -1;
 				}
-	}
+//	}
 }
 
 int		remove_useless_co(t_map *map)
@@ -242,7 +243,8 @@ int		main(void)
 	ft_putchar('\n');
 	if (!remove_useless_co(map))
 		return (-1);
-	n = -1;
+	get_all_way(map);
+/*	n = -1;
 	while (++n < map->nb_ant)
 		//while (map->ant[map->nb_ant - 1] != map->end)
 		if (map->ant[n] != map->end)
@@ -257,7 +259,7 @@ int		main(void)
 //			ft_putendl("!!!!!!!!!!!!!3");
 
 			n--;
-		}
+		}*/
 	//print_room_info(map);
 	free_map(map);
 	return (0);

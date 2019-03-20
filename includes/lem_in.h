@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 14:09:06 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/15 17:03:55 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/19 14:35:49 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -32,6 +32,7 @@ typedef struct s_room	t_room;
 struct					s_map
 {
 	t_room				*room;
+	int					**way;
 	int					*ant;
 	int					*last_room;
 	int					nb_room;
