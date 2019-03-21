@@ -23,6 +23,8 @@ int get_all_path(t_map *map, int room)
 	int *tmp;
 	int nb_path;
 
+	//init room somewhere
+
 	while (1)
 	{
 		ret = 0;
@@ -41,13 +43,13 @@ int get_all_path(t_map *map, int room)
 						if (tmp == 0)
 						{
 							tmp = map->path[n];
-							map->path[n] = add_room_to_path(tmp, room, map->path_len[n]);
+							map->path[n] = add_room_to_path(tmp, map->room[room].connection[m], map->path_len[n]);
 							map->path_len[n]++;
 						}
 						else
 						{
-							map->path[map->nb_path] = add_room_to_path(tmp, room, map->path_len[n] - 1);
-							map->nb_path++;
+							map->path[map->nb_path] = add_room_to_path(tmp, map->room[room].connection[m], map->path_len[n] - 1);
+							map->nb_path++;				//realloc or huge buffer
 							map->path_len[map->nb_path] = map->path_len[n];
 						}
 						if (map->room[room].connection[m] != map->end)
@@ -61,3 +63,6 @@ int get_all_path(t_map *map, int room)
 			break ;
 	}
 }
+
+
+// make an other function
