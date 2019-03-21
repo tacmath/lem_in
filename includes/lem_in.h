@@ -32,12 +32,14 @@ typedef struct s_room	t_room;
 struct					s_map
 {
 	t_room				*room;
-	int					**way;
+	int					**path;
+	int					*path_len;
 	int 				**comp;
 	int					*ant;
 	int					*last_room;
 	int					nb_room;
 	int					nb_ant;
+	int					nb_path;
 	int					start;
 	int					end;
 };
