@@ -6,14 +6,15 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 15:34:46 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/20 15:12:44 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/22 15:45:05 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void		get_all_way(t_map *map);
+//void		get_all_way(t_map *map);
+int get_multiple_path(t_map *map);
 
 int		*connection_realloc(int *connection, int *nb_co, int new_co)
 {
@@ -244,7 +245,8 @@ int		main(void)
 	ft_putchar('\n');
 	if (!remove_useless_co(map))
 		return (-1);
-	get_all_way(map);
+	get_multiple_path(map);
+//	get_all_way(map);
 /*	n = -1;
 	while (++n < map->nb_ant)
 		//while (map->ant[map->nb_ant - 1] != map->end)

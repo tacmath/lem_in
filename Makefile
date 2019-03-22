@@ -6,7 +6,7 @@
 #    By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2018/11/05 12:24:50 by mtaquet      #+#   ##    ##    #+#        #
-#    Updated: 2019/03/18 15:10:00 by mtaquet     ###    #+. /#+    ###.fr      #
+#    Updated: 2019/03/22 14:36:07 by mtaquet     ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -19,6 +19,7 @@ LIBFILES = libft.a
 SRCFILES = main.c\
 		   room.c\
 		   utils.c\
+		   path.c\
 		   init.c\
 		   resol.c\
 		   hype.c\

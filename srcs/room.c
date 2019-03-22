@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:13:45 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/20 16:36:32 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/22 15:15:37 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -129,7 +129,7 @@ void		reset_heat(t_map *map)
 	while (++n < map->nb_room)
 		map->room[n].heat = -1;
 }
-
+/*
 int 		get_way(t_map *map, int room, int heat, int **way)
 {
 	int	n;
@@ -273,4 +273,4 @@ void get_all_way(t_map *map)
 	}
 	test_all_way(map);
 	put_comp(map);
-}
+}*/
