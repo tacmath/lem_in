@@ -10,14 +10,8 @@ int *add_room_to_path(int *path, int room, int len)
 		return (0);
 	n = -1;
 	while (++n < len)
-	{
 		new_path[n] = path[n];
-	//	ft_putnbr(path[n]);
-	//	ft_putchar(' ');
-	}
 	new_path[n] = room;
-//	ft_putnbr(room);
-//	ft_putendl("");
 	return (new_path);
 }
 
@@ -66,16 +60,6 @@ int get_all_path(t_map *map, int start_path)
 	int *tmp;
 	int nb_path;
 
-	//init room somewhere
-
-//	res_heat(map);	
-//	map->path = malloc(sizeof(int*) /* 100000*/);
-//	map->path[0] = malloc(sizeof(int));
-//	map->path[0][0] = map->start;
-//	map->path_len = malloc(sizeof(int) /* 100000*/);
-//	map->path_len[0] = 1;
-//	map->nb_path = 1;
-//	map->room[map->start].heat = 1;
 	while (1)
 	{
 		ret = 0;
@@ -88,27 +72,23 @@ int get_all_path(t_map *map, int start_path)
 			{
 				tmp = 0;
 				m = -1;
-	//			ft_putendl("ok");
-
 				while (++m < map->room[room].nb_connection)
 					if (map->room[map->room[room].connection[m]].heat == -1)
 					{
 						if (tmp == 0)
 						{
-	//									ft_putendl("okkkkkkkkkkkk");
-
 							tmp = map->path[n];
 							map->path[n] = add_room_to_path(tmp, map->room[room].connection[m], map->path_len[n]);
 							map->path_len[n]++;
-	//							ft_putendl("ooooooooooooooooook");
-
 						}
 						else
 						{
-							map->path = (int**)ft_realloc((void**)&(map->path), sizeof(int*) * map->nb_path, sizeof(int*) * (map->nb_path + 1));
-							map->path_len = (int*)ft_realloc((void**)&(map->path_len), sizeof(int) * map->nb_path, sizeof(int) * (map->nb_path + 1));
+							if (map->nb_path % 1000 == 0)
+							{
+								map->path = (int**)ft_realloc((void**)&(map->path), sizeof(int*) * map->nb_path, sizeof(int*) * (map->nb_path + 1000));
+								map->path_len = (int*)ft_realloc((void**)&(map->path_len), sizeof(int) * map->nb_path, sizeof(int) * (map->nb_path + 1000));
+							}
 							map->path[map->nb_path] = add_room_to_path(tmp, map->room[room].connection[m], map->path_len[n] - 1);
-							//map->nb_path++;				//realloc or huge buffer
 							map->path_len[map->nb_path] = map->path_len[n];
 							map->nb_path++;
 						}
@@ -122,7 +102,41 @@ int get_all_path(t_map *map, int start_path)
 		if (ret == 0)
 			break ;
 	}
-//	draw_all_path(map);
+	return (1);
+}
+
+int get_usable_path(t_map *map)
+{
+	int **tmp;
+	int *tmp_len;
+	int nb_path;
+	int n;
+	
+	n = -1;
+	nb_path = 0;
+	while (++n < map->nb_path)
+		if (map->path[n][map->path_len[n] - 1] == map->end)
+			nb_path++;
+	if (!(tmp = malloc(sizeof(int*) * nb_path)))
+		return (0);
+	if (!(tmp_len = malloc(sizeof(int) * nb_path)))
+		return (0);
+	n = -1;
+	nb_path = 0;
+	while (++n < map->nb_path)
+		if (map->path[n][map->path_len[n] - 1] == map->end)
+		{
+			tmp[nb_path] = map->path[n];
+			tmp_len[nb_path] = map->path_len[n];
+			nb_path++;
+		}
+		else
+			free(map->path[n]);
+	free(map->path);
+	free(map->path_len);
+	map->path = tmp;
+	map->path_len = tmp_len;
+	map->nb_path = nb_path;
 	return (1);
 }
 
@@ -133,34 +147,32 @@ int get_multiple_path(t_map *map)
 
 	n = -1;
 	map->nb_path = 0;
-	//map->path = 0;
-	//map->path_len = 0;
 	while (++n < map->room[map->start].nb_connection)
 	{
 		start_path = map->nb_path;
  		res_heat(map);
-		//map->path = malloc(sizeof(int*) /* 100000*/);
 		if (map->nb_path != 0) 
 		{
-			map->path = (int**)ft_realloc((void**)&(map->path), sizeof(int*) * map->nb_path, sizeof(int*) * (map->nb_path + 1));
-			map->path_len = (int*)ft_realloc((void**)&(map->path_len), sizeof(int) * map->nb_path, sizeof(int) * (map->nb_path + 1));
+			map->path = (int**)ft_realloc((void**)&(map->path), sizeof(int*) * map->nb_path, sizeof(int*) * (map->nb_path + 1000));
+			map->path_len = (int*)ft_realloc((void**)&(map->path_len), sizeof(int) * map->nb_path, sizeof(int) * (map->nb_path + 1000));
 		}
 		else
 		{
-			map->path = malloc(sizeof(int*) /* 100000*/);
-			map->path_len = malloc(sizeof(int) /* 100000*/);
+			map->path = malloc(sizeof(int*) * 1000);
+			map->path_len = malloc(sizeof(int) * 1000);
 		}
 		map->path[start_path] = malloc(sizeof(int));
 		map->path[start_path][0] = map->room[map->start].connection[n];
-		//map->path_len = malloc(sizeof(int) /* 100000*/);
 		map->nb_path++;
 		map->path_len[start_path] = 1;
 		map->room[map->start].heat = 1;
 		map->room[map->room[map->start].connection[n]].heat = 1;
 		get_all_path(map, start_path);
 	}
+	get_usable_path(map);
 	ft_putnbr(map->nb_path);
-//	draw_all_path(map);
+	ft_putendl("");
+	draw_all_path(map);
 	return (1);
 }
 
