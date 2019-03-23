@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 14:09:06 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/20 15:06:52 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/23 14:17:00 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -15,6 +15,7 @@
 # define LEM_IN_H
 
 # include "libft.h"
+#include <stdint.h>
 # include <stdlib.h>
 
 struct					s_room
@@ -33,6 +34,7 @@ struct					s_map
 {
 	t_room				*room;
 	int					**path;
+	uint128_t			**path_room;
 	int					*path_len;
 	int 				**comp;
 	int					*ant;
