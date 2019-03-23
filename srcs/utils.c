@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:21:16 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/19 13:08:00 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/23 14:52:40 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -58,6 +58,11 @@ void		free_map(t_map *map)
 		free(map->room[n].name);
 		free(map->room[n].connection);
 	}
+	n = -1;
+	while (++n < map->nb_path)
+		free(map->path[n]);
+	free(map->path);
+	free(map->path_len);
 	free(map->ant);
 	free(map->last_room);
 	free(map->room);
