@@ -21,8 +21,9 @@ char		compatibility_one(uint64_t *rooms1, uint64_t *rooms2, int size)
 	res = 0;
 	i = -1;
 	while (++i <= size)
-		res |= (rooms1[i] & rooms2[i]);
-	return (!res);
+		if(rooms1[i] & rooms2[i])
+			return (0);
+	return (1);
 }
 
 int			compatibility_all(t_map *map)
