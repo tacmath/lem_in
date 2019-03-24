@@ -145,6 +145,7 @@ int get_usable_path(t_map *map)
 void sort_path(t_map *map)
 {
 	int tmp_len;
+	uint64_t *tmp_bin;
 	int n;
 	int m;
 	int *tmp;
@@ -158,10 +159,13 @@ void sort_path(t_map *map)
 			{
 				tmp_len = map->path_len[n + 1];
 				tmp = map->path[n + 1];
+				tmp_bin = map->path_room[n + 1];
 				map->path[n + 1] = map->path[n];
 				map->path_len[n + 1] = map->path_len[n];
+				map->path_room[n + 1] = map->path_room[n];
 				map->path[n] = tmp;
-				map->path_len[n] = tmp_len;			
+				map->path_len[n] = tmp_len;
+				map->path_room[n] = tmp_bin;
 			}
 	}
 }
@@ -200,7 +204,7 @@ int get_multiple_path(t_map *map)
 	if (!compatibility_all(map))
 		return (0);
 	//
-/*	for (int i= 0; i < map->nb_path; i++)
+	/*for (int i= 0; i < map->nb_path; i++)
 	{
 		ft_putstr("( ");
 		for (int j = 0; j < map->nb_path; j++)
