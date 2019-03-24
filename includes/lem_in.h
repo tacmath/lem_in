@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 14:09:06 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/23 14:35:58 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/24 13:45:19 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -30,12 +30,20 @@ struct					s_room
 
 typedef struct s_room	t_room;
 
+struct					s_matrix_path
+{
+	char				**matrix;
+	int					*nb_compat;
+};
+
+typedef struct s_matrix	t_matrix;
+
 struct					s_map
 {
 	t_room				*room;
 	int					**path;
 	uint64_t			**path_room;
-	char				**matrix;
+	t_matrix			path_compat;
 	int					*path_len;
 	int 				**comp;
 	int					*ant;
