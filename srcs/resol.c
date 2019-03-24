@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:26:27 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/24 16:07:13 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/24 16:17:05 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -72,5 +72,29 @@ void	move_ant(t_map	*map)
 
 int		resol(t_map *map)
 {
-	int i;
+	int		i;
+	int		best_flow;
+	int		test_flow;
+	int		*best_compa;
+	int		*test_compa;
+
+	i = -1;
+	best_flow = 0;
+	best_compa = NULL;
+	while (++i < map->nb_ants)
+	{
+		if ((test_flow = fucking_recursive(map, &test_compa, best_flow) <= 0))
+			return (0);
+		if (best_flow > test_flow)
+		{
+			free (test_compa);
+			break;
+		}
+		best_flow = test_flow;
+		if (best_compa)
+			free(best_compa);
+		best_compa = test_compa;
+	}
+	//maybe put best compa in the struct
+	return (1);
 }
