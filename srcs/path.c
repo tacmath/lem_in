@@ -142,6 +142,30 @@ int get_usable_path(t_map *map)
 	return (1);
 }
 
+void sort_path(t_map *map)
+{
+	int tmp_len;
+	int n;
+	int m;
+	int *tmp;
+
+	m = -1;
+	while (++m < map->nb_path)
+	{
+		n = -1;
+		while (++n < map->nb_path - 1)
+			if (map->path_len[n] > map->path_len[n + 1])
+			{
+				tmp_len = map->path_len[n + 1];
+				tmp = map->path[n + 1];
+				map->path[n + 1] = map->path[n];
+				map->path_len[n + 1] = map->path_len[n];
+				map->path[n] = tmp;
+				map->path_len[n] = tmp_len;			
+			}
+	}
+}
+
 int get_multiple_path(t_map *map)
 {
 	int n;
@@ -172,21 +196,22 @@ int get_multiple_path(t_map *map)
 		get_all_path(map, start_path);
 	}
 	get_usable_path(map);
+	sort_path(map);
 	if (!compatibility_all(map))
 		return (0);
 	//
-	for (int i= 0; i < map->nb_path; i++)
+/*	for (int i= 0; i < map->nb_path; i++)
 	{
 		ft_putstr("( ");
 		for (int j = 0; j < map->nb_path; j++)
 			ft_printf("%d ", (int)map->path_compat.matrix[i][j]);
 		ft_putendl(")");
-	}
+	}*/
 		//ft_printf("path %d : %d\n", i, map->path_compat.nb_compat[i]);
 	//
 	ft_putnbr(map->nb_path);
 	ft_putendl("");
-	//draw_all_path(map);
+//	draw_all_path(map);
 	return (1);
 }
 

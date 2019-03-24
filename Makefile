@@ -6,7 +6,7 @@
 #    By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2018/11/05 12:24:50 by mtaquet      #+#   ##    ##    #+#        #
-#    Updated: 2019/03/24 14:06:04 by lperron     ###    #+. /#+    ###.fr      #
+#    Updated: 2019/03/24 14:46:23 by mtaquet     ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -22,7 +22,6 @@ SRCFILES = main.c\
 		   path.c\
 		   init.c\
 		   resol.c\
-		   hype.c\
 		   compat.c\
 
 INCFILES = lem_in.h

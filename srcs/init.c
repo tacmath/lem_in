@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:24:10 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/18 16:29:44 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/24 15:40:09 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -22,15 +22,13 @@ int		rooms_init(t_map *map)
 	{
 		map->room[n].connection = 0;
 		map->room[n].heat = -1;
-		map->room[n].hype = 0;
-		map->room[n].ant = 0;
 		map->room[n].nb_connection = 0;
 	}
 	n = -1;
 	while (++n < map->nb_ant)
 	{
-		map->ant[n] = map->start;
-		map->last_room[n] = map->start;
+		map->ant[n] = -1;
+		map->ant_progress[n] = -1;
 	}
 	return (1);
 }
@@ -56,7 +54,7 @@ int		init_struct(t_map *map, char ***output)
 	}
 	if (!(map->ant = malloc(sizeof(int) * map->nb_ant)))
 		return (ft_super_free(1, map));
-	if (!(map->last_room = malloc(sizeof(int) * map->nb_ant)))
+	if (!(map->ant_progress = malloc(sizeof(int) * map->nb_ant)))
 		return (ft_super_free(1, map));
 	map->room = 0;
 	map->start = -1;

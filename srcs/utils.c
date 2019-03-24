@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:21:16 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/23 14:52:40 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/24 15:38:25 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -64,7 +64,7 @@ void		free_map(t_map *map)
 	free(map->path);
 	free(map->path_len);
 	free(map->ant);
-	free(map->last_room);
+	free(map->ant_progress);
 	free(map->room);
 	free(map);
 }

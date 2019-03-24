@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 15:34:46 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/22 15:45:05 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/24 15:40:41 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -43,7 +43,6 @@ int		get_connection(t_map *map, char *line, char ***output) //securise
 	int len;
 
 	len = -1;
-	ft_printf("!!!%s\n", line);
 	while (line[++len] != '-')
 		;
 	co1 = -1;
@@ -127,16 +126,16 @@ void	print_room_info(t_map *map)
 		ft_putendl("");
 	}
 }
-
-void	reset_hype(t_map *map)
+/*
+void	reset_heat(t_map *map)
 {
 	int n;
 
 	n = -1;
 	while (++n < map->nb_room)
-		map->room[n].hype = 0;
-}
-
+		map->room[n].heat = 0;
+}*/
+/*
 int	test_maps(t_map *map, int room)
 {
 	int n;
@@ -164,18 +163,18 @@ int	test_maps(t_map *map, int room)
 //	map->room[room].hype = 0;
 	return (0);
 }
-
+*/
 int	test_room(t_map *map, int room)
 {
 	int n;
 
 	if (room == map->start || room == map->end)
 		return (1);
-	map->room[room].hype = 1;
+	map->room[room].heat = 1;
 	n = -1;
 	while (++n < map->room[room].nb_connection)
 	{
-		if (map->room[map->room[room].connection[n]].hype != 1)
+		if (map->room[map->room[room].connection[n]].heat != 1)
 			if (test_room(map, map->room[room].connection[n]))
 				return (1);
 	}
@@ -215,7 +214,7 @@ int		remove_useless_co(t_map *map)
 		}
 		/*else
 			test_maps(map, map->room[map->start].connection[n]);*/
-	test_all_maps(map);
+	//	test_all_maps(map);
 	return (1);
 }
 
@@ -233,7 +232,6 @@ int		main(void)
 	if (!get_room(map, &output))
 		return (-1);
 	n = -1;
-	ft_putstr("ok");
 	if (!get_error(map))
 	{
 		while (output[++n] != 0)
