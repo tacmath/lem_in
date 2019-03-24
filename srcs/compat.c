@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/23 13:30:43 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/24 13:45:10 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/24 14:18:27 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -40,8 +40,9 @@ int			nb_path_compat(t_map *map)
 		j = -1;
 		while (++j < map->nb_path)
 			if (map->path_compat.matrix[j][i])
-				map->path_compat.nb_compat++;
+				map->path_compat.nb_compat[i]++;
 	}
+	return (1);
 }
 
 int			compatibility_all(t_map *map)

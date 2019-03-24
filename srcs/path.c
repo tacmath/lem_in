@@ -172,9 +172,21 @@ int get_multiple_path(t_map *map)
 		get_all_path(map, start_path);
 	}
 	get_usable_path(map);
+	if (!compatibility_all(map))
+		return (0);
+	//
+	for (int i= 0; i < map->nb_path; i++)
+	{
+		ft_putstr("( ");
+		for (int j = 0; j < map->nb_path; j++)
+			ft_printf("%d ", (int)map->path_compat.matrix[i][j]);
+		ft_putendl(")");
+	}
+		//ft_printf("path %d : %d\n", i, map->path_compat.nb_compat[i]);
+	//
 	ft_putnbr(map->nb_path);
 	ft_putendl("");
-	draw_all_path(map);
+	//draw_all_path(map);
 	return (1);
 }
 

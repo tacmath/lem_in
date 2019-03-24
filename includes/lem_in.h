@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 14:09:06 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/24 14:02:47 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/24 14:07:32 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -72,4 +72,5 @@ int						get_error(t_map *map);
 void					get_room_heat(t_map *map, int room, int heat);
 void					kylie_jenner(t_map *map);
 void					move_ant(t_map *map);
+int						compatibility_all(t_map *map);
 #endif
