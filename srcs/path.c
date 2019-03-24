@@ -41,14 +41,7 @@ void draw_all_path(t_map *map)
 			ft_putchar(' ');
 		}
 		ft_putendl("");
-	
-	
-	
 	}
-
-
-
-
 }
 
 int get_all_path(t_map *map, int start_path)
@@ -111,6 +104,7 @@ int get_usable_path(t_map *map)
 	int *tmp_len;
 	int nb_path;
 	int n;
+	int m;
 	
 	n = -1;
 	nb_path = 0;
@@ -121,6 +115,8 @@ int get_usable_path(t_map *map)
 		return (0);
 	if (!(tmp_len = malloc(sizeof(int) * nb_path)))
 		return (0);
+	if (!(map->path_room = malloc(sizeof(uint64_t*) * nb_path)))
+		return (0);
 	n = -1;
 	nb_path = 0;
 	while (++n < map->nb_path)
@@ -128,6 +124,12 @@ int get_usable_path(t_map *map)
 		{
 			tmp[nb_path] = map->path[n];
 			tmp_len[nb_path] = map->path_len[n];
+			if (!(map->path_room[nb_path] = ft_memalloc(sizeof(uint64_t) * ((map->nb_room >> 6) + 1))))
+				return (0);
+
+			m = -1;
+			while (tmp[nb_path][++m] != map->end)
+				map->path_room[nb_path][tmp[nb_path][m] >> 6] |= 1 << tmp[nb_path][m] % 64;
 			nb_path++;
 		}
 		else
