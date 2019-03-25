@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 14:09:06 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/25 13:37:25 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/25 17:33:30 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -44,6 +44,7 @@ struct					s_map
 	t_matrix			path_compat;
 	int					*best_compa;
 	int					best_flow;
+	int					best_nb_compat;
 	int					*path_len;
 	int 				**comp;
 	int					*ant;
@@ -72,5 +73,6 @@ void					get_room_heat(t_map *map, int room, int heat);
 //void					kylie_jenner(t_map *map);
 void					move_ant(t_map *map);
 int						compatibility_all(t_map *map);
+int						resol(t_map *map);
 
 #endif
