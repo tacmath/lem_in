@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:26:27 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/24 16:27:28 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/25 13:49:51 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -70,26 +70,64 @@ void	move_ant(t_map	*map)
 	ft_putchar('\n');
 }*/
 
+void	push_test_compa(int	*test_compa, int room, int size)
+{
+	int		i;
+
+	i = -1;
+	while (test_compa[i] != -1 && i < size)
+		;
+	test_compa[i] = room;
+}
+
+int		fucking_recursive(t_map *map, int **test_compa, int size, int j)
+{
+	int		i;
+	int		*best;
+	int		ok;
+
+	i = -1;
+	if (*test_compa = NULL)
+	{
+		if (!(*test_compa = malloc(sizeof(int) * size)))
+			return (-1);
+		while (++i < size)
+			*test[i] = -1;
+	}
+	while (++j < map->nb_room) // we add a room in the path and recur !!!!!!
+	{
+		i = -1;
+		ok = 1;
+		while(++i < size)
+			if (test_compa[i] != -1 && map->path_compat[test_compat[i]][j] == 0)
+				ok = 0;
+		if (ok)
+		{
+			push_test_compa(*
+		}
+	}
+}
+
 int		resol(t_map *map)
 {
 	int		i;
-	int		best_flow;
 	int		test_flow;
 	int		*test_compa;
 
-	i = -1;
-	best_flow = 0;
+	i = 1;
+	map->best_flow = 0;
 	map->best_compa = NULL;
 	while (++i < map->nb_ant)
 	{
-		if ((test_flow = fucking_recursive(map, &test_compa, best_flow) <= 0))
+		test_compa = NULL;
+		if (((test_flow = fucking_recursive(map, &test_compa, i, -1)) < 0))
 			return (0);
-		if (best_flow > test_flow)
+		if (map->best_flow > test_flow) //in the recursive, if we can't find a new path, we need to set test_flow to 0;
 		{
 			free (test_compa);
 			break;
 		}
-		best_flow = test_flow;
+		map->best_flow = test_flow;
 		if (map->best_compa)
 			free(map->best_compa);
 		map->best_compa = test_compa;
