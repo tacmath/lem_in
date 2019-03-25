@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/23 13:30:43 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/24 15:11:23 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/25 23:12:25 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -16,9 +16,7 @@
 char		compatibility_one(uint64_t *rooms1, uint64_t *rooms2, int size)
 {
 	int	i;
-	int res;
 
-	res = 0;
 	i = -1;
 	while (++i <= size)
 		if(rooms1[i] & rooms2[i])

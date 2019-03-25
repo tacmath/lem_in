@@ -6,14 +6,14 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:26:27 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/25 18:05:44 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/25 23:55:51 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-int add_ant_to_line(char **line, int ant, char room_name, int *len)
+int add_ant_to_line(char **line, int ant, char *room_name, int *len)
 {
 	int n;
 	int m;
@@ -120,6 +120,8 @@ double	compute_flow(t_map *map, int *test_compa, int size)
 
 	i = -1;
 	flow = size;
+	if (!test_compa)
+		return (0);
 	while (++i < size)
 	{
 		ft_printf("compute : %d\n", i);
@@ -153,7 +155,7 @@ int		*cpy_path_array(int *src, int size)
 	return (dest);
 }
 
-double	fucking_recursive(t_map *map, int **best, int	**test,int size) // for the moment we just compare best to best............
+double	fucking_recursive(t_map *map, int **best, int	**test, int size) // for the moment we just compare best to best............
 {
 	int		i;
 	int		ok;
@@ -161,16 +163,28 @@ double	fucking_recursive(t_map *map, int **best, int	**test,int size) // for the
 
 	i = -1;
 	ft_printf("TRUXbbbbbbbbbbb\n");
-	if (*best && recur_get_step(*best, size) == size)
+	if (*test && recur_get_step(*test, size) == size)
+	{
+		if (compute_flow(map, *test,  size) > compute_flow(map, *best, size))
+		{
+			free(*best);
+			*best = cpy_path_array(*test, size); //abort abort (we need to freeeeee)
+		}
 		return (compute_flow(map, *best, size));
+	}
 	//allocate test
 
 	if (*test == NULL) //okay it's the first
 	{
+		ft_printf("alllocattttt  %d\n", size);
 		if (!(*test = malloc(sizeof(int) * size)))
 			return (-1);
 		while (++i < size)
-			*test[i] = -1;
+		{
+			ft_printf("%d\n", i);
+			(*test)[i] = -1;
+		}
+		ft_printf("tete\n");
 		*best = NULL;
 	}
 	ft_putendl("OK");
@@ -189,13 +203,15 @@ double	fucking_recursive(t_map *map, int **best, int	**test,int size) // for the
 		ft_printf("TRUX\n");
 		if (ok)
 		{
-		ft_printf("TRUXiii\n");
+			ft_printf("TRUXiii\n");
 			push_test_compa(*test, j, size);
-			if (fucking_recursive(map, best, test, size) > compute_flow(map, *best, size))
+			fucking_recursive(map, best, test, size); 
+			/*if (fucking_recursive(map, best, test, size) > compute_flow(map, *best, size))
 			{
 				free(*best);
 				*best = cpy_path_array(*test, size); //abort abort (we need to freeeeee)
 			}
+			*/
 		}
 	}
 	return (compute_flow(map, *best, size));
@@ -211,11 +227,11 @@ int		resol(t_map *map)
 	i = 0;
 	map->best_flow = 0;
 	map->best_compa = NULL;
-	tmp = NULL;
 	while (++i < map->nb_ant)
 	{
 		ft_printf("ant++\n");
 		test_compa = NULL;
+		tmp = NULL;
 		if (((test_flow = fucking_recursive(map, &test_compa, &tmp, i)) < 0))
 			return (0);
 		if (map->best_flow > test_flow) //in the recursive, if we can't find a new path, we need to set test_flow to 0;
@@ -227,7 +243,7 @@ int		resol(t_map *map)
 		if (map->best_compa)
 			free(map->best_compa);
 		map->best_compa = test_compa;
-		map->best_nb_compat = i + 1;
+		map->best_nb_compat = i;
 	}
 	return (1);
 }
