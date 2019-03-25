@@ -12,6 +12,39 @@
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+int add_ant_to_line(char **line, int ant, char room_name, int *len)
+{
+	int n;
+	int m;
+	char *ant_nb;
+	char *tmp;
+	
+	if (!(ant_nb = ft_itoa(ant + 1)))
+		return (0);
+	if (!(tmp = malloc(sizeof(int) * (*len + ft_strlen(ant_nb) + 3 + ft_strlen(room_name)))))
+		return (0);
+	n = -1;
+	while (++n < *len)
+		tmp[n] = (*line)[n];
+	tmp[n] = 'L';
+	*len += ft_strlen(ant_nb) + 1;
+	m = -1;
+	while (++n < *len)
+		tmp[n] = ant_nb[++m];
+	tmp[n] = '-';
+	*len += ft_strlen(room_name) + 1;
+	m = -1;
+	while (++n < *len)
+		tmp[n] = room_name[++m];
+	tmp[n] = ' ';
+	tmp[n + 1] = '\0';
+	free(*line);
+	free(ant_nb);
+	*line = tmp;
+	return (1);
+}
+
 /*
 void		put_resol(t_map *map, int ant, int room)
 {
