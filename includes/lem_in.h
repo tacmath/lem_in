@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 14:09:06 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/26 12:56:40 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/26 17:08:35 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -31,6 +31,7 @@ typedef struct s_room	t_room;
 struct					s_matrix
 {
 	char				**matrix;
+	uint64_t			**matrixbin;
 	int					*nb_compat;
 };
 
