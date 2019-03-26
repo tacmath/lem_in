@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:26:27 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/25 23:55:51 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/26 13:07:04 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -129,6 +129,7 @@ double	compute_flow(t_map *map, int *test_compa, int size)
 			return (0);
 		flow /= map->path_len[test_compa[i]];
 	}
+	ft_printf( _RED_ "flow = %f\n" _EOC_ , flow);
 	return (flow);
 }
 
@@ -181,7 +182,7 @@ double	fucking_recursive(t_map *map, int **best, int	**test, int size) // for th
 			return (-1);
 		while (++i < size)
 		{
-			ft_printf("%d\n", i);
+			ft_printf("tt:%d\n", i);
 			(*test)[i] = -1;
 		}
 		ft_printf("tete\n");
@@ -193,11 +194,11 @@ double	fucking_recursive(t_map *map, int **best, int	**test, int size) // for th
 	{
 		i = -1;
 		ok = 1;
-		ft_printf("%d\n", j);
+		ft_printf("ll%d\n", j);
 		while(++i < size) //can add this path
 		{
-			ft_printf("i = %d\n", i);
-			if (*test[i] != -1 && map->path_compat.matrix[*test[i]][j] == 0)
+			ft_printf("jj i = %d\n", i);
+			if ((*test)[i] != -1 && map->path_compat.matrix[*test[i]][j] == 0)
 				ok = 0;
 		}
 		ft_printf("TRUX\n");
@@ -220,20 +221,22 @@ double	fucking_recursive(t_map *map, int **best, int	**test, int size) // for th
 int		resol(t_map *map)
 {
 	int		i;
-	int		test_flow;
+	double	test_flow;
 	int		*test_compa;
 	int		*tmp;
 
 	i = 0;
 	map->best_flow = 0;
 	map->best_compa = NULL;
-	while (++i < map->nb_ant)
+	while (++i < map->nb_ant && i < map->nb_path)
 	{
-		ft_printf("ant++\n");
+		ft_printf( _RED_ "ant++\n" _EOC_ );
 		test_compa = NULL;
 		tmp = NULL;
 		if (((test_flow = fucking_recursive(map, &test_compa, &tmp, i)) < 0))
 			return (0);
+		ft_printf( _GREEN_ "test = %f real best = %f \n", test_flow, compute_flow(map, test_compa, i));
+
 		if (map->best_flow > test_flow) //in the recursive, if we can't find a new path, we need to set test_flow to 0;
 		{
 			free (test_compa);
@@ -242,8 +245,11 @@ int		resol(t_map *map)
 		map->best_flow = test_flow;
 		if (map->best_compa)
 			free(map->best_compa);
+
 		map->best_compa = test_compa;
 		map->best_nb_compat = i;
+		ft_printf( _BLUE_ "RECUR OK size = %d\n   best_flow = %f\n" _EOC_ , i, map->best_flow);
 	}
+	ft_printf( _GREEN_ "Byyye\n" _EOC_ );
 	return (1);
 }
