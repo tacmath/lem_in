@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:26:27 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/26 17:25:08 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/26 17:41:30 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -236,13 +236,10 @@ uint64_t	*bin_init(int size)
 	return (bin);
 }
 
-int		test_new_path(uint64_t *megapath, int j, int size)
+int		test_new_path(uint64_t *megapath, int j)
 {
-	int		i;
 
-	i = -1;
-	size = (size >> 6) + 1;
-		if ((megapath[j >> 6] & 1 << (j % 64)))
+		if ((megapath[j >> 6] & (1 << (j % 64))))
 		{
 //			ft_printf( _GREEN_ "yep biatch\n" _EOC_);
 			return (1);
@@ -360,7 +357,7 @@ double	fucking_recursive(t_map *map, int **best, int	**test, int size, uint64_t 
 
 		}*/
 	//	ft_printf("TRUX\n");
-		if (test_new_path(megapath, j, map->nb_path))
+		if (test_new_path(megapath, j))
 		{
 			//	ft_printf("TRUXiii\n");
 			push_test_compa(*test, j, size);
