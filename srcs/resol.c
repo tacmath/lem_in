@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:26:27 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/26 13:07:04 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/26 13:59:33 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -119,17 +119,18 @@ double	compute_flow(t_map *map, int *test_compa, int size)
 	double	flow;
 
 	i = -1;
-	flow = size;
+	flow = 0;
 	if (!test_compa)
 		return (0);
 	while (++i < size)
 	{
-		ft_printf("compute : %d\n", i);
+	//	ft_printf("compute : %d\n", i);
 		if (test_compa[i] == -1)
 			return (0);
-		flow /= map->path_len[test_compa[i]];
+		flow +=  1 / (double)map->path_len[test_compa[i]];
 	}
-	ft_printf( _RED_ "flow = %f\n" _EOC_ , flow);
+	//flow /= size;
+//	ft_printf( _RED_ "flow = %f\n" _EOC_ , flow);
 	return (flow);
 }
 
@@ -163,7 +164,7 @@ double	fucking_recursive(t_map *map, int **best, int	**test, int size) // for th
 	int		j;
 
 	i = -1;
-	ft_printf("TRUXbbbbbbbbbbb\n");
+//	ft_printf("TRUXbbbbbbbbbbb\n");
 	if (*test && recur_get_step(*test, size) == size)
 	{
 		if (compute_flow(map, *test,  size) > compute_flow(map, *best, size))
@@ -177,36 +178,44 @@ double	fucking_recursive(t_map *map, int **best, int	**test, int size) // for th
 
 	if (*test == NULL) //okay it's the first
 	{
-		ft_printf("alllocattttt  %d\n", size);
+	//	ft_printf("alllocattttt  %d\n", size);
 		if (!(*test = malloc(sizeof(int) * size)))
 			return (-1);
 		while (++i < size)
 		{
-			ft_printf("tt:%d\n", i);
+		//	ft_printf("tt:%d\n", i);
 			(*test)[i] = -1;
 		}
-		ft_printf("tete\n");
+	//	ft_printf("tete\n");
 		*best = NULL;
 	}
-	ft_putendl("OK");
+//	ft_putendl("OK");
 	j = -1;
 	while (++j < map->nb_path) // we add a path in compa and recur !!!!!!
 	{
 		i = -1;
 		ok = 1;
-		ft_printf("ll%d\n", j);
-		while(++i < size) //can add this path
+	//	ft_printf("ll%d\n", j);
+		while(++i < size && ok) //can add this path
 		{
-			ft_printf("jj i = %d\n", i);
-			if ((*test)[i] != -1 && map->path_compat.matrix[*test[i]][j] == 0)
+		//	ft_printf("jj i = %d\n", i);
+		//	ft_printf("%d\n", (*test)[i]);
+			if ((*test)[i] != -1 && map->path_compat.matrix[(*test)[i]][j] == 0)
+			{
+		//		ft_printf( _RED_ " echecc %d   %d\n" _EOC_, j , (*test)[i]);
 				ok = 0;
+			}
+	//		else
+		//	ft_printf( _GREEN_ " victoire %d   %d\n" _EOC_, j , (*test)[i]);
+
 		}
-		ft_printf("TRUX\n");
+	//	ft_printf("TRUX\n");
 		if (ok)
 		{
-			ft_printf("TRUXiii\n");
+		//	ft_printf("TRUXiii\n");
 			push_test_compa(*test, j, size);
-			fucking_recursive(map, best, test, size); 
+			fucking_recursive(map, best, test, size);
+		   (*test)[recur_get_step(*test, size) - 1] = -1;	
 			/*if (fucking_recursive(map, best, test, size) > compute_flow(map, *best, size))
 			{
 				free(*best);
@@ -215,6 +224,7 @@ double	fucking_recursive(t_map *map, int **best, int	**test, int size) // for th
 			*/
 		}
 	}
+//	ft_printf("!!!!!!!!!!!!!!!!!11\n");
 	return (compute_flow(map, *best, size));
 }
 

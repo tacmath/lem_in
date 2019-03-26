@@ -220,7 +220,7 @@ int get_multiple_path(t_map *map)
 	for (int i = 0; i< map->best_nb_compat; i++)
 		ft_printf("%d ", map->best_compa[i]);
 	ft_putendl("");
-//	draw_all_path(map);
+	draw_all_path(map);
 	return (1);
 }
 
