@@ -105,7 +105,7 @@ int get_usable_path(t_map *map)
 	int nb_path;
 	int n;
 	int m;
-	
+
 	n = -1;
 	nb_path = 0;
 	while (++n < map->nb_path)
@@ -170,6 +170,179 @@ void sort_path(t_map *map)
 	}
 }
 
+int comp_realloc(int **comp, int new_comp)
+{
+	int n;
+	int *tmp;
+
+	n = -1;
+	while ((*comp)[++n] != -1)
+		;
+//	ft_printf("len: %dnew :%d\n",n ,new_comp);
+	if (!(tmp = malloc(sizeof(int) * (n + 2))))
+		return (0);
+	n = -1;
+	while ((*comp)[++n] != -1)
+		tmp[n] = (*comp)[n];
+	tmp[n] = new_comp;
+	tmp[n + 1] = -1;
+	free(*comp);
+	*comp = tmp;
+	return (1);
+}
+
+int get_nb_comp(t_map *map, int *res, int path)
+{
+	int n;
+	int m;
+	int count;
+	int len;
+	int resul;
+
+	resul = 0;
+	len = -1;
+	while (res[++len] != -1)
+		if (res[len] == path || map->path_compat.matrix[path][res[len]] == 0)
+			return (0);
+	len++;
+	n = -1;
+	while (++n < map->nb_path)
+	{
+		count = 0;
+		if (map->path_compat.matrix[path][n] == 1 || path == n)
+		{
+			count++;
+			m = -1;
+			while (res[++m] != -1)
+				if (map->path_compat.matrix[res[m]][n] == 1)
+					count++;
+			if (len == count)
+				resul++;
+		}
+	}
+	return (resul);
+}
+
+
+int get_best_comp(t_map *map, int **res, int path)
+{
+	int n;
+	int best_path;
+	int resu;
+	int best_res;
+
+	*res = malloc(sizeof(int) * 2);
+	(*res)[0] = path;
+	(*res)[1] = -1;
+	resu = 0;
+	while (1)
+	{
+		best_path = -1;
+		best_res = 0;
+		n = -1;
+		while (++n < map->nb_path)
+		{
+			resu = 0;
+			if (map->path_compat.matrix[path][n] == 1)
+				resu = get_nb_comp(map, *res, n);
+			if (resu > best_res)
+			{
+				best_path = n;
+				best_res = resu;	
+			}
+		}
+		if (best_res == 0)
+			break ;
+		else
+		{
+//			ft_printf("%d\n", best_res);
+			comp_realloc(res, best_path);
+		/*	n = -1;
+			while ((*res)[++n] != -1)
+			{
+				ft_putnbr((*res)[n]);
+				ft_putchar(' ');
+			}
+			ft_putchar('\n');
+*/
+		}
+
+	}
+	return (1);
+}
+
+
+int test_compa(t_map *map, int *compa)
+{
+	int n;
+	int m;
+
+	n = -1;
+	while (compa[++n] != -1)
+	{
+		m = -1;
+		while (compa[++m] != -1)
+		{
+			if (map->path_compat.matrix[compa[n]][compa[m]] == 0 && compa[m] != compa[n])
+				return (0);
+		}
+	}
+	return (1);
+}
+
+int get_best_path_comp(t_map *map)
+{
+	int *best;
+	//int	*tmp;
+	//int m;
+	//int len;
+	int n;
+	int nb_best;
+	int max;
+
+	/*len = 0;
+	best = 0;
+	n = -1;	
+	while (++n < map->nb_path)
+	{
+		get_best_comp(map, &tmp, n);
+		m = -1;
+		while (tmp[++m] != -1)
+			;
+		if (m > len)
+		{
+			len = m;
+			free(best);
+			best = tmp;
+			tmp = 0;
+		}
+		else
+			free(tmp);
+	}*/
+	n  = -1;
+	max = 0;
+	while (++n < map->nb_path)
+		if (map->path_compat.nb_compat[n] > max)
+		{
+			max = map->path_compat.nb_compat[n];
+			nb_best = n;
+		}
+	get_best_comp(map, &best, nb_best);
+	if (test_compa(map, best))
+		ft_putendl("ok");
+	else
+		ft_putendl("ko");
+	n = -1;
+	while (best[++n] != -1)
+	{
+		ft_putnbr(best[n]);
+		ft_putchar(' ');
+	}
+	ft_putchar('\n');
+	return (1);
+}
+
+
 int get_multiple_path(t_map *map)
 {
 	int n;
@@ -180,7 +353,7 @@ int get_multiple_path(t_map *map)
 	while (++n < map->room[map->start].nb_connection)
 	{
 		start_path = map->nb_path;
- 		res_heat(map);
+		res_heat(map);
 		if (map->nb_path != 0) 
 		{
 			map->path = (int**)ft_realloc((void**)&(map->path), sizeof(int*) * map->nb_path, sizeof(int*) * (map->nb_path + 1000));
@@ -203,24 +376,25 @@ int get_multiple_path(t_map *map)
 	sort_path(map);
 	if (!compatibility_all(map))
 		return (0);
+	get_best_path_comp(map);
 	//
 	/*for (int i= 0; i < map->nb_path; i++)
-	{
-		ft_putstr("( ");
-		for (int j = 0; j < map->nb_path; j++)
-			ft_printf("%d ", (int)map->path_compat.matrix[i][j]);
-		ft_putendl(")");
-	}*/
-		//ft_printf("path %d : %d\n", i, map->path_compat.nb_compat[i]);
+	  {
+	  ft_putstr("( ");
+	  for (int j = 0; j < map->nb_path; j++)
+	  ft_printf("%d ", (int)map->path_compat.matrix[i][j]);
+	  ft_putendl(")");
+	  }*/
+	//ft_printf("path %d : %d\n", i, map->path_compat.nb_compat[i]);
 	//
-	ft_putnbr(map->nb_path);
-	ft_putendl("");
-	ft_putendl("NOW!");
-	resol(map);
-	for (int i = 0; i< map->best_nb_compat; i++)
-		ft_printf("%d ", map->best_compa[i]);
-	ft_putendl("");
-	draw_all_path(map);
+//	ft_putnbr(map->nb_path);
+//	ft_putendl("");
+//	ft_putendl("NOW!");
+//	resol(map);
+//	for (int i = 0; i< map->best_nb_compat; i++)
+//		ft_printf("%d ", map->best_compa[i]);
+//	ft_putendl("");
+//	draw_all_path(map);
 	return (1);
 }
 
