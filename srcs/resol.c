@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:26:27 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/26 17:41:30 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/27 14:04:26 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -368,6 +368,16 @@ double	fucking_recursive(t_map *map, int **best, int	**test, int size, uint64_t 
 //	ft_printf("!!!!!!!!!!!!!!!!!11\n");
 	free(megapath);
 	return (compute_flow(map, *best, size));
+}
+
+int		is_it_better(t_map *map, int *test, int size)
+{
+	int	how_many_step;
+	int	nb_ant;
+
+	if (map->best_flow == -1)
+		return (1);
+	
 }
 
 int		resol(t_map *map)
