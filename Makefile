@@ -29,7 +29,7 @@ LIB = $(addprefix $(LIBDIR),$(LIBFILES))
 SRC = $(addprefix $(SRCDIR),$(SRCFILES))
 INC = $(addprefix $(INCDIR),$(INCFILES)) libft/includes/libft.h
 OBJ = $(SRC:.c=.o)
-FLAG = -g -Wall -Werror -Wextra -I includes -I libft/includes -fsanitize=address
+FLAG = -g -Wall -Werror -Wextra -I includes -I libft/includes ###-fsanitize=address
 
 all: lib $(NAME)
 

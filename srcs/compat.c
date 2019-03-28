@@ -64,7 +64,7 @@ int			binarize(t_map *map)
 			if (map->path_compat.matrix[i][j] == 1)
 				map->path_compat.matrixbin[i][j >> 6] =  1 << (j % 64);
 		}
-		ft_printf("\n");
+//		ft_printf("\n");
 	}
 	return (1);
 }

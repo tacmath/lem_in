@@ -193,6 +193,7 @@ int comp_realloc(int **comp, int new_comp)
 
 int get_nb_comp(t_map *map, int *res, int path)
 {
+	int mem[map->room[map->start].nb_connection + 1];
 	int n;
 	int m;
 	int count;
@@ -204,6 +205,7 @@ int get_nb_comp(t_map *map, int *res, int path)
 	while (res[++len] != -1)
 		if (res[len] == path || map->path_compat.matrix[path][res[len]] == 0)
 			return (0);
+	mem[0] = -1;
 	len++;
 	n = -1;
 	while (++n < map->nb_path)
@@ -217,7 +219,18 @@ int get_nb_comp(t_map *map, int *res, int path)
 				if (map->path_compat.matrix[res[m]][n] == 1)
 					count++;
 			if (len == count)
-				resul++;
+			{
+				m = -1;
+				while (mem[++m] != -1)
+					if (map->path[n][0] == mem[m])
+						break ;
+				if (mem[m] == -1)
+				{
+					mem[m] = map->path[n][0];
+					mem[m + 1] = -1;
+					resul++;
+				}
+			}
 		}
 	}
 	return (resul);
@@ -296,10 +309,12 @@ int get_best_path_comp(t_map *map)
 	//int	*tmp;
 	//int m;
 	//int len;
+	int test[1];
 	int n;
 	int nb_best;
 	int max;
-
+	
+	test[0] = -1;
 	/*len = 0;
 	best = 0;
 	n = -1;	
@@ -322,9 +337,9 @@ int get_best_path_comp(t_map *map)
 	n  = -1;
 	max = 0;
 	while (++n < map->nb_path)
-		if (map->path_compat.nb_compat[n] > max)
+		if ( get_nb_comp(map, test, n) > max)
 		{
-			max = map->path_compat.nb_compat[n];
+			max =  get_nb_comp(map, test, n);
 			nb_best = n;
 		}
 	get_best_comp(map, &best, nb_best);
