@@ -305,7 +305,7 @@ int test_compa(t_map *map, int *compa)
 
 int get_best_path_comp(t_map *map)
 {
-	int *best;
+//	int *best;
 	//int	*tmp;
 	//int m;
 	//int len;
@@ -342,15 +342,15 @@ int get_best_path_comp(t_map *map)
 			max =  get_nb_comp(map, test, n);
 			nb_best = n;
 		}
-	get_best_comp(map, &best, nb_best);
-	if (test_compa(map, best))
+	get_best_comp(map, &map->best_compa, nb_best);
+	if (test_compa(map, map->best_compa))
 		ft_putendl("ok");
 	else
 		ft_putendl("ko");
 	n = -1;
-	while (best[++n] != -1)
+	while (map->best_compa[++n] != -1)
 	{
-		ft_putnbr(best[n]);
+		ft_putnbr(map->best_compa[n]);
 		ft_putchar(' ');
 	}
 	ft_putchar('\n');
