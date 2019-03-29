@@ -6,7 +6,7 @@
 #    By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2018/11/05 12:24:50 by mtaquet      #+#   ##    ##    #+#        #
-#    Updated: 2019/03/29 11:55:57 by lperron     ###    #+. /#+    ###.fr      #
+#    Updated: 2019/03/29 13:27:08 by lperron     ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -23,6 +23,7 @@ SRCFILES = main.c\
 		   init.c\
 		   resol.c\
 		   compat.c\
+		   move_ant.c
 
 INCFILES = lem_in.h
 LIB = $(addprefix $(LIBDIR),$(LIBFILES))

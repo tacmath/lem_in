@@ -6,13 +6,14 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:26:27 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/27 16:32:36 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/29 13:04:00 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
+/*
 int add_ant_to_line(char **line, int ant, char *room_name, int *len)
 {
 	int n;
@@ -44,8 +45,8 @@ int add_ant_to_line(char **line, int ant, char *room_name, int *len)
 	*line = tmp;
 	return (1);
 }
+*/
 
-/*
 void		put_resol(t_map *map, int ant, int room)
 {
 	ft_putchar('L');
@@ -57,7 +58,7 @@ void		put_resol(t_map *map, int ant, int room)
 
 
 
-
+/*
 void	move_ant(t_map	*map)
 {
 	int		hype_max;

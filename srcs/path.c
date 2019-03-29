@@ -410,6 +410,7 @@ int get_multiple_path(t_map *map)
 //		ft_printf("%d ", map->best_compa[i]);
 //	ft_putendl("");
 //	draw_all_path(map);
+	gogogo(map);
 	return (1);
 }
 

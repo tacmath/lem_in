@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 14:09:06 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/26 17:08:35 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/29 13:31:01 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -37,6 +37,16 @@ struct					s_matrix
 
 typedef struct s_matrix	t_matrix;
 
+
+struct					s_ant
+{
+	int					room;
+	int					i_path;
+	int					path;
+};
+
+typedef struct s_ant	t_ant;
+
 struct					s_map
 {
 	t_room				*room;
@@ -48,7 +58,7 @@ struct					s_map
 	int					best_nb_compat;
 	int					*path_len;
 	int 				**comp;
-	int					*ant;
+	t_ant				*ant;
 	int					*ant_progress;
 	int					nb_room;
 	int					nb_ant;
@@ -75,5 +85,7 @@ void					get_room_heat(t_map *map, int room, int heat);
 void					move_ant(t_map *map);
 int						compatibility_all(t_map *map);
 int						resol(t_map *map);
+int						gogogo(t_map *map);
+void					put_resol(t_map *map, int ant, int room);
 
 #endif
