@@ -6,7 +6,7 @@
 #    By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2018/11/05 12:24:50 by mtaquet      #+#   ##    ##    #+#        #
-#    Updated: 2019/03/25 23:18:13 by lperron     ###    #+. /#+    ###.fr      #
+#    Updated: 2019/03/29 11:55:57 by lperron     ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -29,7 +29,7 @@ LIB = $(addprefix $(LIBDIR),$(LIBFILES))
 SRC = $(addprefix $(SRCDIR),$(SRCFILES))
 INC = $(addprefix $(INCDIR),$(INCFILES)) libft/includes/libft.h
 OBJ = $(SRC:.c=.o)
-FLAG = -g -Wall -Werror -Wextra -I includes -I libft/includes ###-fsanitize=address
+FLAG = -Wall -Werror -Wextra -I includes -I libft/includes
 
 all: lib $(NAME)
 
