@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/29 12:13:30 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/29 16:11:24 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/31 16:10:07 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -77,6 +77,28 @@ void	continue_path(t_map *map, int j, int *arrived)
 	put_resol(map, j, map->ant[j].room);
 }
 
+
+int		how_long_will_it_be(t_map *map, int min_path, int plusant) 
+{
+	int	count;
+	int	arrived;
+	int	i;
+
+	count = 0;
+	arrived = 0;
+	while (arrived < map->nb_ant + plusant)
+	{
+
+		count++;
+		i = -1;
+		while (++i <= min_path)
+			if (count >= map->path_len[map->best_compa[i]])
+				arrived++;
+	}
+	return (count);
+}
+
+
 void	can_i_go(t_map *map, int j, int *arrived, int ant)
 {
 	int	min_path;
@@ -102,10 +124,7 @@ void	can_i_go(t_map *map, int j, int *arrived, int ant)
 //	ft_printf( _RED_ "path = %d\n" _EOC_ , min_path);
 	if (map->best_compa[min_path] != -1)
 	{
-
-	//	min_path = map->best_compa[min_path];
-	//	if (map->path_len[min_path] < map->nb_ant + 1 + map->path_len[map->best_compa[0]])
-		if (min_path == 0 || (map->path_len[map->best_compa[min_path]] - map->path_len[map->best_compa[0]]) <  map->nb_ant / (double)(min_path + 1))
+		if (min_path == 0 || (how_long_will_it_be(map, min_path - 1, min_path) > how_long_will_it_be(map, min_path, min_path)))
 		{
 			map->nb_ant--;
 			map->ant[j].i_path = 0;
@@ -117,9 +136,7 @@ void	can_i_go(t_map *map, int j, int *arrived, int ant)
 				map->ant[j].room = -1;
 				(*arrived)++;
 			}
-
-			ft_printf( _RED_ " pathlen = %d " _EOC_ , map->path_len[map->best_compa[min_path]]);
-
+		//	ft_printf( _RED_ " pathlen = %d " _EOC_ , map->path_len[map->best_compa[min_path]]);
 		}
 	}
 }
@@ -141,7 +158,7 @@ int		gogogo(t_map *map)
 
 	while (arrived != ant)
 	{
-		count++;
+count++;
 		j = -1;
 		while (++j < ant)
 		{
