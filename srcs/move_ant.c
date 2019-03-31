@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/29 12:13:30 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/31 18:21:21 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/31 19:42:43 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -85,7 +85,7 @@ int		how_long_will_it_be(t_map *map, int min_path, int plusant)
 	int	i;
 	int incr;
 
-	count = 0;
+	count = map->path_len[map->best_compa[0]] - 1;
 	arrived = 0;
 	incr = 0;
 	while (arrived < map->nb_ant + plusant)
