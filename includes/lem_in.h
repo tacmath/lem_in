@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 14:09:06 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/29 13:31:01 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/01 14:22:05 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -85,7 +85,8 @@ void					get_room_heat(t_map *map, int room, int heat);
 void					move_ant(t_map *map);
 int						compatibility_all(t_map *map);
 int						resol(t_map *map);
-int						gogogo(t_map *map);
+int						gogogo(t_map *map, int *count);
 void					put_resol(t_map *map, int ant, int room);
+void					sort_best_comp(t_map *map);
 
 #endif

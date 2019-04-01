@@ -6,12 +6,41 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:21:16 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/24 15:38:25 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/01 14:21:35 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+
+void	sort_best_comp(t_map *map)
+{
+	int	i;
+	int	j;
+	int tmp;
+
+	i = -1;
+	while (map->best_compa[++i] != -1)
+	{
+		j = i;
+		while (map->best_compa[++j] != -1)
+		{
+			if (map->path_len[map->best_compa[i]] >
+					map->path_len[map->best_compa[j]])
+			{
+				tmp = map->best_compa[i];
+				map->best_compa[i] = map->best_compa[j];
+				map->best_compa[j] = tmp;
+			}
+		}
+	}
+	i = -1;
+	//DEBUG
+	while (map->best_compa[++i] != -1)
+		ft_printf(_BLUE_ "%d\n" _EOC_, map->path_len[map->best_compa[i]]);
+	//
+}
 
 int			add_to_output(char ***output, char *new_line)
 {
