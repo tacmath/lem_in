@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 14:09:06 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/01 14:58:20 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/01 15:01:35 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -89,6 +89,6 @@ int						gogogo(t_map *map, int *count);
 void					put_resol(t_map *map, int ant, int room);
 void					sort_best_comp(t_map *map);
 int						how_long_will_it_be(t_map *map, int min_path,
-						int plusant)
+						int plusant, int *path);
 
 #endif
