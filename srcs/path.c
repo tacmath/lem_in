@@ -392,7 +392,13 @@ int get_multiple_path(t_map *map)
 	sort_path(map);
 	if (!compatibility_all(map))
 		return (0);
-	get_best_path_comp(map);
+//	get_best_path_comp(map);
+
+
+	resol(map);
+
+
+
 	//
 	/*for (int i= 0; i < map->nb_path; i++)
 	  {
@@ -413,6 +419,10 @@ int get_multiple_path(t_map *map)
 //	draw_all_path(map);
 	count = 0;
 	gogogo(map, &count);
+	if (test_compa(map, map->best_compa))
+		ft_printf(_GREEN_ "OK\n" _EOC_);
+	else
+		ft_printf(_RED_ "KO\n" _EOC_);
 	return (1);
 }
 

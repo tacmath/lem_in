@@ -6,7 +6,7 @@
 #    By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2018/11/05 12:24:50 by mtaquet      #+#   ##    ##    #+#        #
-#    Updated: 2019/03/29 13:27:08 by lperron     ###    #+. /#+    ###.fr      #
+#    Updated: 2019/04/02 17:31:13 by lperron     ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -21,7 +21,7 @@ SRCFILES = main.c\
 		   utils.c\
 		   path.c\
 		   init.c\
-		   resol.c\
+		   resolnew.c\
 		   compat.c\
 		   move_ant.c
 

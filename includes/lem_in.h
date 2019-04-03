@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 14:09:06 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/01 15:01:35 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/02 16:52:29 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -55,6 +55,7 @@ struct					s_map
 	t_matrix			path_compat;
 	int					*best_compa;
 	double				best_flow;
+	int					best_speed;
 	int					best_nb_compat;
 	int					*path_len;
 	int 				**comp;
