@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:26:27 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/03 15:13:14 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/03 16:27:34 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -119,16 +119,16 @@ uint64_t	*add_path(uint64_t *megapath, uint64_t *newpath, int size)
 {
 	int			i;
 	uint64_t	*new_mega;
-	//int old_size = size;
+	int old_size = size;
 	i = -1;
 	size = (size >> 6) + 1;
 	if (!(new_mega = (malloc(sizeof(uint64_t) * size))))
 		return (NULL);
-	//	print_megapath(megapath, old_size);
-	//	print_megapath(newpath, old_size);
+		print_megapath(megapath, old_size);
+		print_megapath(newpath, old_size);
 	while (++i < size)
 		new_mega[i] = megapath[i] & newpath[i];
-	//	print_megapath(new_mega, old_size);
+		print_megapath(new_mega, old_size);
 	return (new_mega);
 }
 
@@ -169,6 +169,10 @@ int		fucking_recursive(t_map *map, int j, uint64_t	*megapath,
 							map->nb_path)))
 				return (0);
 			push_test_compa(test_comp, j, map->nb_path);
+
+//	for (int k = 0; k < recur_get_step(test_comp, map->nb_path); k++)
+//		ft_printf(_BLUE_ "%d " _EOC_ ,test_comp[k]);
+//	ft_putendl("");
 			last_recur = 0;
 //	ft_putendl("testmiddle");
 
@@ -192,17 +196,17 @@ int		fucking_recursive(t_map *map, int j, uint64_t	*megapath,
 		}
 	}
 //	ft_putendl("testlast");
-	ft_printf("%d\n", recur_get_step(test_comp, map->nb_path) - 1);
-	for (int k = 0; k < recur_get_step(test_comp, map->nb_path); k++)
-		ft_printf(_RED_ "%d " _EOC_ ,test_comp[k]);
-	ft_putendl("");
+//	ft_printf("%d\n", recur_get_step(test_comp, map->nb_path) - 1);
+//	for (int k = 0; k < recur_get_step(test_comp, map->nb_path); k++)
+//		ft_printf(_RED_ "%d " _EOC_ ,test_comp[k]);
+//	ft_putendl("");
 	//if ((j = recur_get_step(test_comp, map->nb_path)))
-	if (!last_recur)
+//	if (last_recur)
 	{
 j = recur_get_step(test_comp, map->nb_path);
 		test_comp[j - 1] = -1;
 	}
-
+//	ft_printf(_GREEN_ "out\n" _EOC_);
 	return  (1);
 }
 

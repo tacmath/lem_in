@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/23 13:30:43 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/26 17:23:05 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/03 16:16:24 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -62,7 +62,7 @@ int			binarize(t_map *map)
 		{
 		//	ft_printf( _BLUE_ "%d " _EOC_, 1 << (j % 64));
 			if (map->path_compat.matrix[i][j] == 1)
-				map->path_compat.matrixbin[i][j >> 6] =  1 << (j % 64);
+				map->path_compat.matrixbin[i][j >> 6] |= 1 << (j % 64);
 		}
 //		ft_printf("\n");
 	}

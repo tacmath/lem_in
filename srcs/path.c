@@ -35,12 +35,15 @@ void draw_all_path(t_map *map)
 	while (++n < map->nb_path)
 	{
 		m = -1;
+		if (n == 13 || n == 28)
+		{
 		while (++m < map->path_len[n])
 		{
 			ft_putstr(map->room[map->path[n][m]].name);
 			ft_putchar(' ');
 		}
 		ft_putendl("");
+		}
 	}
 }
 
@@ -109,7 +112,7 @@ int get_usable_path(t_map *map)
 	n = -1;
 	nb_path = 0;
 	while (++n < map->nb_path)
-		if (map->path[n][map->path_len[n] - 1] == map->end)
+		if (map->path[n][map->path_len[n] - 1] == map->end && map->path_len[n] < 30)
 			nb_path++;
 	if (!(tmp = malloc(sizeof(int*) * nb_path)))
 		return (0);
@@ -120,7 +123,7 @@ int get_usable_path(t_map *map)
 	n = -1;
 	nb_path = 0;
 	while (++n < map->nb_path)
-		if (map->path[n][map->path_len[n] - 1] == map->end)
+		if (map->path[n][map->path_len[n] - 1] == map->end && map->path_len[n] < 30)
 		{
 			tmp[nb_path] = map->path[n];
 			tmp_len[nb_path] = map->path_len[n];
@@ -297,7 +300,10 @@ int test_compa(t_map *map, int *compa)
 		while (compa[++m] != -1)
 		{
 			if (map->path_compat.matrix[compa[n]][compa[m]] == 0 && compa[m] != compa[n])
+			{
+				ft_printf(_RED_ "ERROR : %d  v  %d   %d\n", compa[n] , compa[m], map->path_compat.matrix[compa[n]][compa[m]]);
 				return (0);
+			}
 		}
 	}
 	return (1);
