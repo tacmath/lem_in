@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:26:27 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/03 13:53:29 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/03 15:03:05 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -159,6 +159,8 @@ int		fucking_recursive(t_map *map, int j, uint64_t	*megapath,
 
 	last_recur = 1;
 	//	ft_printf("We're lookin' %d\n", j + 1);
+//	ft_putendl("test1");
+	speed = 0;
 	while (++j < map->nb_path && map->path_len[j] < map->best_speed)
 	{
 		if (test_new_path(megapath, j))
@@ -167,9 +169,10 @@ int		fucking_recursive(t_map *map, int j, uint64_t	*megapath,
 							map->nb_path)))
 				return (0);
 			push_test_compa(test_comp, j, map->nb_path);
+//	ft_putendl("testmiddle");
+
 	if ( map->best_speed > (speed = how_long_will_it_be(map,
-					recur_get_step(test_comp, map->nb_path), 0, test_comp))
-	   )
+				recur_get_step(test_comp, map->nb_path) -1 , 0, test_comp)))
 	{
 		i = -1;
 		//		ft_printf("It's a progress\n");
@@ -179,6 +182,7 @@ int		fucking_recursive(t_map *map, int j, uint64_t	*megapath,
 			}
 		//	ft_printf("same\n");
 		map->best_speed = speed;
+//		speed = 0;
 	}
 
 			last_recur = !(fucking_recursive(map, j, tmp, test_comp));
@@ -186,7 +190,13 @@ int		fucking_recursive(t_map *map, int j, uint64_t	*megapath,
 		//	test_comp[recur_get_step(test_comp, map->nb_path) - 1] = -1;
 		}
 	}
-		test_comp[recur_get_step(test_comp, map->nb_path) - 1] = -1;
+//	ft_putendl("testlast");
+	ft_printf("%d\n", recur_get_step(test_comp, map->nb_path) - 1);
+	for (int k = 0; k < recur_get_step(test_comp, map->nb_path); k++)
+		ft_printf(_RED_ "%d " _EOC_ ,test_comp[k]);
+	ft_putendl("");
+//	if ((j = recur_get_step(test_comp, map->nb_path)))
+		test_comp[j - 1] = -1;
 
 	return  (1);
 }
