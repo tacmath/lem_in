@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:26:27 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/03 15:03:05 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/03 15:13:14 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -169,6 +169,7 @@ int		fucking_recursive(t_map *map, int j, uint64_t	*megapath,
 							map->nb_path)))
 				return (0);
 			push_test_compa(test_comp, j, map->nb_path);
+			last_recur = 0;
 //	ft_putendl("testmiddle");
 
 	if ( map->best_speed > (speed = how_long_will_it_be(map,
@@ -185,7 +186,7 @@ int		fucking_recursive(t_map *map, int j, uint64_t	*megapath,
 //		speed = 0;
 	}
 
-			last_recur = !(fucking_recursive(map, j, tmp, test_comp));
+			(fucking_recursive(map, j, tmp, test_comp));
 			free(tmp);
 		//	test_comp[recur_get_step(test_comp, map->nb_path) - 1] = -1;
 		}
@@ -195,8 +196,12 @@ int		fucking_recursive(t_map *map, int j, uint64_t	*megapath,
 	for (int k = 0; k < recur_get_step(test_comp, map->nb_path); k++)
 		ft_printf(_RED_ "%d " _EOC_ ,test_comp[k]);
 	ft_putendl("");
-//	if ((j = recur_get_step(test_comp, map->nb_path)))
+	//if ((j = recur_get_step(test_comp, map->nb_path)))
+	if (!last_recur)
+	{
+j = recur_get_step(test_comp, map->nb_path);
 		test_comp[j - 1] = -1;
+	}
 
 	return  (1);
 }
