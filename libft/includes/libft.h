@@ -6,7 +6,7 @@
 /*   By: lperron <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/10/02 13:14:48 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/05 19:47:08 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/05 20:45:34 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -16,16 +16,11 @@
 # ifndef BUFF_SIZE
 #  define BUFF_SIZE 32
 # endif
-# ifndef INT_MAX
-#  define INT_MAX 2147483647
-# endif
-# ifndef INT_MIN
-#  define INT_MIN -2147483648
-# endif
 # include <string.h>
 # include <stdint.h>
 # include <wchar.h>
 # include <sys/types.h>
+# include "flimits.h"
 # include "ft_printf.h"
 
 typedef struct			s_list
