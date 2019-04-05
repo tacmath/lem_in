@@ -35,15 +35,12 @@ void draw_all_path(t_map *map)
 	while (++n < map->nb_path)
 	{
 		m = -1;
-		if (n == 13 || n == 28)
-		{
 		while (++m < map->path_len[n])
 		{
 			ft_putstr(map->room[map->path[n][m]].name);
 			ft_putchar(' ');
 		}
 		ft_putendl("");
-		}
 	}
 }
 
@@ -59,37 +56,37 @@ int get_all_path(t_map *map, int start_path)
 	while (1)
 	{
 		ret = 0;
-		nb_path = map->nb_path;
-		n = start_path - 1;
-		while (++n < nb_path)
-		{
-			room = map->path[n][map->path_len[n] - 1];
-			if (room != map->end)
-			{
-				tmp = 0;
-				m = -1;
-				while (++m < map->room[room].nb_connection)
-					if (map->room[map->room[room].connection[m]].heat == -1)
-					{
-						if (tmp == 0)
-						{
-							tmp = map->path[n];
-							map->path[n] = add_room_to_path(tmp, map->room[room].connection[m], map->path_len[n]);
-							map->path_len[n]++;
-						}
-						else
-						{
-							if (map->nb_path % 1000 == 0)
-							{
-								map->path = (int**)ft_realloc((void**)&(map->path), sizeof(int*) * map->nb_path, sizeof(int*) * (map->nb_path + 1000));
-								map->path_len = (int*)ft_realloc((void**)&(map->path_len), sizeof(int) * map->nb_path, sizeof(int) * (map->nb_path + 1000));
-							}
-							map->path[map->nb_path] = add_room_to_path(tmp, map->room[room].connection[m], map->path_len[n] - 1);
-							map->path_len[map->nb_path] = map->path_len[n];
-							map->nb_path++;
-						}
-						if (map->room[room].connection[m] != map->end)
-							map->room[map->room[room].connection[m]].heat = 1;
+        nb_path = map->nb_path;
+        n = start_path - 1;
+        while (++n < nb_path)
+        {
+            room = map->path[n][map->path_len[n] - 1];
+            if (room != map->end && room != map->start)
+            {
+                tmp = 0;
+                m = -1;
+                while (++m < map->room[room].nb_connection)
+                    if (map->room[map->room[room].connection[m]].heat == -1)
+                    {
+                        if (tmp == 0)
+                        {
+                            tmp = map->path[n];
+                            map->path[n] = add_room_to_path(tmp, map->room[room].connection[m], map->path_len[n]);
+                            map->path_len[n]++;
+                        }
+                        else
+                        {
+                            if (map->nb_path % 1000 == 0)
+                            {
+                                map->path = (int**)ft_realloc((void**)&(map->path), sizeof(int*) * map->nb_path, sizeof(int*) * (map->nb_path + 1000));
+                                map->path_len = (int*)ft_realloc((void**)&(map->path_len), sizeof(int) * map->nb_path, sizeof(int) * (map->nb_path + 1000));
+                            }
+                            map->path[map->nb_path] = add_room_to_path(tmp, map->room[room].connection[m], map->path_len[n] - 1);
+                            map->path_len[map->nb_path] = map->path_len[n];
+                            map->nb_path++;
+                        }
+                        if (map->room[room].connection[m] != map->end && map->room[room].connection[m] != map->start)
+                            map->room[map->room[room].connection[m]].heat = 1;
 						ret++;
 					}
 				free(tmp);
@@ -363,39 +360,73 @@ int get_best_path_comp(t_map *map)
 	return (1);
 }
 
-
+void rev_path(t_map *map, int nb_path)
+{
+    int n;
+    int tmp;
+    
+    if (map->path[nb_path][map->path_len[nb_path] - 1] == map->start)
+    {
+        map->path[nb_path][map->path_len[nb_path] - 1] = map->end;
+        n = -1;
+        while (++n < (map->path_len[nb_path] - 1) / 2)
+        {
+            tmp = map->path[nb_path][n];
+            map->path[nb_path][n] = map->path[nb_path][map->path_len[nb_path] - n - 2];
+            map->path[nb_path][map->path_len[nb_path] - n - 2] = tmp;
+        }
+        map->path[nb_path][map->path_len[nb_path] - 1] = map->end;
+    }
+}
 int get_multiple_path(t_map *map)
 {
 	int n;
 	int start_path;
+	int start_of_rev;
 	int	count;
 
 	n = -1;
 	map->nb_path = 0;
+	res_heat(map);
+	map->path = malloc(sizeof(int*) * 1000);
+    map->path_len = malloc(sizeof(int) * 1000);
+	start_path = map->nb_path;
+
 	while (++n < map->room[map->start].nb_connection)
 	{
-		start_path = map->nb_path;
-		res_heat(map);
-		if (map->nb_path != 0) 
-		{
-			map->path = (int**)ft_realloc((void**)&(map->path), sizeof(int*) * map->nb_path, sizeof(int*) * (map->nb_path + 1000));
-			map->path_len = (int*)ft_realloc((void**)&(map->path_len), sizeof(int) * map->nb_path, sizeof(int) * (map->nb_path + 1000));
-		}
-		else
-		{
-			map->path = malloc(sizeof(int*) * 1000);
-			map->path_len = malloc(sizeof(int) * 1000);
-		}
-		map->path[start_path] = malloc(sizeof(int));
-		map->path[start_path][0] = map->room[map->start].connection[n];
-		map->nb_path++;
-		map->path_len[start_path] = 1;
-		map->room[map->start].heat = 1;
-		map->room[map->room[map->start].connection[n]].heat = 1;
-		get_all_path(map, start_path);
-	}
+        map->path[start_path + n] = malloc(sizeof(int));
+        map->path[start_path + n][0] = map->room[map->start].connection[n];
+        map->nb_path++;
+        map->path_len[start_path + n] = 1;
+        map->room[map->start].heat = 1;
+        map->room[map->room[map->start].connection[n]].heat = 1;
+    }
+	get_all_path(map, start_path);
+    start_of_rev = map->nb_path;
+    n = -1;
+	res_heat(map);	
+    map->path = (int**)ft_realloc((void**)&(map->path), sizeof(int*) * map->nb_path, sizeof(int*) * (map->nb_path + 1000));
+    map->path_len = (int*)ft_realloc((void**)&(map->path_len), sizeof(int) * map->nb_path, sizeof(int) * (map->nb_path + 1000));
+	start_path = map->nb_path;
+    while (++n < map->room[map->end].nb_connection)
+    {
+        map->path[start_path + n] = malloc(sizeof(int));
+        map->path[start_path + n][0] = map->room[map->end].connection[n];
+        map->nb_path++;
+        map->path_len[start_path + n] = 1;
+        map->room[map->end].heat = 1;
+        map->room[map->room[map->end].connection[n]].heat = 1;
+    }
+    get_all_path(map, start_path);
+    //    ft_putnbr(map->nb_path);
+    //    ft_putendl("");
+    n = start_of_rev - 1;
+    while (++n < map->nb_path)
+        rev_path(map, n);
+//	draw_all_path(map);
 	get_usable_path(map);
 	sort_path(map);
+	draw_all_path(map);
 	if (!compatibility_all(map))
 		return (0);
 //	get_best_path_comp(map);
@@ -422,7 +453,7 @@ int get_multiple_path(t_map *map)
 //	for (int i = 0; i< map->best_nb_compat; i++)
 //		ft_printf("%d ", map->best_compa[i]);
 //	ft_putendl("");
-	draw_all_path(map);
+//	draw_all_path(map);
 	count = 0;
 	gogogo(map, &count);
 	if (test_compa(map, map->best_compa))
