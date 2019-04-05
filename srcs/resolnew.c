@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/04 18:09:19 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/05 17:30:15 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/05 19:47:37 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -338,7 +338,7 @@ int		resol(t_map *map)
 		return (0);
 	}
 	i = -1;
-	map->best_speed = 66666666;
+	map->best_speed = INT_MAX;
 	while (++i < map->nb_path + 1)
 	{
 		test_comp[i] = -1;
