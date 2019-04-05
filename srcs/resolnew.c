@@ -6,12 +6,22 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/04 18:09:19 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/05 13:41:05 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/05 17:30:15 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+
+
+
+#include <time.h>
+clock_t timet;
+clock_t tt;
+
+
+
 
 void		put_resol(t_map *map, int ant, int room)
 {
@@ -37,16 +47,19 @@ int		recur_get_step(int	*test_compa, int size)
 	return (i);
 }
 
-int		*cpy_megapath(int *src, int size)
+uint64_t		*cpy_megapath(uint64_t *src, int size)
 {
 	int	i;
-	int	*dest;
+	uint64_t	*dest;
 
-	if (!(dest = malloc(sizeof(int) * size)))
+//	tt = clock();
+	if (!(dest = malloc(sizeof(uint64_t) * size)))
 		return (NULL);
 	i = -1;
 	while (++i < size)
 		dest[i] = src[i];
+//timet += ((double) (clock() - tt));
+
 	return (dest);
 }
 
@@ -213,8 +226,8 @@ void	add_path(uint64_t *megapath , uint64_t *new_path, int size)
 //		int old_size = size;
 	i = -1;
 	size = (size >> 6) + 1;
-	//	if (!(new_mega = (malloc(sizeof(uint64_t) * size))))
-	//		return (NULL);
+//		if (!(new_mega = (malloc(sizeof(uint64_t) * size))))
+//			return (NULL);
 //			print_megapath(megapath, old_size);
 //			print_megapath(new_path, old_size);
 	while (++i < size)
@@ -223,57 +236,62 @@ void	add_path(uint64_t *megapath , uint64_t *new_path, int size)
 //	ft_putendl("");
 }
 
-void	reset_megapath(uint64_t *megapath, int *test_comp, t_map *map)
+
+void	reset_megapath(uint64_t *megapath, int *test_comp, t_map *map,
+		int whereami)
 {
 	int	i;
 	int	size;
-	int	j;
-
+	
+//	tt = clock();
 	size = (map->nb_path >> 6) + 1;
 	i = -1;
 	while (++i < size)
 		megapath[i] = 0xFFFFFFFFFFFFFFFF;
-	j = recur_get_step(test_comp, map->nb_path);
 	i = -1;
-	while (++i < j -1)
-		add_path(megapath, map->path_compat.matrixbin[i], map->nb_path);
+//	ft_printf(_CYAN_);
+	while (++i < whereami)
+		add_path(megapath, map->path_compat.matrixbin[test_comp[i]], map->nb_path);
+//	ft_printf(_EOC_);
+//timet += ((double) (clock() - tt));
 }
 
-int		fucking_recursive(t_map *map, int j, uint64_t	*megapath,
-		int	*test_comp)
+int		fucking_recursive(t_map *map, int j, uint64_t *megapath, int *test_comp)
 {
 	int			speed;
-	int			last_recur;
 	int			i;
 	int			whereami;
+//	uint64_t	*tmp;
 
-	last_recur = 1;
-
+//	ft_printf(_GREEN_ "In\n" _EOC_);
 	whereami = recur_get_step(test_comp, map->nb_path);
-	speed = 0;
 	while (++j < map->nb_path && map->path_len[j] < map->best_speed)
-	{
 		if (test_new_path(megapath, j))
 		{
 			push_test_compa(test_comp, j, whereami);
-			last_recur = 0;
+	//		if(!(tmp = cpy_megapath(megapath, map->nb_path)))
+	//			return (0);
+
+	//		add_path(tmp, map->path_compat.matrixbin[j], map->nb_path);
+
 			add_path(megapath, map->path_compat.matrixbin[j], map->nb_path);
 			if ( map->best_speed > (speed = how_long_will_it_be(map,
 							whereami, 0, test_comp)))
 			{
 				i = -1;
 				while (test_comp[++i] != -1)
-				{
-					map->best_compa[i] = test_comp[i]; //need to check if best_comp is initialized
-				}
+					map->best_compa[i] = test_comp[i];
 				map->best_speed = speed;
 			}
 			(fucking_recursive(map, j, megapath, test_comp));
-			reset_megapath(megapath, test_comp, map);
+
+			//(fucking_recursive(map, j, tmp, test_comp));
+		reset_megapath(megapath, test_comp, map, whereami);
+		//	free(tmp);
 		}
-	}
-	whereami = recur_get_step(test_comp, map->nb_path);
-	test_comp[whereami - 1] = -1;
+	if ((whereami = recur_get_step(test_comp, map->nb_path))) 
+		test_comp[whereami - 1] = -1;
+//	ft_printf(_RED_ "out\n" _EOC_);
 	return  (1);
 }
 
@@ -304,6 +322,7 @@ int		resol(t_map *map)
 	uint64_t	*megapath;
 	int			*test_comp;
 	int			i;
+	timet = 0;
 
 	if(!(megapath = bin_init(map->nb_path)))
 		return (0);
@@ -333,6 +352,7 @@ int		resol(t_map *map)
 	while (map->best_compa[++j] != -1)
 		ft_printf("%d  ",map->best_compa[j]);
 	ft_putendl("");
+	ft_printf("reset time = %f\n", (double)timet / CLOCKS_PER_SEC );
 	//freeeeeeeeeeeeeeeeee
 	return (1);
 }
