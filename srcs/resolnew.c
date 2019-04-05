@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                          LE - /            */
 /*                                                              /             */
-/*   resol.c                                          .::    .:/ .      .::   */
+/*   resolnew.c                                       .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
-/*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
+/*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2019/03/14 14:26:27 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/03 16:27:34 by lperron     ###    #+. /#+    ###.fr     */
+/*   Created: 2019/04/04 18:09:19 by lperron      #+#   ##    ##    #+#       */
+/*   Updated: 2019/04/05 13:41:05 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -24,12 +24,7 @@ void		put_resol(t_map *map, int ant, int room)
 
 void	push_test_compa(int	*test_compa, int path, int size)
 {
-	int		i;
-
-	i = -1;
-	while (++i < size && test_compa[i] != -1)
-		;
-	test_compa[i] = path;
+	test_compa[size] = path;
 }
 
 int		recur_get_step(int	*test_compa, int size)
@@ -73,7 +68,7 @@ uint64_t	*bin_init(int size)
 int		test_new_path(uint64_t *megapath, int j)
 {
 
-	if ((megapath[j >> 6] & (1 << (j % 64))))
+	if ((megapath[j >> 6] & (1ULL << (j % 64))))
 	{
 		//			ft_printf( _GREEN_ "yep biatch\n" _EOC_);
 		return (1);
@@ -94,19 +89,19 @@ void	print_megapath(uint64_t *megapath, int size)
 	j  = size % 64;
 	while (j > -1)
 	{
-		if (megapath[i >> 6] & 1 << (j))
+		if (megapath[i] & 1ULL << (j))
 			ft_putchar('1');
 		else
 			ft_putchar('0');
 		j--;
 	}
-
-	while (i-- > 0)
+//ft_printf("  %llu  ",megapath[i >> 6] );
+	while (--i >= 0)
 	{
 		j = 64;
-		while (j-- > -1)
+		while (--j > -1)
 		{
-			if (megapath[i] & 1 << (j % 64))
+			if (megapath[i] & 1ULL << (j % 64))
 				ft_putchar('1');
 			else
 				ft_putchar('0');
@@ -115,99 +110,193 @@ void	print_megapath(uint64_t *megapath, int size)
 	ft_putchar('\n');
 }
 
-uint64_t	*add_path(uint64_t *megapath, uint64_t *newpath, int size)
-{
-	int			i;
-	uint64_t	*new_mega;
-	int old_size = size;
-	i = -1;
-	size = (size >> 6) + 1;
-	if (!(new_mega = (malloc(sizeof(uint64_t) * size))))
-		return (NULL);
-		print_megapath(megapath, old_size);
-		print_megapath(newpath, old_size);
-	while (++i < size)
-		new_mega[i] = megapath[i] & newpath[i];
-		print_megapath(new_mega, old_size);
-	return (new_mega);
-}
+/*uint64_t	*add_path(uint64_t *megapath, uint64_t *newpath, int size)
+  {
+  int			i;
+  uint64_t	*new_mega;
+  int old_size = size;
+  i = -1;
+  size = (size >> 6) + 1;
+  if (!(new_mega = (malloc(sizeof(uint64_t) * size))))
+  return (NULL);
+  print_megapath(megapath, old_size);
+  print_megapath(newpath, old_size);
+  while (++i < size)
+  new_mega[i] = megapath[i] & newpath[i];
+  print_megapath(new_mega, old_size);
+  return (new_mega);
+  }*/
 
 /*int test_compa(t_map *map, int *compa)
-{
-	int n;
-	int m;
+  {
+  int n;
+  int m;
 
-	n = -1;
-	while (compa[++n] != -1)
-	{
-		m = -1;
-		while (compa[++m] != -1)
-		{
-			if (map->path_compat.matrix[compa[n]][compa[m]] == 0 && compa[m] != compa[n])
-				return (0);
-		}
-	}
-	return (1);
-}*/
-int		fucking_recursive(t_map *map, int j, uint64_t	*megapath,
-		int	*test_comp)
-{
-	uint64_t	*tmp;
-	int			speed;
-	int			last_recur;
-	int			i;
+  n = -1;
+  while (compa[++n] != -1)
+  {
+  m = -1;
+  while (compa[++m] != -1)
+  {
+  if (map->path_compat.matrix[compa[n]][compa[m]] == 0 && compa[m] != compa[n])
+  return (0);
+  }
+  }
+  return (1);
+  }*/
+/*
+   int		fucking_recursive(t_map *map, int j, uint64_t	*megapath,
+   int	*test_comp)
+   {
+   uint64_t	*tmp;
+   int			speed;
+   int			last_recur;
+   int			i;
 
-	last_recur = 1;
-	//	ft_printf("We're lookin' %d\n", j + 1);
+   last_recur = 1;
+//	ft_printf("We're lookin' %d\n", j + 1);
 //	ft_putendl("test1");
-	speed = 0;
-	while (++j < map->nb_path && map->path_len[j] < map->best_speed)
-	{
-		if (test_new_path(megapath, j))
-		{
-			if (!(tmp = add_path(megapath, map->path_compat.matrixbin[j],
-							map->nb_path)))
-				return (0);
-			push_test_compa(test_comp, j, map->nb_path);
+speed = 0;
+while (++j < map->nb_path && map->path_len[j] < map->best_speed)
+{
+if (test_new_path(megapath, j))
+{
+if (!(tmp = add_path(megapath, map->path_compat.matrixbin[j],
+map->nb_path)))
+return (0);
+push_test_compa(test_comp, j, map->nb_path);
 
 //	for (int k = 0; k < recur_get_step(test_comp, map->nb_path); k++)
 //		ft_printf(_BLUE_ "%d " _EOC_ ,test_comp[k]);
 //	ft_putendl("");
-			last_recur = 0;
+last_recur = 0;
 //	ft_putendl("testmiddle");
 
-	if ( map->best_speed > (speed = how_long_will_it_be(map,
-				recur_get_step(test_comp, map->nb_path) -1 , 0, test_comp)))
-	{
-		i = -1;
-		//		ft_printf("It's a progress\n");
-		while (test_comp[++i] != -1)
-		{
-			map->best_compa[i] = test_comp[i]; //need to check if best_comp is initialized
-			}
-		//	ft_printf("same\n");
-		map->best_speed = speed;
+if ( map->best_speed > (speed = how_long_will_it_be(map,
+recur_get_step(test_comp, map->nb_path) -1 , 0, test_comp)))
+{
+i = -1;
+//		ft_printf("It's a progress\n");
+while (test_comp[++i] != -1)
+{
+map->best_compa[i] = test_comp[i]; //need to check if best_comp is initialized
+}
+//	ft_printf("same\n");
+map->best_speed = speed;
 //		speed = 0;
-	}
+}
 
-			(fucking_recursive(map, j, tmp, test_comp));
-			free(tmp);
-		//	test_comp[recur_get_step(test_comp, map->nb_path) - 1] = -1;
-		}
-	}
+(fucking_recursive(map, j, tmp, test_comp));
+free(tmp);
+//	test_comp[recur_get_step(test_comp, map->nb_path) - 1] = -1;
+}
+}
 //	ft_putendl("testlast");
 //	ft_printf("%d\n", recur_get_step(test_comp, map->nb_path) - 1);
 //	for (int k = 0; k < recur_get_step(test_comp, map->nb_path); k++)
 //		ft_printf(_RED_ "%d " _EOC_ ,test_comp[k]);
 //	ft_putendl("");
-	//if ((j = recur_get_step(test_comp, map->nb_path)))
+//if ((j = recur_get_step(test_comp, map->nb_path)))
 //	if (last_recur)
-	{
+{
 j = recur_get_step(test_comp, map->nb_path);
-		test_comp[j - 1] = -1;
-	}
+test_comp[j - 1] = -1;
+}
 //	ft_printf(_GREEN_ "out\n" _EOC_);
+return  (1);
+}*/
+
+void	add_path(uint64_t *megapath , uint64_t *new_path, int size)
+{
+	int			i;
+
+//		int old_size = size;
+	i = -1;
+	size = (size >> 6) + 1;
+	//	if (!(new_mega = (malloc(sizeof(uint64_t) * size))))
+	//		return (NULL);
+//			print_megapath(megapath, old_size);
+//			print_megapath(new_path, old_size);
+	while (++i < size)
+		megapath[i] &= new_path[i];
+//			print_megapath(megapath, old_size);
+//	ft_putendl("");
+}
+
+void	reset_megapath(uint64_t *megapath, int *test_comp, t_map *map)
+{
+	int	i;
+	int	size;
+	int	j;
+
+	size = (map->nb_path >> 6) + 1;
+	i = -1;
+	while (++i < size)
+		megapath[i] = 0xFFFFFFFFFFFFFFFF;
+	j = recur_get_step(test_comp, map->nb_path);
+	i = -1;
+	while (++i < j -1)
+		add_path(megapath, map->path_compat.matrixbin[i], map->nb_path);
+}
+
+int		fucking_recursive(t_map *map, int j, uint64_t	*megapath,
+		int	*test_comp)
+{
+	int			speed;
+	int			last_recur;
+	int			i;
+	int			whereami;
+
+	last_recur = 1;
+
+	whereami = recur_get_step(test_comp, map->nb_path);
+	speed = 0;
+	while (++j < map->nb_path && map->path_len[j] < map->best_speed)
+	{
+		if (test_new_path(megapath, j))
+		{
+			push_test_compa(test_comp, j, whereami);
+			last_recur = 0;
+			add_path(megapath, map->path_compat.matrixbin[j], map->nb_path);
+			if ( map->best_speed > (speed = how_long_will_it_be(map,
+							whereami, 0, test_comp)))
+			{
+				i = -1;
+				while (test_comp[++i] != -1)
+				{
+					map->best_compa[i] = test_comp[i]; //need to check if best_comp is initialized
+				}
+				map->best_speed = speed;
+			}
+			(fucking_recursive(map, j, megapath, test_comp));
+			reset_megapath(megapath, test_comp, map);
+		}
+	}
+	whereami = recur_get_step(test_comp, map->nb_path);
+	test_comp[whereami - 1] = -1;
 	return  (1);
+}
+
+
+void	print_matrix(t_map *map)
+{
+	int i;
+	int	j;
+
+	i = -1;
+	while (++i < map->nb_path)
+	{
+		j = map->nb_path;
+		if ( i == 0)
+			ft_printf("MATRIX =\n");
+		while (--j >= 0)
+			ft_printf (_GREEN_ "%d" _EOC_, map->path_compat.matrix[i][j]);
+	//	if ( i ==0)
+		ft_putendl("");
+	}
+	ft_printf("BINARY=\n");
+			print_megapath( map->path_compat.matrixbin[0], map->nb_path);
+	ft_putendl("");
 }
 
 int		resol(t_map *map)
@@ -237,6 +326,7 @@ int		resol(t_map *map)
 		map->best_compa[i] = -1;
 	}
 	//	ft_printf("\nGO\n");
+//	print_matrix(map);
 	fucking_recursive(map, -1, megapath, test_comp);
 	//	ft_printf("\nUngo\n");
 	int j = -1;

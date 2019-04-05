@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/23 13:30:43 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/03 16:16:24 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/05 13:05:11 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -58,13 +58,19 @@ int			binarize(t_map *map)
 		if (!(map->path_compat.matrixbin[i] = ft_memalloc(sizeof(uint64_t) * size))) //need to free
 			return (0);
 		j = -1;
+//		while (++j < size)
+//map->path_compat.matrixbin[i][j] = 0;
+		j =-1;
 		while (++j < map->nb_path)
 		{
-		//	ft_printf( _BLUE_ "%d " _EOC_, 1 << (j % 64));
+			if ( i == 0)
+			ft_printf( _BLUE_ "%d" _EOC_, map->path_compat.matrix[i][j]);
 			if (map->path_compat.matrix[i][j] == 1)
-				map->path_compat.matrixbin[i][j >> 6] |= 1 << (j % 64);
+				map->path_compat.matrixbin[i][j >> 6] |= 1ULL << (j % 64);
+
 		}
-//		ft_printf("\n");
+		if (i == 0)
+		ft_printf("\n");
 	}
 	return (1);
 }

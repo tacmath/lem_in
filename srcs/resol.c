@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:26:27 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/29 13:04:00 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/05 12:48:42 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -240,7 +240,7 @@ uint64_t	*bin_init(int size)
 int		test_new_path(uint64_t *megapath, int j)
 {
 
-		if ((megapath[j >> 6] & (1 << (j % 64))))
+		if ((megapath[j >> 6] & (1LLU << (j % 64))))
 		{
 //			ft_printf( _GREEN_ "yep biatch\n" _EOC_);
 			return (1);
@@ -261,7 +261,7 @@ void	print_megapath(uint64_t *megapath, int size)
 	j  = size % 64;
 	while (j > -1)
 		{
-			if (megapath[i >> 6] & 1 << (j))
+			if (megapath[i >> 6] & 1LLU << (j))
 				ft_putchar('1');
 			else
 				ft_putchar('0');
@@ -273,7 +273,7 @@ void	print_megapath(uint64_t *megapath, int size)
 		j = 64;
 		while (j-- > -1)
 		{
-			if (megapath[i] & 1 << (j % 64))
+			if (megapath[i] & 1LLU << (j % 64))
 				ft_putchar('1');
 			else
 				ft_putchar('0');

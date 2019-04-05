@@ -132,7 +132,7 @@ int get_usable_path(t_map *map)
 
 			m = -1;
 			while (tmp[nb_path][++m] != map->end)
-				map->path_room[nb_path][tmp[nb_path][m] >> 6] |= 1 << tmp[nb_path][m] % 64;
+				map->path_room[nb_path][tmp[nb_path][m] >> 6] |= 1ULL << (tmp[nb_path][m] % 64);
 			nb_path++;
 		}
 		else
