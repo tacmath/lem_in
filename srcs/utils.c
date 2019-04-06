@@ -6,41 +6,12 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:21:16 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/01 14:21:35 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/06 17:29:05 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-
-
-void	sort_best_comp(t_map *map)
-{
-	int	i;
-	int	j;
-	int tmp;
-
-	i = -1;
-	while (map->best_compa[++i] != -1)
-	{
-		j = i;
-		while (map->best_compa[++j] != -1)
-		{
-			if (map->path_len[map->best_compa[i]] >
-					map->path_len[map->best_compa[j]])
-			{
-				tmp = map->best_compa[i];
-				map->best_compa[i] = map->best_compa[j];
-				map->best_compa[j] = tmp;
-			}
-		}
-	}
-	i = -1;
-	//DEBUG
-	while (map->best_compa[++i] != -1)
-		ft_printf(_BLUE_ "%d\n" _EOC_, map->path_len[map->best_compa[i]]);
-	//
-}
 
 int			add_to_output(char ***output, char *new_line)
 {
@@ -77,28 +48,7 @@ void		write_output(char **output)
 	output = 0;
 }
 
-void		free_map(t_map *map)
-{
-	int n;
-
-	n = -1;
-	while (++n < map->nb_room)
-	{
-		free(map->room[n].name);
-		free(map->room[n].connection);
-	}
-	n = -1;
-	while (++n < map->nb_path)
-		free(map->path[n]);
-	free(map->path);
-	free(map->path_len);
-	free(map->ant);
-	free(map->ant_progress);
-	free(map->room);
-	free(map);
-}
-
-static int			gou_lag(t_map *map, int room1, int room2)
+static int	gou_lag(t_map *map, int room1, int room2)
 {
 	int n;
 	int m;
@@ -121,7 +71,7 @@ static int			gou_lag(t_map *map, int room1, int room2)
 	return (1);
 }
 
-void ok(int  *co, int nb_co)
+void		ok(int *co, int nb_co)
 {
 	int n;
 
@@ -141,7 +91,6 @@ int			sta_line(t_map *map, int room1, int room2)
 	int i;
 	int *tmp;
 
-//	ok(map->room[room1].connection, map->room[room1].nb_connection);
 	map->room[room1].nb_connection--;
 	n = map->room[room1].nb_connection;
 	if (!(tmp = malloc(sizeof(int) * (n))))
@@ -157,35 +106,9 @@ int			sta_line(t_map *map, int room1, int room2)
 		else
 			i++;
 	}
-//	ok(tmp, map->room[room1].nb_connection);
 	free(map->room[room1].connection);
 	map->room[room1].connection = tmp;
 	if (!gou_lag(map, room2, room1))
 		return (0);
-	return (1);
-}
-
-int			get_error(t_map *map)
-{
-	if (map->nb_room == 0)
-	{
-		free(map->ant);
-		free(map);
-		ft_putendl("ERROR");
-		return (0);
-	}
-	else if (map->start == -1 || map->end == -1)
-	{
-		free_map(map);
-		ft_putendl("ERROR");
-		return (0);
-	}
-	get_room_heat(map, map->end, 0);
-	if (map->room[map->start].heat == -1)
-	{
-		free_map(map);
-		ft_putendl("ERROR");
-		return (0);
-	}
 	return (1);
 }

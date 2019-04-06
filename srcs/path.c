@@ -378,6 +378,7 @@ void rev_path(t_map *map, int nb_path)
         map->path[nb_path][map->path_len[nb_path] - 1] = map->end;
     }
 }
+
 int get_multiple_path(t_map *map)
 {
 	int n;
@@ -431,10 +432,9 @@ int get_multiple_path(t_map *map)
 		return (0);
 //	get_best_path_comp(map);
 
-
+	map->max_compa = ft_min(map->room[map->start].nb_connection, map->room[map->end].nb_connection);
 	resol(map);
-
-
+	printf_best_compa(map);
 
 	//
 	/*for (int i= 0; i < map->nb_path; i++)

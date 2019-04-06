@@ -6,14 +6,28 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:24:10 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/29 13:26:40 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/06 17:21:52 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-int		rooms_init(t_map *map)
+uint64_t	*bin_init(int size)
+{
+	int			i;
+	uint64_t	*bin;
+
+	i = -1;
+	size = (size >> 6) + 1;
+	if (!(bin = (malloc(sizeof(uint64_t) * size))))
+		return (NULL);
+	while (++i < size)
+		bin[i] = 0xFFFFFFFFFFFFFFFF;
+	return (bin);
+}
+
+int			rooms_init(t_map *map)
 {
 	int n;
 	int	i;
@@ -37,7 +51,7 @@ int		rooms_init(t_map *map)
 	return (1);
 }
 
-int		init_struct(t_map *map, char ***output)
+int			init_struct(t_map *map, char ***output)
 {
 	char *line;
 

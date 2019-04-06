@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 14:09:06 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/02 16:52:29 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/06 17:06:34 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -66,6 +66,7 @@ struct					s_map
 	int					nb_path;
 	int					start;
 	int					end;
+	int					max_compa;
 };
 
 typedef struct s_map	t_map;
@@ -91,5 +92,8 @@ void					put_resol(t_map *map, int ant, int room);
 void					sort_best_comp(t_map *map);
 int						how_long_will_it_be(t_map *map, int min_path,
 						int plusant, int *path);
+uint64_t				*bin_init(int size);
+void					print_megapath(uint64_t *megapath, int size);
+void					printf_best_compa(t_map *map);
 
 #endif

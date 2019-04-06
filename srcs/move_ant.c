@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/29 12:13:30 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/06 16:08:21 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/06 17:14:51 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -22,7 +22,7 @@ void	continue_path(t_map *map, int j, int *arrived)
 	put_resol(map, j, map->ant[j].room);
 }
 
-int		how_long_will_it_be(t_map *map, int mpath, int antp, int	*path)
+int		how_long_will_it_be(t_map *map, int mpath, int antp, int *path)
 {
 	int	n;
 	int	arr;
@@ -36,9 +36,9 @@ int		how_long_will_it_be(t_map *map, int mpath, int antp, int	*path)
 	{
 		bn = n;
 		n = incr <= mpath ? map->path_len[path[incr]] : n;
-		if (incr <= mpath && (n - bn) * incr <= map->nb_ant + antp -arr)
+		if (incr <= mpath && (n - bn) * incr <= map->nb_ant + antp - arr)
 		{
-			arr +=  bn == 0 ? incr : (n - bn) *incr;
+			arr += bn == 0 ? incr : (n - bn) * incr;
 			while (incr <= mpath && map->path_len[path[incr]] == n && ++incr)
 				arr++;
 		}
@@ -49,31 +49,34 @@ int		how_long_will_it_be(t_map *map, int mpath, int antp, int	*path)
 	return (n);
 }
 
-/*int		how_long_will_it_be(t_map *map, int min_path, int plusant, int	*path)
-{
-	int	count;
-	int	arrived;
-	int	i;
-	int incr;
-
-	count = map->path_len[path[0]] - 1;
-	arrived = 0;
-	incr = 0;
-	while (arrived < map->nb_ant + plusant)
-	{
-		count++;
-		i = incr - 1;
-		while (++i <= incr && i <= min_path)
-		{
-			if (count >= map->path_len[path[i]])
-				incr++;
-			else
-				break ;
-		}
-		arrived += ft_min(incr, min_path + 1);
-	}
-	return (count);
-}*/
+/*
+** int		how_long_will_it_be(t_map *map, int min_path,
+** int plusant, int	*path)
+** {
+**	int	count;
+**	int	arrived;
+**	int	i;
+**	int incr;
+**
+**	count = map->path_len[path[0]] - 1;
+**	arrived = 0;
+**	incr = 0;
+**	while (arrived < map->nb_ant + plusant)
+**	{
+**		count++;
+**		i = incr - 1;
+**		while (++i <= incr && i <= min_path)
+**		{
+**			if (count >= map->path_len[path[i]])
+**				incr++;
+**			else
+**				break ;
+**		}
+**		arrived += ft_min(incr, min_path + 1);
+**	}
+**	return (count);
+** }
+*/
 
 int		get_min_path(t_map *map, int ant)
 {
