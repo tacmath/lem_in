@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/04 18:09:19 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/05 19:47:37 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/06 13:08:44 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -273,7 +273,7 @@ int		fucking_recursive(t_map *map, int j, uint64_t *megapath, int *test_comp)
 	//			return (0);
 
 	//		add_path(tmp, map->path_compat.matrixbin[j], map->nb_path);
-
+//how_long_will_it_be(map, whereami, 0, test_comp);
 			add_path(megapath, map->path_compat.matrixbin[j], map->nb_path);
 			if ( map->best_speed > (speed = how_long_will_it_be(map,
 							whereami, 0, test_comp)))
@@ -287,6 +287,8 @@ int		fucking_recursive(t_map *map, int j, uint64_t *megapath, int *test_comp)
 
 			//(fucking_recursive(map, j, tmp, test_comp));
 		reset_megapath(megapath, test_comp, map, whereami);
+//		reset_megapath(megapath, test_comp, map, whereami);
+
 		//	free(tmp);
 		}
 	if ((whereami = recur_get_step(test_comp, map->nb_path))) 
