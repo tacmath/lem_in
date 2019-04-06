@@ -111,7 +111,7 @@ int get_usable_path(t_map *map)
 	while (++n < map->nb_path)
 		if (map->path[n][map->path_len[n] - 1] == map->end)
 			nb_path++;
-	if (!(tmp = malloc(sizeof(int*) * nb_path)))
+	if (!(tmp = malloc(sizeof(int*) * nb_path )))
 		return (0);
 	if (!(tmp_len = malloc(sizeof(int) * nb_path)))
 		return (0);
