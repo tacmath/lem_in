@@ -6,24 +6,31 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:24:10 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/06 18:13:24 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/07 15:05:35 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-uint64_t	*bin_init(int size)
+uint64_t	**bin_init(int size)
 {
 	int			i;
-	uint64_t	*bin;
+	int			j;
+	uint64_t	**bin;
 
 	i = -1;
 	size = (size >> 6) + 1;
-	if (!(bin = (malloc(sizeof(uint64_t) * size))))
+	if (!(bin = (malloc(sizeof(uint64_t *) * 1000))))
 		return (NULL);
-	while (++i < size)
-		bin[i] = 0xFFFFFFFFFFFFFFFF;
+	j = -1;
+	while (++j < 1000)
+	{
+		if (!(bin[j] = (malloc(sizeof(uint64_t) * size))))
+			return (NULL);
+		while (++i < size)
+			bin[j][i] = 0xFFFFFFFFFFFFFFFF;
+	}
 	return (bin);
 }
 

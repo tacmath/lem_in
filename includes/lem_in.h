@@ -6,16 +6,15 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 14:09:06 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/06 17:06:34 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/07 14:48:47 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #ifndef LEM_IN_H
 # define LEM_IN_H
-
 # include "libft.h"
-#include <stdint.h>
+# include <stdint.h>
 # include <stdlib.h>
 
 struct					s_room
@@ -37,7 +36,6 @@ struct					s_matrix
 
 typedef struct s_matrix	t_matrix;
 
-
 struct					s_ant
 {
 	int					room;
@@ -58,7 +56,7 @@ struct					s_map
 	int					best_speed;
 	int					best_nb_compat;
 	int					*path_len;
-	int 				**comp;
+	int					**comp;
 	t_ant				*ant;
 	int					*ant_progress;
 	int					nb_room;
@@ -71,7 +69,6 @@ struct					s_map
 
 typedef struct s_map	t_map;
 
-
 int						get_room(t_map *map, char ***output);
 int						rooms_init(t_map *map);
 int						get_all_connection(t_map *map, char *line,
@@ -83,7 +80,6 @@ void					write_output(char **output);
 void					free_map(t_map *map);
 int						get_error(t_map *map);
 void					get_room_heat(t_map *map, int room, int heat);
-//void					kylie_jenner(t_map *map);
 void					move_ant(t_map *map);
 int						compatibility_all(t_map *map);
 int						resol(t_map *map);
@@ -92,7 +88,7 @@ void					put_resol(t_map *map, int ant, int room);
 void					sort_best_comp(t_map *map);
 int						how_long_will_it_be(t_map *map, int min_path,
 						int plusant, int *path);
-uint64_t				*bin_init(int size);
+uint64_t				**bin_init(int size);
 void					print_megapath(uint64_t *megapath, int size);
 void					printf_best_compa(t_map *map);
 
