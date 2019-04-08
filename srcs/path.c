@@ -420,6 +420,58 @@ void rev_path(t_map *map, int nb_path)
 	}
 }
 
+void get_more_path(t_map *map)
+{
+	int mem[map->max_compa + 1];
+	int m;
+	int n;
+	int nb;
+
+	mem[0] = -1;
+	m = -1;
+	while (++m < map->nb_path)
+	{
+		nb = 0;
+		if (map->path[m][map->path_len[m] - 1] == map->end)
+		{
+			n = m;
+			while (++n < map->nb_path)
+				if (map->path[n][map->path_len[n] - 1] == map->end && map->path[m][map->path_len[m] - 2] == map->path[n][map->path_len[n] - 2])
+					nb++;
+		}
+		if (nb >= 2)
+		{
+			n = -1;
+			while (mem[++n] != -1)
+				if (mem[n] == map->path[m][map->path_len[m] - 2])
+					break ;
+			if (mem[n] == -1)
+			{
+				mem[n] = map->path[m][map->path_len[m] - 2];
+				mem[n + 1] = -1;
+			}
+		}
+	}
+	res_heat(map);
+	n = -1;
+	while (mem[++n] != -1)
+		map->room[mem[n]].heat = 1;
+	n = -1;
+	map->path = (int**)ft_realloc((void**)&(map->path), sizeof(int*) * map->nb_path, sizeof(int*) * (map->nb_path + 1000));
+	map->path_len = (int*)ft_realloc((void**)&(map->path_len), sizeof(int) * map->nb_path, sizeof(int) * (map->nb_path + 1000));
+	m = map->nb_path;
+	while (++n < map->room[map->end].nb_connection)
+	{
+		map->path[m + n] = malloc(sizeof(int));
+		map->path[m + n][0] = map->room[map->start].connection[n];
+		map->nb_path++;
+		map->path_len[m + n] = 1;
+		map->room[map->start].heat = 1;
+		map->room[map->room[map->start].connection[n]].heat = 1;
+	}
+	get_all_path(map, m);
+}
+
 int get_multiple_path(t_map *map)
 {
 	int n;
@@ -465,15 +517,16 @@ int get_multiple_path(t_map *map)
 	n = start_of_rev - 1;
 	while (++n < map->nb_path)
 		rev_path(map, n);
+	map->max_compa = ft_min(map->room[map->start].nb_connection, map->room[map->end].nb_connection);
+//	get_more_path(map);
 	//	draw_all_path(map);
 	get_usable_path(map);
 	sort_path(map);
 	draw_all_path(map);
 	if (!compatibility_all(map))
 		return (0);
-	//	get_best_path_comp(map);
+//	get_best_path_comp(map);
 
-	map->max_compa = ft_min(map->room[map->start].nb_connection, map->room[map->end].nb_connection);
 	resol(map);
 	printf_best_compa(map);
 
