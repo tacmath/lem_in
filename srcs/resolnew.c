@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/04 18:09:19 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/08 13:16:25 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/08 14:27:02 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -19,6 +19,7 @@ int			how_long_will_it_beb(t_map *map, int mpath, int best, int *path)
 	int	lef;
 	int	bn;
 	int	incr;
+	int	tmp;
 
 	lef = map->nb_ant;
 	incr = 0;
@@ -27,9 +28,9 @@ int			how_long_will_it_beb(t_map *map, int mpath, int best, int *path)
 	{
 		bn = n;
 		n = incr <= mpath ? map->path_len[path[incr]] : n;
-		if (incr <= mpath && (n - bn) * incr <= lef)
+		if (incr <= mpath && (tmp = (n - bn) * incr) <= lef)
 		{
-			lef -= bn == 0 ? incr : (n - bn) * incr;
+			lef -= bn == 0 ? incr : tmp;
 			while (incr <= mpath && map->path_len[path[incr]] == n && ++incr)
 				lef--;
 		}
@@ -64,26 +65,27 @@ int			fucking_recursive(t_map *map, int j, uint64_t **mega, int *comp)
 {
 	int			speed;
 	int			i;
-	int			st;
+	int			up;
 
-	st = recur_get_step(comp, map->max_compa);
-	while (++j < map->nb_path && map->path_len[j] < map->best_speed && st < 999)
-		if ((mega[st][j >> 6] & (1ULL << (j % 64))) > 0)
+	up = ++(map->recur_step);
+	while (++j < map->nb_path && map->path_len[j] < map->best_speed && map->recur_step < 999)
+		if ((mega[map->recur_step][j >> 6] & (1ULL << (j % 64))) > 0)
 		{
-			comp[st] = j;
-			add_path(mega, st, map->path_compat.matrixbin[j], map->nb_path);
+			comp[map->recur_step] = j;
+			add_path(mega, map->recur_step, map->path_compat.matrixbin[j], map->nb_path);
 			if (map->best_speed > (speed = how_long_will_it_beb(map,
-							st, map->best_speed, comp)))
+							map->recur_step, map->best_speed, comp)))
 			{
 				i = -1;
 				while (comp[++i] != -1)
 					map->best_compa[i] = comp[i];
 				map->best_speed = speed;
 			}
+			up = 0;
 			(fucking_recursive(map, j, mega, comp));
 		}
-	if ((st = recur_get_step(comp, map->max_compa)))
-		comp[st - 1] = -1;
+	comp[(up == 0 ? map->recur_step + 1 : map->recur_step) - 1] = -1;
+	--(map->recur_step);
 	return (1);
 }
 
@@ -106,6 +108,7 @@ int			resol(t_map *map)
 		test_comp[i] = -1;
 		map->best_compa[i] = -1;
 	}
+	map->recur_step = -1;
 	fucking_recursive(map, -1, megapath, test_comp);
 	i = -1;
 	while (++i < 1000)

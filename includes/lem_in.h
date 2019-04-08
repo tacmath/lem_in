@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 14:09:06 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/07 14:48:47 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/08 13:31:39 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -65,6 +65,7 @@ struct					s_map
 	int					start;
 	int					end;
 	int					max_compa;
+	int					recur_step;
 };
 
 typedef struct s_map	t_map;
