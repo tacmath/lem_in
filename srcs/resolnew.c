@@ -6,14 +6,14 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/04 18:09:19 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/08 02:24:13 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/08 13:16:25 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-int		how_long_will_it_beb(t_map *map, int mpath, int best, int *path)
+int			how_long_will_it_beb(t_map *map, int mpath, int best, int *path)
 {
 	int	n;
 	int	lef;
