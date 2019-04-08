@@ -6,12 +6,38 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/04 18:09:19 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/07 15:14:10 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/08 02:24:13 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+int		how_long_will_it_beb(t_map *map, int mpath, int best, int *path)
+{
+	int	n;
+	int	lef;
+	int	bn;
+	int	incr;
+
+	lef = map->nb_ant;
+	incr = 0;
+	n = 0;
+	while (lef > 0 && n < best)
+	{
+		bn = n;
+		n = incr <= mpath ? map->path_len[path[incr]] : n;
+		if (incr <= mpath && (n - bn) * incr <= lef)
+		{
+			lef -= bn == 0 ? incr : (n - bn) * incr;
+			while (incr <= mpath && map->path_len[path[incr]] == n && ++incr)
+				lef--;
+		}
+		else
+			return (n + lef / incr + 1);
+	}
+	return (n);
+}
 
 int			recur_get_step(int *test_compa, int size)
 {
@@ -46,8 +72,8 @@ int			fucking_recursive(t_map *map, int j, uint64_t **mega, int *comp)
 		{
 			comp[st] = j;
 			add_path(mega, st, map->path_compat.matrixbin[j], map->nb_path);
-			if (map->best_speed > (speed = how_long_will_it_be(map,
-							st, 0, comp)))
+			if (map->best_speed > (speed = how_long_will_it_beb(map,
+							st, map->best_speed, comp)))
 			{
 				i = -1;
 				while (comp[++i] != -1)
