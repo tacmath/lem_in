@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/06 18:20:24 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/06 18:20:34 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/08 15:53:30 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -110,11 +110,23 @@ int get_all_path(t_map *map, int start_path)
 	return (1);
 }
 
+int path_cmp(int *path1, int *path2, int path_len)
+{
+	int n;
+
+	n = -1;
+	while (++n < path_len)
+		if (path1[n] != path2[n])
+			return (0);
+	return (1);
+}
+
 int get_usable_path(t_map *map)
 {
 	int **tmp;
 	int *tmp_len;
 	int nb_path;
+	int mem;
 	int n;
 	int m;
 
@@ -122,7 +134,15 @@ int get_usable_path(t_map *map)
 	nb_path = 0;
 	while (++n < map->nb_path)
 		if (map->path[n][map->path_len[n] - 1] == map->end)
-			nb_path++;
+		{
+			m = n;
+			mem = 0;
+			while (++m < map->nb_path)
+				if (map->path_len[n] == map->path_len[m] && path_cmp(map->path[n], map->path[m], map->path_len[n]))
+					mem = 1;
+			if (mem == 0)
+				nb_path++;
+		}
 	if (!(tmp = malloc(sizeof(int*) * nb_path )))
 		return (0);
 	if (!(tmp_len = malloc(sizeof(int) * nb_path)))
@@ -134,15 +154,24 @@ int get_usable_path(t_map *map)
 	while (++n < map->nb_path)
 		if (map->path[n][map->path_len[n] - 1] == map->end)
 		{
-			tmp[nb_path] = map->path[n];
-			tmp_len[nb_path] = map->path_len[n];
-			if (!(map->path_room[nb_path] = ft_memalloc(sizeof(uint64_t) * ((map->nb_room >> 6) + 1))))
-				return (0);
-
-			m = -1;
-			while (tmp[nb_path][++m] != map->end)
-				map->path_room[nb_path][tmp[nb_path][m] >> 6] |= 1ULL << (tmp[nb_path][m] % 64);
-			nb_path++;
+			mem = 0;
+			m = n;
+			while (++m < map->nb_path)
+				if (map->path_len[n] == map->path_len[m] && path_cmp(map->path[n], map->path[m], map->path_len[n]))
+					mem = 1;
+			if (mem == 0)
+			{
+				tmp[nb_path] = map->path[n];
+				tmp_len[nb_path] = map->path_len[n];
+				if (!(map->path_room[nb_path] = ft_memalloc(sizeof(uint64_t) * ((map->nb_room >> 6) + 1))))
+					return (0);
+				m = -1;
+				while (tmp[nb_path][++m] != map->end)
+					map->path_room[nb_path][tmp[nb_path][m] >> 6] |= 1ULL << (tmp[nb_path][m] % 64);
+				nb_path++;
+			}
+			else
+				free(map->path[n]);
 		}
 		else
 			free(map->path[n]);
