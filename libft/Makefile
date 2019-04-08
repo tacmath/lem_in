@@ -6,7 +6,7 @@
 #    By: lperron <marvin@le-101.fr>                 +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2018/08/13 13:17:34 by lperron      #+#   ##    ##    #+#        #
-#    Updated: 2019/04/06 13:18:47 by lperron     ###    #+. /#+    ###.fr      #
+#    Updated: 2019/04/08 16:41:49 by lperron     ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -23,25 +23,40 @@ FILESPERS= ft_realloc.c ft_sort_integer_table.c ft_split_whitespaces.c ft_str_is
 FILESPRINTF= bin_handler.c float_handler.c ft_format_numb.c ft_parser.c ft_printf_add.c ft_printf.c functions.c int_handler.c int_handler2.c percent_handler.c string_handler.c unico_handler.c unsigned_handler.c utils.c widthprec.c
 FILESINC= libft.h ft_printf.h
 INCDIR= ./includes/
-FILES= $(FILESLC) $(FILESSU) $(FILESBONUS) $(FILESPERS)
+FILES= $(FILESLC) $(FILESSU) $(FILESBONUS) $(FILESPERS) $(FILESPRINTF)
 SRC= $(addprefix $(SRCDIRLC),$(FILESLC)) $(addprefix $(SRCDIRSU),$(FILESSU)) $(addprefix $(SRCDIRBONUS),$(FILESBONUS)) $(addprefix $(SRCDIRPERS),$(FILESPERS)) $(addprefix $(SRCDIRPRINTF),$(FILESPRINTF))
 INC= $(addprefix $(INCDIR),$(FILESINC))
 OBJ= $(SRC:.c=.o)
 NAME= libft.a
 CFLAGS= -Wall -Wextra #-Werror
 CC= gcc
+QTY := $(shell echo ${FILES} | wc -w)
+CNT = 0
+COLSET = 0
+SIZE = 0
+ASIZE = 0
 
 all: $(NAME)
 
 %.o: %.c $(INC)
-	$(CC) -c -o $@ $< -I $(INCDIR) $(CFLAGS)
+	@$(eval CNT=$(shell echo "$(CNT) + 1" | bc))
+	@$(eval COLSET=$(shell echo "$(CNT) * 255 / $(QTY)" | bc))
+	@$(eval SIZE=$(shell echo "$(CNT) * 100 / $(QTY) + 1" | bc))
+	@$(eval ASIZE=$(shell echo "100 - $(SIZE)" | bc))
+	@printf "[48;2;255;$(COLSET);0m%$(SIZE)s[0m%$(ASIZE)s $(NAME)                   \r" "" "" $(SIZE)
+	@$(CC) -c -o $@ $< -I $(INCDIR) $(CFLAGS)
 
 $(NAME): $(OBJ) $(INC)
-	ar rc $(NAME) $(OBJ)
-	ranlib $(NAME)
+	@printf "\nCreating $(NAME)\r"
+	@ar rc $(NAME) $(OBJ)
+	@ranlib $(NAME)
+	@printf "$(NAME) Created    \n"
 clean:
-	rm -f $(OBJ)
+	@printf "cleaning $(NAME)\r"
+	@rm -f $(OBJ)
+	@printf "$(NAME) Cleaned     \n"
 
 fclean: clean
-	rm -f $(NAME)
-re: fclean $(NAME)	
+	@rm -f $(NAME)
+re: fclean $(NAME)
+
