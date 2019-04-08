@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/04 18:09:19 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/08 14:27:02 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/08 16:04:49 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -68,6 +68,8 @@ int			fucking_recursive(t_map *map, int j, uint64_t **mega, int *comp)
 	int			up;
 
 	up = ++(map->recur_step);
+//	if ((up == 1 && j >= 5))
+//		return (1);
 	while (++j < map->nb_path && map->path_len[j] < map->best_speed && map->recur_step < 999)
 		if ((mega[map->recur_step][j >> 6] & (1ULL << (j % 64))) > 0)
 		{
