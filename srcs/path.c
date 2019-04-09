@@ -442,7 +442,7 @@ void get_more_path(t_map *map)
 				if (map->path[n][map->path_len[n] - 1] == map->end && map->path[m][map->path_len[m] - 2] == map->path[n][map->path_len[n] - 2])
 					nb++;
 		}
-		if (nb >= 2)
+		if (nb >= 1)
 		{
 			n = -1;
 			while (mem[++n] != -1)
@@ -467,7 +467,7 @@ void get_more_path(t_map *map)
 				if (map->path[n][map->path_len[n] - 1] == map->end && map->path[m][0] == map->path[n][0])
 					nb++;
 		}
-		if (nb >= 2)
+		if (nb >= 1)
 		{
 			n = -1;
 			while (mem2[++n] != -1)
