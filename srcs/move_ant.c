@@ -55,7 +55,7 @@ int		how_long(t_map *map)
 	int m;
 	int nb;
 
-	nb = map->path_len[map->best_compa[0]];
+	nb = map->path_len[map->best_compa[0]] - 1;
 	n = map->nb_ant;
 	while (n > 0)
 	{
