@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/29 12:13:30 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/06 17:14:51 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/14 13:12:03 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -49,6 +49,24 @@ int		how_long_will_it_be(t_map *map, int mpath, int antp, int *path)
 	return (n);
 }
 
+int		how_long(t_map *map)
+{
+	int n;
+	int m;
+	int nb;
+
+	nb = map->path_len[map->best_compa[0]];
+	n = map->nb_ant;
+	while (n > 0)
+	{
+		nb++;
+		m = -1;
+		while (map->best_compa[++m] != -1)
+			if (map->path_len[map->best_compa[m]] <= nb)
+				n--;
+	}
+	return (nb);
+}
 /*
 ** int		how_long_will_it_be(t_map *map, int min_path,
 ** int plusant, int	*path)
@@ -101,29 +119,33 @@ int		get_min_path(t_map *map, int ant)
 	return (min_path);
 }
 
-void	can_i_go(t_map *map, int j, int *arrived, int ant)
+void	can_i_go(t_map *map, int *arrived, int ant)
 {
-	int	min_path;
+	int	path;
+	int m;
+	int n;
 
-	min_path = get_min_path(map, ant);
-	if (map->best_compa[min_path] != -1)
-	{
-		if (min_path == 0 || (how_long_will_it_be(map, min_path - 1, min_path,
-		map->best_compa) > how_long_will_it_be(map,
-		min_path, min_path, map->best_compa)))
+	n = -1;
+	m = 0;
+	while (++n < ant && map->best_compa[m] != -1)
+		if (map->ant[n].room == map->start)
 		{
-			map->nb_ant--;
-			map->ant[j].i_path = 0;
-			map->ant[j].path = map->best_compa[min_path];
-			map->ant[j].room = map->path[map->best_compa[min_path]][0];
-			put_resol(map, j, map->ant[j].room);
-			if (map->ant[j].room == map->end)
+			path = map->best_compa[m];
+			if (how_long(map) >= map->path_len[path])
 			{
-				map->ant[j].room = -1;
-				(*arrived)++;
+				map->nb_ant--;
+				map->ant[n].i_path = 0;
+				map->ant[n].path = path;
+				map->ant[n].room = map->path[path][0];
+				put_resol(map, n, map->ant[n].room);
+				if (map->ant[n].room == map->end)
+				{
+					map->ant[n].room = -1;
+					(*arrived)++;
+				}
 			}
+			m++;
 		}
-	}
 }
 
 int		gogogo(t_map *map, int *count)
@@ -140,17 +162,13 @@ int		gogogo(t_map *map, int *count)
 		(*count)++;
 		j = -1;
 		while (++j < ant)
-		{
-			if (map->ant[j].room == map->end || (j != 0 &&
-						map->ant[j - 1].room == map->start))
-				;
-			else if (map->ant[j].room == map->start)
-				can_i_go(map, j, &arrived, ant);
-			else
+			if (map->ant[j].room != map->end && map->ant[j].room != map->start)
 				continue_path(map, j, &arrived);
-		}
+		can_i_go(map, &arrived, ant);
 		ft_putendl("");
 	}
+	map->nb_ant = ant;
+	ft_printf("test = %d\n", how_long(map));
 	ft_printf("count = %d\n", *count);
 	return (1);
 }

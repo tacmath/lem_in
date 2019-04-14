@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/06 18:20:24 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/08 15:53:30 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/14 12:41:43 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -559,7 +559,7 @@ int get_multiple_path(t_map *map)
 	while (++n < map->nb_path)
 		rev_path(map, n);
 	map->max_compa = ft_min(map->room[map->start].nb_connection, map->room[map->end].nb_connection);
-	get_more_path(map);
+//	get_more_path(map);
 	//	draw_all_path(map);
 	get_usable_path(map);
 	sort_path(map);
