@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/04 18:09:19 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/08 16:04:49 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/15 14:15:13 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -28,6 +28,7 @@ int			how_long_will_it_beb(t_map *map, int mpath, int best, int *path)
 	{
 		bn = n;
 		n = incr <= mpath ? map->path_len[path[incr]] : n;
+	//	n = incr == 0 ? n - 1 : n;
 		if (incr <= mpath && (tmp = (n - bn) * incr) <= lef)
 		{
 			lef -= bn == 0 ? incr : tmp;
@@ -35,7 +36,7 @@ int			how_long_will_it_beb(t_map *map, int mpath, int best, int *path)
 				lef--;
 		}
 		else
-			return (n + lef / incr + 1);
+			return (n + (lef - 1) / incr + 1);
 	}
 	return (n);
 }

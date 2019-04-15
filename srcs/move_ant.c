@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/29 12:13:30 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/14 13:12:03 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/15 14:09:39 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -168,6 +168,7 @@ int		gogogo(t_map *map, int *count)
 		ft_putendl("");
 	}
 	map->nb_ant = ant;
+	ft_printf("best speed = %d\n", map->best_speed);
 	ft_printf("test = %d\n", how_long(map));
 	ft_printf("count = %d\n", *count);
 	return (1);
