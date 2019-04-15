@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 14:09:06 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/08 13:31:39 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/15 15:13:02 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -59,6 +59,7 @@ struct					s_map
 	int					**comp;
 	t_ant				*ant;
 	int					*ant_progress;
+	int					*tmp;
 	int					nb_room;
 	int					nb_ant;
 	int					nb_path;
@@ -87,8 +88,6 @@ int						resol(t_map *map);
 int						gogogo(t_map *map, int *count);
 void					put_resol(t_map *map, int ant, int room);
 void					sort_best_comp(t_map *map);
-int						how_long_will_it_be(t_map *map, int min_path,
-						int plusant, int *path);
 uint64_t				**bin_init(int size);
 void					print_megapath(uint64_t *megapath, int size);
 void					printf_best_compa(t_map *map);
