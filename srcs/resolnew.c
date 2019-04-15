@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/04 18:09:19 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/15 14:15:13 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/15 17:22:58 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -28,7 +28,6 @@ int			how_long_will_it_beb(t_map *map, int mpath, int best, int *path)
 	{
 		bn = n;
 		n = incr <= mpath ? map->path_len[path[incr]] : n;
-	//	n = incr == 0 ? n - 1 : n;
 		if (incr <= mpath && (tmp = (n - bn) * incr) <= lef)
 		{
 			lef -= bn == 0 ? incr : tmp;
@@ -69,17 +68,16 @@ int			fucking_recursive(t_map *map, int j, uint64_t **mega, int *comp)
 	int			up;
 
 	up = ++(map->recur_step);
-//	if ((up == 1 && j >= 5))
-//		return (1);
-	while (++j < map->nb_path && map->path_len[j] < map->best_speed && map->recur_step < 999)
+	while (++j < map->nb_path && map->path_len[j] <
+			map->best_speed && map->recur_step < 999)
 		if ((mega[map->recur_step][j >> 6] & (1ULL << (j % 64))) > 0)
 		{
 			comp[map->recur_step] = j;
-			add_path(mega, map->recur_step, map->path_compat.matrixbin[j], map->nb_path);
+			add_path(mega, map->recur_step, map->path_compat.matrixbin[j],
+					map->nb_path);
 			if (map->best_speed > (speed = how_long_will_it_beb(map,
-							map->recur_step, map->best_speed, comp)))
+				map->recur_step, map->best_speed, comp)) && (i = -1) < 0)
 			{
-				i = -1;
 				while (comp[++i] != -1)
 					map->best_compa[i] = comp[i];
 				map->best_speed = speed;

@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:24:10 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/07 15:05:35 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/15 17:25:38 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -27,11 +27,29 @@ uint64_t	**bin_init(int size)
 	while (++j < 1000)
 	{
 		if (!(bin[j] = (malloc(sizeof(uint64_t) * size))))
+		{
+			while (--j >= 0)
+				free(bin[j]);
+			ft_super_free(1, bin);
 			return (NULL);
+		}
 		while (++i < size)
 			bin[j][i] = 0xFFFFFFFFFFFFFFFF;
 	}
 	return (bin);
+}
+
+void		pre_init(t_map *map)
+{
+	map->ant = NULL;
+	map->path = NULL;
+	map->path_room = NULL;
+	map->path_len = NULL;
+	map->comp = NULL;
+	map->ant_progress = NULL;
+	map->path_compat.matrix = NULL;
+	map->path_compat.matrixbin = NULL;
+	map->path_compat.nb_compat = NULL;
 }
 
 int			rooms_init(t_map *map)
@@ -78,7 +96,7 @@ int			init_struct(t_map *map, char ***output)
 		return (0);
 	}
 	if (!(map->ant_progress = malloc(sizeof(int) * map->nb_ant)))
-		return (ft_super_free(1, map));
+		return (ft_super_free(1, map)); //nope, fct free map
 	map->room = 0;
 	map->start = -1;
 	map->end = -1;
