@@ -36,14 +36,16 @@ static void	res_heat(t_map *map)
 		map->room[n].heat = -1;
 }
 // remove
-void draw_all_path(t_map *map)
+void draw_all_path(t_map *map, int start)
 {
 	int n;
 	int m;
 
-	n = -1;
+	n = start - 1;
 	while (++n < map->nb_path)
 	{
+		if (map->path[n][map->path_len[n] - 1] == map->end && map->path_len[n] < map->best_speed)
+		{
 		m = -1;
 		while (++m < map->path_len[n])
 		{
@@ -51,6 +53,7 @@ void draw_all_path(t_map *map)
 			ft_putchar(' ');
 		}
 		ft_putendl("");
+		}
 	}
 }
 
@@ -338,12 +341,50 @@ void get_more_path(t_map *map)
 	get_all_path(map, m);
 }
 
+int get_last_path(t_map *map)
+{
+	int n;
+	int m;
+	int start_path;
+	
+	res_heat(map);
+	n = -1;
+	while (map->best_compa[++n] != -1)
+	{
+		m = -1;
+		while (++m < map->path_len[map->best_compa[n]] - 1)
+			 map->room[map->path[map->best_compa[n]][m]].heat = 1;
+	}
+	n = -1;
+	map->path = (int**)ft_realloc((void**)&(map->path), sizeof(int*) * map->nb_path, sizeof(int*) * (map->nb_path + 1000));
+	map->path_len = (int*)ft_realloc((void**)&(map->path_len), sizeof(int) * map->nb_path, sizeof(int) * (map->nb_path + 1000));
+	start_path = map->nb_path;
+	m = 0;
+	while (++n < map->room[map->start].nb_connection)
+	{
+		if (map->room[map->room[map->start].connection[n]].heat == -1)
+		{
+			map->path[start_path + n - m] = malloc(sizeof(int));
+			map->path[start_path + n - m][0] = map->room[map->start].connection[n];
+			map->nb_path++;
+			map->path_len[start_path + n - m] = 1;
+			map->room[map->start].heat = 1;
+			map->room[map->room[map->start].connection[n]].heat = 1;
+		}
+		else
+			m++;
+	}
+	get_all_path(map, start_path);
+	draw_all_path(map, start_path);
+	return (1);
+}
+
 int get_multiple_path(t_map *map)
 {
 	int n;
 	int start_path;
 	int start_of_rev;
-	int	count;
+//	int	count;
 
 	n = -1;
 	map->nb_path = 0;
@@ -393,14 +434,15 @@ int get_multiple_path(t_map *map)
 	if (!get_usable_path(map, -1, 0))
 		return (0);
 	sort_path(map);
-	draw_all_path(map);
+	//draw_all_path(map);
 	if (!compatibility_all(map))
 		return (0);
 //	get_best_path_comp(map);
 
 	resol(map);
 	printf_best_compa(map);
-
+	get_last_path(map);
+//	draw_all_path(map);
 	//
 	/*for (int i= 0; i < map->nb_path; i++)
 	  {
@@ -419,8 +461,8 @@ int get_multiple_path(t_map *map)
 	//		ft_printf("%d ", map->best_compa[i]);
 	//	ft_putendl("");
 	//	draw_all_path(map);
-	count = 0;
-	gogogo(map, &count);
+//	count = 0;
+//	gogogo(map, &count);
 	return (1);
 }
 
