@@ -53,6 +53,8 @@ void draw_all_path(t_map *map, int start)
 			ft_putchar(' ');
 		}
 		ft_putendl("");
+		ft_putnbr(map->path_len[n]);
+		ft_putendl("");
 		}
 	}
 }
