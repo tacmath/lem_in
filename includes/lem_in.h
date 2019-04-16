@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 14:09:06 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/15 15:13:02 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/16 13:49:20 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -91,5 +91,8 @@ void					sort_best_comp(t_map *map);
 uint64_t				**bin_init(int size);
 void					print_megapath(uint64_t *megapath, int size);
 void					printf_best_compa(t_map *map);
+int						get_all_path(t_map *map, int start_path);
+int						get_usable_path(t_map *map, int n, int nb_path);
+void					sort_path(t_map *map);
 
 #endif
