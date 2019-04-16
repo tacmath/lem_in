@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:24:10 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/15 17:25:38 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/16 17:10:03 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -96,7 +96,7 @@ int			init_struct(t_map *map, char ***output)
 		return (0);
 	}
 	if (!(map->ant_progress = malloc(sizeof(int) * map->nb_ant)))
-		return (ft_super_free(1, map)); //nope, fct free map
+		return (free_map(map));
 	map->room = 0;
 	map->start = -1;
 	map->end = -1;

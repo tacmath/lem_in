@@ -6,7 +6,7 @@
 /*   By: lperron <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/10/02 13:14:48 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/05 20:45:34 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/16 18:02:08 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -150,5 +150,6 @@ char					*ft_strsub_free(char *s,
 
 char					*ft_strjoin_mult(int n, ...);
 int						ft_super_free(int n, ...);
+int						ft_ssuper_free(int n, ...);
 
 #endif

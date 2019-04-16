@@ -6,47 +6,18 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/06 18:20:24 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/16 16:35:00 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/16 18:14:14 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-static void	res_heat(t_map *map)
+int			get_path(t_map *map, int room, int heat, int *path_len)
 {
-	int n;
-
-	n = -1;
-	while (++n < map->nb_room)
-		map->room[n].heat = -1;
-}
-
-void rev_path(t_map *map, int nb_path)
-{
-	int n;
-	int tmp;
-
-	if (map->path[nb_path][map->path_len[nb_path] - 1] == map->start)
-	{
-		map->path[nb_path][map->path_len[nb_path] - 1] = map->end;
-		n = -1;
-		while (++n < (map->path_len[nb_path] - 1) / 2)
-		{
-			tmp = map->path[nb_path][n];
-			map->path[nb_path][n] =
-				map->path[nb_path][map->path_len[nb_path] - n - 2];
-			map->path[nb_path][map->path_len[nb_path] - n - 2] = tmp;
-		}
-		map->path[nb_path][map->path_len[nb_path] - 1] = map->end;
-	}
-}
-
-int         get_path(t_map *map, int room, int heat, int *path_len)
-{
-	int    n;
-	int    co;
-	int ret;
+	int		n;
+	int		co;
+	int		ret;
 
 	ret = 0;
 	map->room[room].heat = heat;
@@ -60,22 +31,18 @@ int         get_path(t_map *map, int room, int heat, int *path_len)
 		return (1);
 	}
 	n = -1;
-	while (++n < map->room[room].nb_connection)
-	{
-		co = map->room[room].connection[n];
-		if (map->room[co].heat == -1 || (map->room[co].heat > heat + 1 && map->room[co].heat != 1))
+	while (++n < map->room[room].nb_connection &&
+		(co = map->room[room].connection[n]) == map->room[room].connection[n])
+		if (map->room[co].heat == -1 ||
+				(map->room[co].heat > heat + 1 && map->room[co].heat != 1))
 			if (get_path(map, co, heat + 1, path_len))
 				ret++;
-	}
-	if (ret > 0 && room != map->start)
-	{
-		map->tmp[heat - 1] = room;
+	if (ret > 0 && room != map->start && (map->tmp[heat - 1] = room) == room)
 		return (1);
-	}
 	return (0);
 }
 
-int get_best_path(t_map *map)
+int			get_best_path(t_map *map)
 {
 	int **tmp;
 	int *tmp_len;
@@ -97,18 +64,14 @@ int get_best_path(t_map *map)
 		}
 		else
 			ft_super_free(4, map->path_compat.matrix[n],
-					map->path_compat.matrixbin[n], map->path_room[n], map->path[n]);
+			map->path_compat.matrixbin[n], map->path_room[n], map->path[n]);
 	ft_super_free(2, map->path, map->path_len);
 	map->path = tmp;
 	map->path_len = tmp_len;
 	map->nb_path = m;
-	ft_memdel((void**)&map->path_compat.matrix);
-	ft_memdel((void**)&map->path_compat.matrixbin);
-	ft_memdel((void**)&map->path_room);
-	return (1);
+	return (!(ft_ssuper_free(3, &map->path_compat.matrix,
+					&map->path_compat.matrixbin, &map->path_room)));
 }
-
-int		how_long(t_map *map);
 
 void		sort_pathe(t_map *map)
 {
@@ -134,7 +97,7 @@ void		sort_pathe(t_map *map)
 	}
 }
 
-int get_last_path(t_map *map)
+int			get_last_path(t_map *map)
 {
 	int n;
 	int m;
@@ -160,7 +123,7 @@ int get_last_path(t_map *map)
 			map->path_len[map->nb_path] = path_len;
 			map->nb_path++;
 			sort_pathe(map);
-			map->best_speed = how_long(map); 
+			map->best_speed = how_long(map);
 		}
 		else
 		{
@@ -171,7 +134,7 @@ int get_last_path(t_map *map)
 	return (1);
 }
 
-int get_multiple_path(t_map *map)
+int			get_multiple_path(t_map *map)
 {
 	int n;
 	int start_path;
@@ -184,7 +147,6 @@ int get_multiple_path(t_map *map)
 	map->path = malloc(sizeof(int*) * 1000);
 	map->path_len = malloc(sizeof(int) * 1000);
 	start_path = map->nb_path;
-
 	while (++n < map->room[map->start].nb_connection)
 	{
 		map->path[start_path + n] = malloc(sizeof(int));
@@ -197,9 +159,11 @@ int get_multiple_path(t_map *map)
 	get_all_path(map, start_path);
 	start_of_rev = map->nb_path;
 	n = -1;
-	res_heat(map);	
-	map->path = (int**)ft_realloc((void**)&(map->path), sizeof(int*) * map->nb_path, sizeof(int*) * (map->nb_path + 1000));
-	map->path_len = (int*)ft_realloc((void**)&(map->path_len), sizeof(int) * map->nb_path, sizeof(int) * (map->nb_path + 1000));
+	res_heat(map);
+	map->path = (int**)ft_realloc((void**)&(map->path), sizeof(int*)
+			* map->nb_path, sizeof(int*) * (map->nb_path + 1000));
+	map->path_len = (int*)ft_realloc((void**)&(map->path_len), sizeof(int)
+			* map->nb_path, sizeof(int) * (map->nb_path + 1000));
 	start_path = map->nb_path;
 	while (++n < map->room[map->end].nb_connection)
 	{
@@ -214,13 +178,13 @@ int get_multiple_path(t_map *map)
 	n = start_of_rev - 1;
 	while (++n < map->nb_path)
 		rev_path(map, n);
-	map->max_compa = ft_min(map->room[map->start].nb_connection, map->room[map->end].nb_connection);
+	map->max_compa = ft_min(map->room[map->start].nb_connection,
+			map->room[map->end].nb_connection);
 	if (!get_usable_path(map, -1, 0))
 		return (0);
 	sort_path(map);
 	if (!compatibility_all(map))
 		return (0);
-
 	resol(map);
 	get_last_path(map);
 	count = 0;

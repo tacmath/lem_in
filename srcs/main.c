@@ -6,14 +6,12 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 15:34:46 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/16 16:46:42 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/16 17:15:37 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-
-int get_multiple_path(t_map *map);
 
 int		*connection_realloc(int *connection, int *nb_co, int new_co)
 {
@@ -35,7 +33,7 @@ int		*connection_realloc(int *connection, int *nb_co, int new_co)
 	return (tmp);
 }
 
-int		get_connection(t_map *map, char *line, char ***output) //securise
+int		get_connection(t_map *map, char *line, char ***output)
 {
 	int co1;
 	int co2;
@@ -51,11 +49,10 @@ int		get_connection(t_map *map, char *line, char ***output) //securise
 	while (ft_strcmp(map->room[++co2].name, &(line[len + 1])) &&
 			co2 < map->nb_room)
 		;
-	if (ft_strncmp(map->room[co1].name, line, len) || ft_strcmp(map->room[co2].name, &(line[len + 1])))
-		return (0);
-	if (!(map->room[co1].connection =
-				connection_realloc(map->room[co1].connection,
-					&(map->room[co1].nb_connection), co2)))
+	if (ft_strncmp(map->room[co1].name, line, len) ||
+ft_strcmp(map->room[co2].name, &(line[len + 1])) ||
+!(map->room[co1].connection = connection_realloc(map->room[co1].connection,
+&(map->room[co1].nb_connection), co2)))
 		return (0);
 	if (!(map->room[co2].connection =
 				connection_realloc(map->room[co2].connection,
@@ -83,7 +80,7 @@ int		get_all_connection(t_map *map, char *line, char ***output)
 	return (1);
 }
 
-int	test_room(t_map *map, int room)
+int		test_room(t_map *map, int room)
 {
 	int n;
 
@@ -100,14 +97,14 @@ int	test_room(t_map *map, int room)
 	return (0);
 }
 
-void test_all_maps(t_map *map)
+void	test_all_maps(t_map *map)
 {
 	int m;
 
-		m = -1;
-		while (++m < map->room[map->end].nb_connection)
-				if (!test_room(map, map->room[map->end].connection[m]))
-					sta_line(map, map->end, map->room[map->end].connection[m]);
+	m = -1;
+	while (++m < map->room[map->end].nb_connection)
+		if (!test_room(map, map->room[map->end].connection[m]))
+			sta_line(map, map->end, map->room[map->end].connection[m]);
 }
 
 int		remove_useless_co(t_map *map)
@@ -117,8 +114,8 @@ int		remove_useless_co(t_map *map)
 	n = -1;
 	while (++n < map->room[map->start].nb_connection)
 		if (map->room[map->room[map->start].connection[n]].heat == -1 &&
-			!sta_line(map, map->start, map->room[map->start].connection[n]))
-				return (0);
+				!sta_line(map, map->start, map->room[map->start].connection[n]))
+			return (0);
 	return (1);
 }
 
@@ -130,7 +127,7 @@ int		main(void)
 
 	output = 0;
 	if (!(map = malloc(sizeof(t_map))) || !init_struct(map, &output)
-		|| !get_room(map, &output))
+			|| !get_room(map, &output))
 		return (-1);
 	n = -1;
 	if (!get_error(map))

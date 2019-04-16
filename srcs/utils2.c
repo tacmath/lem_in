@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/06 16:57:06 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/16 15:19:37 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/16 17:16:30 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -42,7 +42,7 @@ int			free_map(t_map *map)
 		if (map->path_compat.matrixbin)
 			free(map->path_compat.matrixbin[n]);
 		if (map->path_room)
-			free (map->path_room[n]);
+			free(map->path_room[n]);
 	}
 	ft_super_free(11, map->path, map->path_compat.matrix,
 map->path_compat.matrixbin, map->path_compat.nb_compat, map->best_compa,

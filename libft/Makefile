@@ -6,7 +6,7 @@
 #    By: lperron <marvin@le-101.fr>                 +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2018/08/13 13:17:34 by lperron      #+#   ##    ##    #+#        #
-#    Updated: 2019/04/08 16:41:49 by lperron     ###    #+. /#+    ###.fr      #
+#    Updated: 2019/04/08 17:00:31 by lperron     ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -43,7 +43,7 @@ all: $(NAME)
 	@$(eval COLSET=$(shell echo "$(CNT) * 255 / $(QTY)" | bc))
 	@$(eval SIZE=$(shell echo "$(CNT) * 100 / $(QTY) + 1" | bc))
 	@$(eval ASIZE=$(shell echo "100 - $(SIZE)" | bc))
-	@printf "[48;2;255;$(COLSET);0m%$(SIZE)s[0m%$(ASIZE)s $(NAME)                   \r" "" "" $(SIZE)
+	@printf "[48;2;255;$(COLSET);0m%$(SIZE)s[0m%$(ASIZE)s $(NAME)     $@          \r" "" "" $(SIZE)
 	@$(CC) -c -o $@ $< -I $(INCDIR) $(CFLAGS)
 
 $(NAME): $(OBJ) $(INC)

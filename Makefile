@@ -6,7 +6,7 @@
 #    By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2018/11/05 12:24:50 by mtaquet      #+#   ##    ##    #+#        #
-#    Updated: 2019/04/16 13:47:22 by mtaquet     ###    #+. /#+    ###.fr      #
+#    Updated: 2019/04/16 17:33:54 by lperron     ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -20,6 +20,7 @@ SRCFILES = main.c\
 		   room.c\
 		   utils.c\
 		   path.c\
+		   path2.c\
 		   get_path.c\
 		   treat_path.c\
 		   init.c\
