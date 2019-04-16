@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/29 12:13:30 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/15 14:47:41 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/16 15:15:31 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -28,14 +28,14 @@ int		how_long(t_map *map)
 	int m;
 	int nb;
 
-	nb = map->path_len[map->best_compa[0]] - 1;
+	nb = map->path_len[0] - 1;
 	n = map->nb_ant;
 	while (n > 0)
 	{
 		nb++;
 		m = -1;
-		while (map->best_compa[++m] != -1)
-			if (map->path_len[map->best_compa[m]] <= nb)
+		while (++m < map->nb_path)
+			if (map->path_len[m] <= nb)
 				n--;
 	}
 	return (nb);
@@ -43,22 +43,20 @@ int		how_long(t_map *map)
 
 void	can_i_go(t_map *map, int *arrived, int ant)
 {
-	int	path;
 	int m;
 	int n;
 
 	n = -1;
 	m = 0;
-	while (++n < ant && map->best_compa[m] != -1)
+	while (++n < ant && m < map->nb_path)
 		if (map->ant[n].room == map->start)
 		{
-			path = map->best_compa[m];
-			if (how_long(map) >= map->path_len[path])
+			if (how_long(map) >= map->path_len[m])
 			{
 				map->nb_ant--;
 				map->ant[n].i_path = 0;
-				map->ant[n].path = path;
-				map->ant[n].room = map->path[path][0];
+				map->ant[n].path = m;
+				map->ant[n].room = map->path[m][0];
 				put_resol(map, n, map->ant[n].room);
 				if (map->ant[n].room == map->end)
 				{

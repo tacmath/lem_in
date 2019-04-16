@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/06 16:57:06 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/16 15:10:30 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/16 15:16:34 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -37,7 +37,7 @@ void		free_map(t_map *map)
 	{
 		if (map->path)
 			free(map->path[n]);
-		if (map->map->path_compat.matrix)
+		if (map->path_compat.matrix)
 			free(map->path_compat.matrix[n]);
 		if (map->path_compat.matrixbin)
 			free(map->path_compat.matrixbin[n]);

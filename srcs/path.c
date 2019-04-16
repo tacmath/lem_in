@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/06 18:20:24 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/16 14:33:33 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/16 15:14:21 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -65,7 +65,7 @@ void rev_path(t_map *map, int nb_path)
 	}
 }
 
-int         get_way(t_map *map, int room, int heat, int **way)
+int         get_way(t_map *map, int room, int heat, int **path)
 {
     int    n;
     int    co;
@@ -75,10 +75,10 @@ int         get_way(t_map *map, int room, int heat, int **way)
     map->room[room].heat = heat;
     if (room == map->end)
     {
-        free(*way);
-        if (!(*way = malloc(sizeof(int) * (heat))))
+        free(*path);
+        if (!(*path = malloc(sizeof(int) * (heat))))
             return (0);
-        (*way)[heat - 1] = -1;
+        (*path)[heat - 1] = -1;
         return (1);
     }
     n = -1;
@@ -86,23 +86,58 @@ int         get_way(t_map *map, int room, int heat, int **way)
     {
         co = map->room[room].connection[n];
         if (map->room[co].heat == -1 || (map->room[co].heat > heat + 1 && map->room[co].heat != 1) )
-            if (get_way(map, co, heat + 1, way))
+            if (get_way(map, co, heat + 1, path))
                 ret++;
     }
     if (ret > 0)
     {
-        (*way)[heat - 1] = room;
+        (*path)[heat - 1] = room;
         return (1);
     }
     return (0);
 }
 
+
+int get_best_path(t_map *map)
+{
+	int **tmp;
+	int *tmp_len;
+	int n;
+	int m;
+
+	if (!(tmp = ft_memalloc(sizeof(int*) * map->max_compa)) ||
+	!(tmp_len = ft_memalloc(sizeof(int) * map->max_compa)))
+		return (0);
+	n = -1;
+	m = 0;
+	while (++n < map->nb_path)
+		if (n == map->best_compa[m] && map->best_compa[m] != -1)
+		{
+			tmp[m] = map->path[n];
+			tmp_len[m++] = map->path_len[n];
+			ft_super_free(3, map->path_compat.matrix[n],
+				map->path_compat.matrixbin[n], map->path_room[n]);
+		}
+		else
+			ft_super_free(4, map->path_compat.matrix[n],
+			map->path_compat.matrixbin[n], map->path_room[n], map->path[n]);
+	ft_super_free(2, map->path, map->path_len);
+	map->path = tmp;
+	map->path_len = tmp_len;
+	map->nb_path = m;
+	ft_memdel((void**)&map->path_compat.matrix);
+	ft_memdel((void**)&map->path_compat.matrixbin);
+	ft_memdel((void**)&map->path_room);
+	return (1);
+}
+
+
 int get_last_path(t_map *map)
 {
 	int n;
 	int m;
-	int start_path;
 	
+	get_best_path(map);
 	res_heat(map);
 	n = -1;
 	while (map->best_compa[++n] != -1)
@@ -111,26 +146,16 @@ int get_last_path(t_map *map)
 		while (++m < map->path_len[map->best_compa[n]] - 1)
 			 map->room[map->path[map->best_compa[n]][m]].heat = 1;
 	}
-	n = -1;
-	map->path = (int**)ft_realloc((void**)&(map->path), sizeof(int*) * map->nb_path, sizeof(int*) * (map->nb_path + 1000));
-	map->path_len = (int*)ft_realloc((void**)&(map->path_len), sizeof(int) * map->nb_path, sizeof(int) * (map->nb_path + 1000));
-	start_path = map->nb_path;
-	m = 0;
+	draw_all_path(map, 0);
+/*	n = -1;
 	while (++n < map->room[map->start].nb_connection)
-	{
 		if (map->room[map->room[map->start].connection[n]].heat == -1)
 		{
-			map->path[start_path + n - m] = malloc(sizeof(int));
-			map->path[start_path + n - m][0] = map->room[map->start].connection[n];
-			map->nb_path++;
-			map->path_len[start_path + n - m] = 1;
-			map->room[map->start].heat = 1;
-			map->room[map->room[map->start].connection[n]].heat = 1;
-		}
-		else
-			m++;
-	}
-	get_all_path(map, start_path);
+		
+		
+		
+		}*/
+
 	return (1);
 }
 
@@ -139,7 +164,7 @@ int get_multiple_path(t_map *map)
 	int n;
 	int start_path;
 	int start_of_rev;
-//	int	count;
+	int	count;
 
 	n = -1;
 	map->nb_path = 0;
@@ -212,8 +237,8 @@ int get_multiple_path(t_map *map)
 	//		ft_printf("%d ", map->best_compa[i]);
 	//	ft_putendl("");
 	//	draw_all_path(map);
-//	count = 0;
-//	gogogo(map, &count);
+	count = 0;
+	gogogo(map, &count);
 	return (1);
 }
 
