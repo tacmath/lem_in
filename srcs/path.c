@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/06 18:20:24 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/16 16:07:08 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/16 16:35:00 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -20,29 +20,6 @@ static void	res_heat(t_map *map)
 	n = -1;
 	while (++n < map->nb_room)
 		map->room[n].heat = -1;
-}
-// remove
-void draw_all_path(t_map *map, int start)
-{
-	int n;
-	int m;
-
-	n = start - 1;
-	while (++n < map->nb_path)
-	{
-		if (map->path[n][map->path_len[n] - 1] == map->end && map->path_len[n] < map->best_speed)
-		{
-			m = -1;
-			while (++m < map->path_len[n])
-			{
-				ft_putstr(map->room[map->path[n][m]].name);
-				ft_putchar(' ');
-			}
-			ft_putendl("");
-			ft_putnbr(map->path_len[n]);
-			ft_putendl("");
-		}
-	}
 }
 
 void rev_path(t_map *map, int nb_path)
@@ -157,7 +134,6 @@ void		sort_pathe(t_map *map)
 	}
 }
 
-
 int get_last_path(t_map *map)
 {
 	int n;
@@ -235,48 +211,19 @@ int get_multiple_path(t_map *map)
 		map->room[map->room[map->end].connection[n]].heat = 1;
 	}
 	get_all_path(map, start_path);
-	//    ft_putnbr(map->nb_path);
-	//    ft_putendl("");
 	n = start_of_rev - 1;
 	while (++n < map->nb_path)
 		rev_path(map, n);
 	map->max_compa = ft_min(map->room[map->start].nb_connection, map->room[map->end].nb_connection);
-
-	//	draw_all_path(map);
 	if (!get_usable_path(map, -1, 0))
 		return (0);
 	sort_path(map);
-	//draw_all_path(map);
 	if (!compatibility_all(map))
 		return (0);
-	//	get_best_path_comp(map);
 
 	resol(map);
-	printf_best_compa(map);
 	get_last_path(map);
-	//	draw_all_path(map);
-	//
-	/*for (int i= 0; i < map->nb_path; i++)
-	  {
-	  ft_putstr("( ");
-	  for (int j = 0; j < map->nb_path; j++)
-	  ft_printf("%d ", (int)map->path_compat.matrix[i][j]);
-	  ft_putendl(")");
-	  }*/
-	//ft_printf("path %d : %d\n", i, map->path_compat.nb_compat[i]);
-	//
-	ft_putnbr(map->nb_path);
-	ft_putendl("");
-	//	ft_putendl("NOW!");
-	//	resol(map);
-	//	for (int i = 0; i< map->best_nb_compat; i++)
-	//		ft_printf("%d ", map->best_compa[i]);
-	//	ft_putendl("");
-	//	draw_all_path(map);
 	count = 0;
 	gogogo(map, &count);
 	return (1);
 }
-
-
-// make an other function
