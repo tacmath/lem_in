@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/06 16:57:06 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/16 15:16:34 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/16 15:19:37 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -22,7 +22,7 @@ void		put_resol(t_map *map, int ant, int room)
 	ft_putchar(' ');
 }
 
-void		free_map(t_map *map)
+int			free_map(t_map *map)
 {
 	int n;
 
@@ -47,6 +47,7 @@ void		free_map(t_map *map)
 	ft_super_free(11, map->path, map->path_compat.matrix,
 map->path_compat.matrixbin, map->path_compat.nb_compat, map->best_compa,
 map->path_len, map->ant_progress, map->ant, map->room, map->path_room, map);
+	return (0);
 }
 
 void		sort_best_comp(t_map *map)
