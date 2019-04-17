@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/06 18:20:24 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/17 13:16:50 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/17 13:22:27 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -113,8 +113,7 @@ int			get_last_path(t_map *map)
 		if (path_len < map->best_speed && path_len != -1)
 		{
 			map->path[map->nb_path] = map->tmp;
-			map->path_len[map->nb_path] = path_len;
-			map->nb_path++;
+			map->path_len[map->nb_path++] = path_len;
 			sort_pathe(map);
 			map->best_speed = how_long(map);
 		}
