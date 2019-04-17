@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/29 12:13:30 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/16 16:33:22 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/17 13:50:20 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -76,7 +76,7 @@ int		gogogo(t_map *map, int *count)
 
 	ant = map->nb_ant;
 	arrived = 0;
-	sort_best_comp(map);
+//	sort_best_comp(map);
 	while (arrived != ant)
 	{
 		(*count)++;

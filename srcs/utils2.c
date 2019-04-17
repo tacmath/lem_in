@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/06 16:57:06 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/16 17:16:30 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/17 13:51:57 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -48,30 +48,6 @@ int			free_map(t_map *map)
 map->path_compat.matrixbin, map->path_compat.nb_compat, map->best_compa,
 map->path_len, map->ant_progress, map->ant, map->room, map->path_room, map);
 	return (0);
-}
-
-void		sort_best_comp(t_map *map)
-{
-	int	i;
-	int	j;
-	int tmp;
-
-	i = -1;
-	while (map->best_compa[++i] != -1)
-	{
-		j = i;
-		while (map->best_compa[++j] != -1)
-		{
-			if (map->path_len[map->best_compa[i]] >
-					map->path_len[map->best_compa[j]])
-			{
-				tmp = map->best_compa[i];
-				map->best_compa[i] = map->best_compa[j];
-				map->best_compa[j] = tmp;
-			}
-		}
-	}
-	i = -1;
 }
 
 int			get_error(t_map *map)
