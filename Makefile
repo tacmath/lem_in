@@ -6,7 +6,7 @@
 #    By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2018/11/05 12:24:50 by mtaquet      #+#   ##    ##    #+#        #
-#    Updated: 2019/04/16 17:33:54 by lperron     ###    #+. /#+    ###.fr      #
+#    Updated: 2019/04/17 15:24:14 by mtaquet     ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -18,6 +18,7 @@ INCDIR = includes/
 LIBFILES = libft.a
 SRCFILES = main.c\
 		   room.c\
+		   connection.c\
 		   utils.c\
 		   path.c\
 		   path2.c\

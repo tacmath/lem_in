@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/29 12:13:30 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/17 13:50:20 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/17 14:37:47 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -68,18 +68,19 @@ void	can_i_go(t_map *map, int *arrived, int ant)
 		}
 }
 
-int		gogogo(t_map *map, int *count)
+int		gogogo(t_map *map)
 {
 	int	ant;
 	int	arrived;
+	int count;
 	int	j;
 
 	ant = map->nb_ant;
 	arrived = 0;
-//	sort_best_comp(map);
+	count = 0;
 	while (arrived != ant)
 	{
-		(*count)++;
+		count++;
 		j = -1;
 		while (++j < ant)
 			if (map->ant[j].room != map->end && map->ant[j].room != map->start)
@@ -87,6 +88,6 @@ int		gogogo(t_map *map, int *count)
 		can_i_go(map, &arrived, ant);
 		ft_putendl("");
 	}
-	map->nb_ant = ant;
+	ft_printf("count = %d\n", count);
 	return (1);
 }
