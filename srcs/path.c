@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/06 18:20:24 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/16 18:14:14 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/17 13:16:50 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -42,18 +42,16 @@ int			get_path(t_map *map, int room, int heat, int *path_len)
 	return (0);
 }
 
-int			get_best_path(t_map *map)
+int			get_best_path(t_map *map, int m)
 {
 	int **tmp;
 	int *tmp_len;
 	int n;
-	int m;
 
 	if (!(tmp = ft_memalloc(sizeof(int*) * map->max_compa)) ||
 			!(tmp_len = ft_memalloc(sizeof(int) * map->max_compa)))
 		return (0);
 	n = -1;
-	m = 0;
 	while (++n < map->nb_path)
 		if (n == map->best_compa[m] && map->best_compa[m] != -1)
 		{
@@ -103,19 +101,14 @@ int			get_last_path(t_map *map)
 	int m;
 	int path_len;
 
-	get_best_path(map);
-	while (1)
+	get_best_path(map, 0);
+	while (!(map->tmp = 0) && res_heat(map))
 	{
 		path_len = -1;
-		map->tmp = 0;
-		res_heat(map);
 		n = -1;
-		while (++n < map->nb_path)
-		{
-			m = -1;
+		while (++n < map->nb_path && (m = -1) < 0)
 			while (++m < map->path_len[n] - 1)
 				map->room[map->path[n][m]].heat = 1;
-		}
 		get_path(map, map->start, 0, &path_len);
 		if (path_len < map->best_speed && path_len != -1)
 		{
@@ -126,12 +119,9 @@ int			get_last_path(t_map *map)
 			map->best_speed = how_long(map);
 		}
 		else
-		{
-			free(map->tmp);
 			break ;
-		}
 	}
-	return (1);
+	return (ft_ssuper_free(1, &map->tmp));
 }
 
 int			get_multiple_path(t_map *map)

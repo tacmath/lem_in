@@ -6,20 +6,21 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/16 17:32:47 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/16 17:34:18 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/17 13:11:29 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void		res_heat(t_map *map)
+int			res_heat(t_map *map)
 {
 	int n;
 
 	n = -1;
 	while (++n < map->nb_room)
 		map->room[n].heat = -1;
+	return (1);
 }
 
 void		rev_path(t_map *map, int nb_path)
