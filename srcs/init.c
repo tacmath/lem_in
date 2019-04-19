@@ -76,29 +76,45 @@ int			rooms_init(t_map *map)
 	return (1);
 }
 
-int			init_struct(t_map *map, char ***output)
+static int		ant_init(t_map *map, char ***output)
 {
 	char *line;
+	int n;
+	int ret;
 
-	if (!(*output = ft_memalloc(sizeof(char*))))
-		return (0);
+	ret = 0;
 	if (get_next_line(0, &line) < 1)
 		return (0);
+	n = -1;
+	while (line[++n])
+		if (line[n] < '0' || line[n] > '9')
+			ret = 1;
 	map->nb_ant = ft_atoi(line);
-	if (!(add_to_output(output, line)))
-		return (0);
-	if (map->nb_ant <= 0)
+	if (map->nb_ant <= 0 || ret)
 	{
-		free(*(output)[0]);
+		free(line);
 		free(*output);
 		free(map);
 		ft_putendl("ERROR");
 		return (0);
 	}
+	if (!(add_to_output(output, line)))
+		return (0);
+	return (1);
+}
+
+int			init_struct(t_map *map, char ***output)
+{
+
+	if (!(*output = ft_memalloc(sizeof(char*))))
+		return (0);
+	if (!ant_init(map, output))
+		return (0);
 	if (!(map->ant_progress = malloc(sizeof(int) * map->nb_ant)))
 		return (free_map(map));
 	map->nb_path = 0;
 	map->room = 0;
+	map->correction = 0;
 	map->start = -1;
 	map->end = -1;
 	return (1);

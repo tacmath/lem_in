@@ -82,7 +82,7 @@ int			get_room(t_map *map, char ***output)
 	map->nb_room = 0;
 	if (get_next_line(0, &line) < 1)
 		return (0);
-	while (ft_strchr(line, ' ') || line[0] == '#')
+	while (isroom(line) || line[0] == '#')
 	{
 		if (line[0] != '#')
 		{

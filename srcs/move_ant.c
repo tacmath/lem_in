@@ -19,7 +19,8 @@ void	continue_path(t_map *map, int j, int *arrived)
 	map->ant[j].room = map->path[map->ant[j].path][map->ant[j].i_path];
 	if (map->ant[j].room == map->end)
 		(*arrived)++;
-	put_resol(map, j, map->ant[j].room);
+	if (!map->correction)
+		put_resol(map, j, map->ant[j].room);
 }
 
 int		how_long(t_map *map)
@@ -57,7 +58,8 @@ void	can_i_go(t_map *map, int *arrived, int ant)
 				map->ant[n].i_path = 0;
 				map->ant[n].path = m;
 				map->ant[n].room = map->path[m][0];
-				put_resol(map, n, map->ant[n].room);
+				if (!map->correction)
+					put_resol(map, n, map->ant[n].room);
 				if (map->ant[n].room == map->end)
 				{
 					map->ant[n].room = -1;
@@ -86,8 +88,10 @@ int		gogogo(t_map *map)
 			if (map->ant[j].room != map->end && map->ant[j].room != map->start)
 				continue_path(map, j, &arrived);
 		can_i_go(map, &arrived, ant);
-		ft_putendl("");
+		if (!map->correction)
+			ft_putendl("");
 	}
-	ft_printf("count = %d\n", count);
+	if (map->correction)
+		ft_printf("lines = %d\n", count);
 	return (1);
 }

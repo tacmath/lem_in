@@ -50,8 +50,9 @@ static int	get_connection(t_map *map, char *line, char ***output)
 			co2 < map->nb_room)
 		;
 	if (ft_strncmp(map->room[co1].name, line, len) ||
-	ft_strcmp(map->room[co2].name, &(line[len + 1])) ||
-	!(map->room[co1].connection = connection_realloc(map->room[co1].connection,
+	ft_strcmp(map->room[co2].name, &(line[len + 1])))
+		return (-1);
+	if (!(map->room[co1].connection = connection_realloc(map->room[co1].connection,
 	&(map->room[co1].nb_connection), co2)))
 		return (0);
 	if (!(map->room[co2].connection =
@@ -63,16 +64,28 @@ static int	get_connection(t_map *map, char *line, char ***output)
 
 int			get_all_connection(t_map *map, char *line, char ***output)
 {
+	int ret;
+
+	ret = 0;
 	if (!rooms_init(map))
 		return (0);
-	if (!get_connection(map, line, output))
+	if (ft_strchr(line, '-') && !(ret = get_connection(map, line, output)))
 		return (0);
+	if (ret == -1)
+		return (1);
 	while (get_next_line(0, &line) == 1)
 	{
 		if (ft_strchr(line, '-') && line[0] != '#')
 		{
-			if (!get_connection(map, line, output))
+			if (!(ret = get_connection(map, line, output)))
 				return (0);
+			if (ret == -1)
+				return (1);
+		}
+		else if (line[0] != '#')
+		{
+			free(line);
+			return (1);
 		}
 		else if (!add_to_output(output, line))
 			return (0);

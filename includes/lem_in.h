@@ -60,6 +60,7 @@ struct					s_map
 	t_ant				*ant;
 	int					*ant_progress;
 	int					*tmp;
+	int					correction;
 	int					nb_room;
 	int					nb_ant;
 	int					nb_path;
@@ -78,7 +79,7 @@ int						get_all_connection(t_map *map, char *line,
 int						sta_line(t_map *map, int room1, int room2);
 int						init_struct(t_map *map, char ***output);
 int						add_to_output(char ***output, char *new_line);
-void					write_output(char **output);
+void					write_output(t_map *map, char **output);
 int						free_map(t_map *map);
 int						get_error(t_map *map);
 void					get_room_heat(t_map *map, int room, int heat);
@@ -88,8 +89,6 @@ int						resol(t_map *map);
 int						gogogo(t_map *map);
 void					put_resol(t_map *map, int ant, int room);
 uint64_t				**bin_init(int size);
-void					print_megapath(uint64_t *megapath, int size);
-void					printf_best_compa(t_map *map);
 int						get_all_path(t_map *map, int start_path);
 int						get_usable_path(t_map *map, int n, int nb_path);
 void					sort_path(t_map *map);
@@ -97,4 +96,6 @@ int						get_multiple_path(t_map *map);
 int						how_long(t_map *map);
 int						res_heat(t_map *map);
 int						get_last_path(t_map *map);
+int						isroom(char *line);
+
 #endif

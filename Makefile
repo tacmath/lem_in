@@ -29,7 +29,6 @@ SRCFILES = main.c\
 		   compat.c\
 		   move_ant.c\
 		   utils2.c\
-		   debugutils.c
 
 INCFILES = lem_in.h
 LIB = $(addprefix $(LIBDIR),$(LIBFILES))

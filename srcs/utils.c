@@ -34,14 +34,15 @@ int			add_to_output(char ***output, char *new_line)
 	return (1);
 }
 
-void		write_output(char **output)
+void		write_output(t_map *map, char **output)
 {
 	int n;
 
 	n = -1;
 	while (output[++n] != 0)
 	{
-		ft_putendl(output[n]);
+		if (!map->correction || (output[n][0] == '#' && output[n][1] != '#'))
+			ft_putendl(output[n]);
 		free(output[n]);
 	}
 	free(output);
@@ -71,19 +72,6 @@ static int	gou_lag(t_map *map, int room1, int room2)
 	return (1);
 }
 
-void		ok(int *co, int nb_co)
-{
-	int n;
-
-	n = -1;
-	while (++n < nb_co)
-	{
-		ft_putnbr(co[n]);
-		ft_putstr(" ");
-	}
-	ft_putstr("\n");
-}
-
 int			sta_line(t_map *map, int room1, int room2)
 {
 	int n;
@@ -110,5 +98,24 @@ int			sta_line(t_map *map, int room1, int room2)
 	map->room[room1].connection = tmp;
 	if (!gou_lag(map, room2, room1))
 		return (0);
+	return (1);
+}
+
+int		isroom(char *str)
+{
+	int n;
+
+	if (str[0] == 'L' && str[0] == ' ')
+		return (0);
+	n = -1;
+	while (str[++n] != ' ')
+		if (str[n] == '\0')
+			return (0);
+	while (str[++n] != ' ')
+		if (str[n] < '0' || str[n] > '9')
+			return (0);
+	while (str[++n])
+		if (str[n] < '0' || str[n] > '9')
+			return (0);
 	return (1);
 }
