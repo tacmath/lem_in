@@ -24,14 +24,14 @@ int move_ant(t_map *map, char *str)
 	ant = ft_atoi(str);
 	if (ant > map->nb_ant)
 	{
-		ft_putendl("[KO] invalid output");
+		ft_putendl( _RED_ "[KO] invalid output" _EOC_ );
 		return (0);		
 	}
 	n = -1;
 	while (str[++n] != '-')
 		if (str[n] < '0' || str[n] > '9')
 		{
-			ft_putendl("[KO] invalid output");
+			ft_putendl( _RED_"[KO] invalid output" _EOC_);
 			return (0);
 		}
 	n++;
@@ -44,12 +44,12 @@ int move_ant(t_map *map, char *str)
 		room++;
 	if (ft_strncmp(&str[n], name, len))
 	{
-		ft_putendl("[KO] unexisting room used");
+		ft_putendl( _RED_ "[KO] unexisting room used" _EOC_);
 		return (0);
 	}
 	if (map->room[room].ant == 1)
 	{
-		ft_printf("[KO] already a ant in room %s\n", map->room[room].name);
+		ft_printf( _RED_ "[KO] already a ant in room %s\n" _EOC_ , map->room[room].name);
 		return (0);
 	}
 	if (map->ant[ant - 1] != map->start)
@@ -62,7 +62,7 @@ int move_ant(t_map *map, char *str)
 			map->ant[ant - 1] = room;
 	if (map->ant[ant - 1] != room)
 	{
-		ft_putendl("[KO] unexisting connection used");
+		ft_putendl( _RED_ "[KO] unexisting connection used" _EOC_ );
 		return (0);
 	}
 	return (1);
@@ -91,9 +91,9 @@ int check(t_map *map)
 		;
 	if (n != map->nb_ant && map->ant[n] != map->end)
 	{
-		ft_printf("[KO] only %d ants out of %d got to the end\n", n, map->nb_ant);
+		ft_printf( _RED_ "[KO] only %d ants out of %d got to the end\n" _EOC_ , n, map->nb_ant);
 		return (1);
 	}
-	ft_printf("[OK] the number of lines used to solve the problem is %d\n", nb_line);
+	ft_printf( _GREEN_ "[OK] the number of lines used to solve the problem is %d\n" _EOC_ , nb_line);
 	return (1);
 }
