@@ -13,14 +13,54 @@
 
 #include "lem_in.h"
 
-void	continue_path(t_map *map, int j, int *arrived)
+int add_ant_to_line(char **line, int ant, char *room_name, int *len)
 {
-	map->ant[j].i_path++;
-	map->ant[j].room = map->path[map->ant[j].path][map->ant[j].i_path];
-	if (map->ant[j].room == map->end)
-		(*arrived)++;
-	if (!map->correction)
-		put_resol(map, j, map->ant[j].room);
+	int n;
+	int m;
+	char *ant_nb;
+	char *tmp;
+	
+	if (!(ant_nb = ft_itoa(ant + 1)))
+		return (0);
+	if (!(tmp = malloc(sizeof(int) * (*len + ft_strlen(ant_nb) + 4 + ft_strlen(room_name)))))
+		return (0);
+	n = -1;
+	while (++n < *len)
+		tmp[n] = (*line)[n];
+	tmp[n] = 'L';
+	*len += ft_strlen(ant_nb) + 1;
+	m = -1;
+	while (++n < *len)
+		tmp[n] = ant_nb[++m];
+	tmp[n] = '-';
+	*len += ft_strlen(room_name) + 1;
+	m = -1;
+	while (++n < *len)
+		tmp[n] = room_name[++m];
+	tmp[n] = ' ';
+	tmp[n + 1] = '\0';
+	*len = n + 1;
+	free(*line);
+	free(ant_nb);
+	*line = tmp;
+	return (1);
+}
+
+int	continue_path(t_map *map, int ant, char **line, int *line_len)
+{
+	int j;
+	
+	j = -1;
+	while (++j < ant)
+		if (map->ant[j].room != map->end && map->ant[j].room != map->start)
+		{
+			map->ant[j].i_path++;
+			map->ant[j].room = map->path[map->ant[j].path][map->ant[j].i_path];
+			if (!map->correction)
+				if (!add_ant_to_line(line, j, map->room[map->ant[j].room].name, line_len))
+					return (0);
+		}
+	return (1);
 }
 
 int		how_long(t_map *map)
@@ -42,7 +82,7 @@ int		how_long(t_map *map)
 	return (nb);
 }
 
-void	can_i_go(t_map *map, int *arrived, int ant)
+int	can_i_go(t_map *map, int ant, char **line, int *line_len)
 {
 	int m;
 	int n;
@@ -59,37 +99,39 @@ void	can_i_go(t_map *map, int *arrived, int ant)
 				map->ant[n].path = m;
 				map->ant[n].room = map->path[m][0];
 				if (!map->correction)
-					put_resol(map, n, map->ant[n].room);
+					if (!add_ant_to_line(line, n, map->room[map->path[m][0]].name, line_len))
+						return (0);
 				if (map->ant[n].room == map->end)
-				{
 					map->ant[n].room = -1;
-					(*arrived)++;
-				}
 			}
 			m++;
 		}
+	return (1);
 }
 
 int		gogogo(t_map *map)
 {
 	int	ant;
-	int	arrived;
 	int count;
-	int	j;
+	char *line;
+	int line_len;
 
 	ant = map->nb_ant;
-	arrived = 0;
 	count = 0;
-	while (arrived != ant)
+	while (map->ant[ant - 1].room != map->end)
 	{
+		line_len = 0;
+		line = 0;
 		count++;
-		j = -1;
-		while (++j < ant)
-			if (map->ant[j].room != map->end && map->ant[j].room != map->start)
-				continue_path(map, j, &arrived);
-		can_i_go(map, &arrived, ant);
+		if (!continue_path(map, ant, &line, &line_len) ||
+			!can_i_go(map, ant, &line, &line_len))
+			return (0);
 		if (!map->correction)
-			ft_putendl("");
+		{
+			line[line_len - 1] = '\n';
+			write(1, line, line_len);
+			free(line);
+		}
 	}
 	if (map->correction)
 		ft_printf("lines = %d\n", count);

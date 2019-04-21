@@ -16,6 +16,7 @@
 # include "libft.h"
 # include <stdint.h>
 # include <stdlib.h>
+# include <unistd.h>
 
 struct					s_room
 {
