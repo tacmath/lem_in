@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 15:34:46 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/17 14:12:22 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/29 12:16:05 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -48,10 +48,8 @@ int		main(int ac, char **av)
 		return (-1);
 	}
 	write_output(map, output);
-	ft_putchar('\n');
 	if (!remove_useless_co(map) || !get_multiple_path(map))
 		return (-1);
 	gogogo(map);
-	free_map(map);
-	return (0);
+	return (free_map(map));
 }

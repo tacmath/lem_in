@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:24:10 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/17 14:11:37 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/29 13:19:58 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -76,11 +76,11 @@ int			rooms_init(t_map *map)
 	return (1);
 }
 
-static int		ant_init(t_map *map, char ***output)
+static int	ant_init(t_map *map, char ***output)
 {
-	char *line;
-	int n;
-	int ret;
+	char	*line;
+	int		n;
+	int		ret;
 
 	ret = 0;
 	if (get_next_line(0, &line) < 1)
@@ -105,7 +105,6 @@ static int		ant_init(t_map *map, char ***output)
 
 int			init_struct(t_map *map, char ***output)
 {
-
 	if (!(*output = ft_memalloc(sizeof(char*))))
 		return (0);
 	if (!ant_init(map, output))

@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 14:09:06 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/17 15:11:46 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/29 14:29:58 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -87,8 +87,9 @@ void					get_room_heat(t_map *map, int room, int heat);
 void					move_ant(t_map *map);
 int						compatibility_all(t_map *map);
 int						resol(t_map *map);
+int						add_ant_to_line(char **line, int ant,
+						char *room_name, int *len);
 int						gogogo(t_map *map);
-void					put_resol(t_map *map, int ant, int room);
 uint64_t				**bin_init(int size);
 int						get_all_path(t_map *map, int start_path);
 int						get_usable_path(t_map *map, int n, int nb_path);

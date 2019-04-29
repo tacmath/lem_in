@@ -6,14 +6,14 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:21:16 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/06 17:29:05 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/29 13:51:33 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "checker.h"
 
-int		isroom(char *str)
+int			isroom(char *str)
 {
 	int n;
 

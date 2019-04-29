@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/17 15:21:32 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/17 15:23:50 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/29 13:51:57 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -50,14 +50,12 @@ static int	get_connection(t_map *map, char *line)
 			co2 < map->nb_room)
 		;
 	if (ft_strncmp(map->room[co1].name, line, len) ||
-	ft_strcmp(map->room[co2].name, &(line[len + 1])))
-		return (0);
-	if (!(map->room[co1].connection = connection_realloc(map->room[co1].connection,
-	&(map->room[co1].nb_connection), co2)))
-		return (0);
-	if (!(map->room[co2].connection =
-				connection_realloc(map->room[co2].connection,
-					(&map->room[co2].nb_connection), co1)))
+	ft_strcmp(map->room[co2].name, &(line[len + 1]))
+	|| !(map->room[co1].connection =
+	connection_realloc(map->room[co1].connection,
+	&(map->room[co1].nb_connection), co2)) || !(map->room[co2].connection =
+	connection_realloc(map->room[co2].connection,
+	(&map->room[co2].nb_connection), co1)))
 		return (0);
 	free(line);
 	return (1);

@@ -6,13 +6,15 @@
 #    By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2018/11/05 12:24:50 by mtaquet      #+#   ##    ##    #+#        #
-#    Updated: 2019/04/17 15:24:14 by mtaquet     ###    #+. /#+    ###.fr      #
+#    Updated: 2019/04/29 15:53:06 by mtaquet     ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
 
 NAME = lem-in
 LIBDIR = libft/
+CHECKDIR = checker/
+VISUDIR = visualisateur/
 SRCDIR = srcs/
 INCDIR = includes/
 LIBFILES = libft.a
@@ -42,7 +44,7 @@ COLSET = 0
 SIZE = 0
 ASIZE = 0
 
-all: lib $(NAME)
+all: lib check visu $(NAME)
 
 %.o: %.c $(INC)
 	@$(eval CNT=$(shell echo "$(CNT) + 1" | bc))
@@ -56,6 +58,14 @@ lib: $(LIBDIR)
 	@make -C $(LIBDIR)
 	@printf "\n"
 
+check: $(CHECKDIR)
+	@make -C $(CHECKDIR)
+	@printf "\n"
+
+visu: $(VISUDIR)
+	@make -C $(VISUDIR)
+	@printf "\n"
+
 $(NAME): $(LIB) $(OBJ) $(INC)
 	@printf "\nLinking $(NAME)\r"
 	@gcc -o $@ $(OBJ) $(FLAG) $(LIB) 
@@ -64,11 +74,15 @@ $(NAME): $(LIB) $(OBJ) $(INC)
 clean:
 	@printf "cleaning $(NAME)\r"
 	@rm -f $(OBJ)
+	@make clean -C $(CHECKDIR)
+	@make clean -C $(VISUDIR)
 	@make clean -C $(LIBDIR)
 	@printf "$(NAME) Cleaned    \n"
 
 fclean: clean
 	@rm -f $(NAME)
+	@rm -f check
+	@rm -f visu
 	@rm -f $(LIB)
 
 re: fclean all

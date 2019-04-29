@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 14:09:06 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/17 15:11:46 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/29 14:17:01 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -21,7 +21,7 @@ struct					s_room
 	int					*connection;
 	int					nb_connection;
 	char				*name;
-	int				ant;
+	int					ant;
 };
 
 typedef struct s_room	t_room;
@@ -29,7 +29,7 @@ typedef struct s_room	t_room;
 struct					s_map
 {
 	t_room				*room;
-	int				*ant;
+	int					*ant;
 	int					nb_room;
 	int					nb_ant;
 	int					start;

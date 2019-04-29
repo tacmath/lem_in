@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:21:16 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/06 17:29:05 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/29 13:13:00 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -37,16 +37,22 @@ int			add_to_output(char ***output, char *new_line)
 void		write_output(t_map *map, char **output)
 {
 	int n;
+	int len;
 
 	n = -1;
 	while (output[++n] != 0)
 	{
 		if (!map->correction || (output[n][0] == '#' && output[n][1] != '#'))
-			ft_putendl(output[n]);
+		{
+			len = ft_strlen(output[n]);
+			output[n][len] = '\n';
+			write(1, output[n], len + 1);
+		}
 		free(output[n]);
 	}
 	free(output);
 	output = 0;
+	ft_putchar('\n');
 }
 
 static int	gou_lag(t_map *map, int room1, int room2)
@@ -101,7 +107,7 @@ int			sta_line(t_map *map, int room1, int room2)
 	return (1);
 }
 
-int		isroom(char *str)
+int			isroom(char *str)
 {
 	int n;
 
