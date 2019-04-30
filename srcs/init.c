@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:24:10 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/29 13:19:58 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/30 16:04:47 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -44,8 +44,10 @@ void		pre_init(t_map *map)
 	map->ant = NULL;
 	map->path = NULL;
 	map->path_room = NULL;
+	map->best_compa = NULL;
+	map->tmp = NULL;
+	map->room = NULL;
 	map->path_len = NULL;
-	map->comp = NULL;
 	map->ant_progress = NULL;
 	map->path_compat.matrix = NULL;
 	map->path_compat.matrixbin = NULL;
@@ -57,6 +59,11 @@ int			rooms_init(t_map *map)
 	int n;
 	int	i;
 
+	if (map->nb_room < 1)
+	{
+		map->ant = 0;
+		return (0);
+	}
 	n = -1;
 	while (++n < map->nb_room)
 	{
@@ -93,9 +100,6 @@ static int	ant_init(t_map *map, char ***output)
 	if (map->nb_ant <= 0 || ret)
 	{
 		free(line);
-		free(*output);
-		free(map);
-		ft_putendl("ERROR");
 		return (0);
 	}
 	if (!(add_to_output(output, line)))
@@ -105,6 +109,7 @@ static int	ant_init(t_map *map, char ***output)
 
 int			init_struct(t_map *map, char ***output)
 {
+	pre_init(map);
 	if (!(*output = ft_memalloc(sizeof(char*))))
 		return (0);
 	if (!ant_init(map, output))

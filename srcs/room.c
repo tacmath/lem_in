@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:13:45 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/16 16:41:31 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/30 16:08:03 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -42,9 +42,13 @@ static int	room_realloc(t_map *map, char *line, char ***output)
 		return (0);
 	n = -1;
 	while (++n < map->nb_room - 1)
+	{
 		tmp[n].name = map->room[n].name;
+		tmp[n].connection = 0;
+	}
 	if (!(tmp[n].name = get_room_name(line, output)))
 		return (0);
+	tmp[n].connection = 0;
 	free(map->room);
 	map->room = tmp;
 	return (1);
@@ -58,8 +62,10 @@ static int	get_start_and_end(t_map *map, char *line, char ***output)
 			return (0);
 		if (get_next_line(0, &line) < 1)
 			return (0);
+		if (!isroom(line))
+			return (ft_super_free(1, line));
 		map->start = map->nb_room;
-		if (!room_realloc(map, line, output))
+		if (isroom(line) && !room_realloc(map, line, output))
 			return (0);
 	}
 	else
@@ -68,6 +74,8 @@ static int	get_start_and_end(t_map *map, char *line, char ***output)
 			return (0);
 		if (get_next_line(0, &line) < 1)
 			return (0);
+		if (!isroom(line))
+			return (ft_super_free(1, line));
 		map->end = map->nb_room;
 		if (!room_realloc(map, line, output))
 			return (0);
@@ -104,19 +112,19 @@ int			get_room(t_map *map, char ***output)
 	return (1);
 }
 
-void		get_room_heat(t_map *map, int room, int heat)
+void		get_room_heat(t_map *map, int room)
 {
 	int	n;
 	int	co;
 
-	map->room[room].heat = heat;
+	map->room[room].heat = 1;
 	if (room == map->start)
 		return ;
 	n = -1;
 	while (++n < map->room[room].nb_connection)
 	{
 		co = map->room[room].connection[n];
-		if (map->room[co].heat == -1 || map->room[co].heat > heat + 1)
-			get_room_heat(map, co, heat + 1);
+		if (map->room[co].heat == -1)
+			get_room_heat(map, co);
 	}
 }

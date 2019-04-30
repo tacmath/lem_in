@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/07 13:15:18 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/07 15:35:13 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/30 14:15:33 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -71,9 +71,9 @@ static void	ft_linex(t_map *map, t_point start, t_point *pix, double dir)
 static void	get_room_coord(t_map *map, t_point *point, int room)
 {
 	(*point).x = 25 + map->room[room].x * map->pipe_len.x
-		+ map->room_image.width / 2;
+		+ map->room_image[0].width / 2;
 	(*point).y = 25 + map->room[room].y * map->pipe_len.y
-		+ map->room_image.height / 2;
+		+ map->room_image[0].height / 2;
 }
 
 void		draw_pipe(t_map *map, int room1, int room2)

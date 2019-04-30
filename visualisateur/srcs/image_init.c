@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/29 14:41:43 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/29 15:12:37 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/30 14:34:23 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -95,6 +95,27 @@ static int	get_other_images(t_map *map, char *path)
 	return (1);
 }
 
+static int	get_room_images(t_map *map, char *name, char *path)
+{
+	if (!(name = ft_strjoin(path, "Ellipsoide_Lemin1.xpm")) ||
+		!(get_image(map->mlx_ptr, &(map->room_image[0]), name))
+		|| ft_super_free(1, name) ||
+		!(name = ft_strjoin(path, "Ellipsoide_Lemin2.xpm")) ||
+		!(get_image(map->mlx_ptr, &(map->room_image[1]), name))
+		|| ft_super_free(1, name) ||
+		!(name = ft_strjoin(path, "Ellipsoide_Lemin3.xpm")) ||
+		!(get_image(map->mlx_ptr, &(map->room_image[2]), name))
+		|| ft_super_free(1, name) ||
+		!(name = ft_strjoin(path, "Ellipsoide_Lemin4.xpm")) ||
+		!(get_image(map->mlx_ptr, &(map->room_image[3]), name))
+		|| ft_super_free(1, name) ||
+		!(name = ft_strjoin(path, "Ellipsoide_Lemin5.xpm")) ||
+		!(get_image(map->mlx_ptr, &(map->room_image[4]), name)))
+		return (0);
+	free(name);
+	return (1);
+}
+
 int			get_all_images(t_map *map)
 {
 	char *path;
@@ -112,11 +133,8 @@ int			get_all_images(t_map *map)
 	if (!(get_image(map->mlx_ptr, &(map->foreground), name)))
 		return (0);
 	free(name);
-	if (!(name = ft_strjoin(path, "ellipsoide_lemin.xpm")))
+	if (!get_room_images(map, name, path))
 		return (0);
-	if (!(get_image(map->mlx_ptr, &(map->room_image), name)))
-		return (0);
-	free(name);
 	if (!get_other_images(map, path))
 		return (0);
 	return (1);

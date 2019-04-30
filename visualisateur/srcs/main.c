@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/26 11:53:23 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/29 15:52:21 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/30 14:23:16 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -41,7 +41,6 @@ static int	get_ant_goal(t_map *map)
 		if (line[n] == 'L' && (n == 0 || line[n - 1] == ' '))
 			map->ant_goal[ft_atoi(&(line[n + 1])) - 1] =
 				get_room_id(map, &(line[n]));
-
 	free(line);
 	return (1);
 }

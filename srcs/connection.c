@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/17 15:21:32 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/29 12:31:35 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/30 16:12:18 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -43,15 +43,16 @@ static int	get_connection(t_map *map, char *line, char ***output)
 	while (line[++len] != '-')
 		;
 	co1 = -1;
-	while (ft_strncmp(map->room[++co1].name, line, len) && co1 < map->nb_room)
+	while (ft_strncmp(map->room[++co1].name, line, len)
+		&& co1 < map->nb_room - 1)
 		;
 	co2 = -1;
-	while (ft_strcmp(map->room[++co2].name, &(line[len + 1])) &&
-			co2 < map->nb_room)
+	while (ft_strcmp(map->room[++co2].name, &(line[len + 1]))
+		&& co2 < map->nb_room - 1)
 		;
 	if (ft_strncmp(map->room[co1].name, line, len) ||
 	ft_strcmp(map->room[co2].name, &(line[len + 1])))
-		return (-1);
+		return (-!(ft_super_free(1, line)));
 	if (!(map->room[co1].connection = connection_realloc(map->room
 	[co1].connection, &(map->room[co1].nb_connection), co2)) ||
 	!(map->room[co2].connection = connection_realloc(map->room[co2].connection,
@@ -66,7 +67,7 @@ int			get_all_connection(t_map *map, char *line, char ***output)
 
 	if ((ret = 0) || !rooms_init(map) || (ft_strchr(line, '-') &&
 		!(ret = get_connection(map, line, output))))
-		return (0);
+		return (ret == 0 ? ft_super_free(1, line) : 0);
 	if (ret == -1)
 		return (1);
 	while (get_next_line(0, &line) == 1)

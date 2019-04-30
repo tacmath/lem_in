@@ -6,12 +6,14 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/05 13:34:41 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/08 13:56:00 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/30 14:11:31 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "visual.h"
+#include <fcntl.h>
+#include <time.h>
 
 static void	get_pipe_len(t_map *map)
 {
@@ -28,8 +30,8 @@ static void	get_pipe_len(t_map *map)
 		if (max.y < map->room[n].y)
 			max.y = map->room[n].y;
 	}
-	map->pipe_len.x = (map->size.x - map->room_image.width - 50) / max.x;
-	map->pipe_len.y = (map->size.y - map->room_image.height - 50) / max.y;
+	map->pipe_len.x = (map->size.x - map->room_image[0].width - 50) / max.x;
+	map->pipe_len.y = (map->size.y - map->room_image[0].height - 50) / max.y;
 }
 
 void		draw_all_room(t_map *map)
@@ -37,14 +39,17 @@ void		draw_all_room(t_map *map)
 	int n;
 	int x;
 	int y;
+	int room;
 
+	srand((unsigned int)time(NULL));
 	get_pipe_len(map);
 	n = -1;
 	while (++n < map->nb_room)
 	{
+		room = rand() % 5;
 		x = 25 + map->pipe_len.x * map->room[n].x;
 		y = 25 + map->pipe_len.y * map->room[n].y;
-		put_room_to_foreground(map, map->room_image, x, y);
+		put_room_to_foreground(map, map->room_image[room], x, y);
 	}
 }
 

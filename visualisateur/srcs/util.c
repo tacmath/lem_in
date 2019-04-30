@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/26 11:53:23 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/29 15:09:35 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/30 14:25:45 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -57,14 +57,11 @@ int			get_ant_in_end(t_map *map)
 	return (ant);
 }
 
-void		ft_free_map(t_map *map)
+void		ft_free_map(t_map *map, int n)
 {
-	int n;
-
 	n = -1;
 	while (++n < map->nb_room)
 		free(map->room[n].name);
-	ft_super_free(4, map->room, map->ant, map->ant_goal, map->path);
 	n = -1;
 	while (++n < 11)
 		mlx_destroy_image(map->mlx_ptr, map->number[n].ptr);
@@ -72,7 +69,9 @@ void		ft_free_map(t_map *map)
 	mlx_destroy_image(map->mlx_ptr, map->end_image.ptr);
 	mlx_destroy_image(map->mlx_ptr, map->background.ptr);
 	mlx_destroy_image(map->mlx_ptr, map->foreground.ptr);
-	mlx_destroy_image(map->mlx_ptr, map->room_image.ptr);
+	n = -1;
+	while (++n < 5)
+		mlx_destroy_image(map->mlx_ptr, map->room_image[n].ptr);
 	mlx_destroy_image(map->mlx_ptr, map->ant_up1.ptr);
 	mlx_destroy_image(map->mlx_ptr, map->ant_up2.ptr);
 	mlx_destroy_image(map->mlx_ptr, map->ant_down1.ptr);
@@ -82,5 +81,6 @@ void		ft_free_map(t_map *map)
 	mlx_destroy_image(map->mlx_ptr, map->ant_left1.ptr);
 	mlx_destroy_image(map->mlx_ptr, map->ant_left2.ptr);
 	mlx_destroy_window(map->mlx_ptr, map->win_ptr);
-	ft_super_free(2, map->mlx_ptr, map);
+	ft_super_free(6, map->room, map->ant, map->ant_goal,
+		map->path, map->mlx_ptr, map);
 }

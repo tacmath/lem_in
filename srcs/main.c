@@ -6,23 +6,24 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/02/21 15:34:46 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/29 12:16:05 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/30 16:03:42 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-int		remove_useless_co(t_map *map)
+int		free_output(char **output)
 {
 	int n;
 
+	if (!output)
+		return (0);
 	n = -1;
-	while (++n < map->room[map->start].nb_connection)
-		if (map->room[map->room[map->start].connection[n]].heat == -1 &&
-				!sta_line(map, map->start, map->room[map->start].connection[n]))
-			return (0);
-	return (1);
+	while (output[++n] != 0)
+		free(output[n]);
+	free(output);
+	return (0);
 }
 
 int		main(int ac, char **av)
@@ -32,24 +33,18 @@ int		main(int ac, char **av)
 	int		n;
 
 	output = 0;
+	map = 0;
 	if (!(map = malloc(sizeof(t_map))) || !init_struct(map, &output)
 			|| !get_room(map, &output))
-		return (-1);
+		return (ft_printf("ERROR\n") && !free_output(output) && !free_map(map));
 	n = 0;
 	while (++n < ac)
 		if (av[n][0] == '-' && av[n][1] == 'c' && av[n][2] == '\0')
 			map->correction = 1;
-	n = -1;
 	if (!get_error(map))
-	{
-		while (output[++n] != 0)
-			free(output[n]);
-		free(output);
-		return (-1);
-	}
+		return (ft_printf("ERROR\n") && !free_output(output) && !free_map(map));
 	write_output(map, output);
-	if (!remove_useless_co(map) || !get_multiple_path(map))
-		return (-1);
-	gogogo(map);
+	if (!get_multiple_path(map) || !gogogo(map))
+		return (!free_map(map));
 	return (free_map(map));
 }

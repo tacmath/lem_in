@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/05 14:37:32 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/29 14:49:11 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/30 14:26:25 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -58,7 +58,7 @@ struct						s_map
 	t_image					end_image;
 	t_image					background;
 	t_image					foreground;
-	t_image					room_image;
+	t_image					room_image[5];
 	t_image					ant_up1;
 	t_image					ant_up2;
 	t_image					ant_down1;
@@ -114,6 +114,6 @@ int							get_all_images(t_map *map);
 int							ft_destroy(t_map *map);
 int							deal_key(int key, t_map *map);
 int							ft_struct_init(t_map *map);
-void						ft_free_map(t_map *map);
+void						ft_free_map(t_map *map, int n);
 
 #endif
