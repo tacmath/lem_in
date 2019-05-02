@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:21:16 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/29 14:16:01 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/02 17:26:11 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -94,7 +94,7 @@ int	check(t_map *map)
 		n = -1;
 		while (line[++n])
 			if (line[n] == 'L' && !move_ant(map, &line[n + 1]))
-				return (1);
+				return (!ft_super_free(1, line));
 		free(line);
 	}
 	n = -1;
