@@ -6,7 +6,7 @@
 #    By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2018/11/05 12:24:50 by mtaquet      #+#   ##    ##    #+#        #
-#    Updated: 2019/05/02 14:23:56 by lperron     ###    #+. /#+    ###.fr      #
+#    Updated: 2019/05/02 17:35:08 by lperron     ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -38,51 +38,37 @@ SRC = $(addprefix $(SRCDIR),$(SRCFILES))
 INC = $(addprefix $(INCDIR),$(INCFILES)) libft/includes/libft.h
 OBJ = $(SRC:.c=.o)
 FLAG = -Wall -Werror -Wextra -I includes -I libft/includes
-QTY := $(shell echo ${SRCFILES} | wc -w)
-CNT = 0
-COLSET = 0
-SIZE = 0
-ASIZE = 0
 
 all: lib $(NAME) checku visuu
 
 %.o: %.c $(INC)
-	@$(eval CNT=$(shell echo "$(CNT) + 1" | bc))
-	@$(eval COLSET=$(shell echo "$(CNT) * 255 / $(QTY)" | bc))
-	@$(eval SIZE=$(shell echo "$(CNT) * 100 / $(QTY)" | bc))
-	@$(eval ASIZE=$(shell echo "100 - $(SIZE)" | bc))
-	@printf "[48;2;255;$(COLSET);0m%$(SIZE)s[0m%$(ASIZE)s $(NAME)             \r" "" "" $(SIZE)
-	@gcc -c -o $@ $< $(FLAG)
+	gcc -c -o $@ $< $(FLAG)
 
 $(LIB): $(LIBDIR)
-	@make -C $(LIBDIR)
+	make -C $(LIBDIR)
 
 lib: $(LIBDIR)
-	@make -C $(LIBDIR)
+	make -C $(LIBDIR)
 
 checku: $(CHECKDIR)
-	@make -C $(CHECKDIR)
+	make -C $(CHECKDIR)
 
 visuu: $(VISUDIR)
-	@make -C $(VISUDIR)
+	make -C $(VISUDIR)
 
 $(NAME): $(LIB) $(OBJ) $(INC) 
-	@printf "\nLinking $(NAME)\r"
-	@gcc -o $@ $(OBJ) $(FLAG) $(LIB) 
-	@printf "$(NAME) Linked     \n"
+	gcc -o $@ $(OBJ) $(FLAG) $(LIB) 
 
 clean:
-	@printf "cleaning $(NAME)\r"
-	@rm -f $(OBJ)
-	@make clean -C $(CHECKDIR)
-	@make clean -C $(VISUDIR)
-	@make clean -C $(LIBDIR)
-	@printf "$(NAME) Cleaned    \n"
+	rm -f $(OBJ)
+	make clean -C $(CHECKDIR)
+	make clean -C $(VISUDIR)
+	make clean -C $(LIBDIR)
 
 fclean: clean
-	@rm -f $(NAME)
-	@rm -f check
-	@rm -f visu
-	@rm -f $(LIB)
+	rm -f $(NAME)
+	rm -f check
+	rm -f visu
+	rm -f $(LIB)
 
 re: fclean all

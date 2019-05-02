@@ -6,7 +6,7 @@
 #    By: lperron <marvin@le-101.fr>                 +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2018/08/13 13:17:34 by lperron      #+#   ##    ##    #+#        #
-#    Updated: 2019/04/08 17:00:31 by lperron     ###    #+. /#+    ###.fr      #
+#    Updated: 2019/05/02 17:35:51 by lperron     ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -28,35 +28,22 @@ SRC= $(addprefix $(SRCDIRLC),$(FILESLC)) $(addprefix $(SRCDIRSU),$(FILESSU)) $(a
 INC= $(addprefix $(INCDIR),$(FILESINC))
 OBJ= $(SRC:.c=.o)
 NAME= libft.a
-CFLAGS= -Wall -Wextra #-Werror
+CFLAGS= -Wall -Wextra -Werror
 CC= gcc
-QTY := $(shell echo ${FILES} | wc -w)
-CNT = 0
-COLSET = 0
-SIZE = 0
-ASIZE = 0
+
 
 all: $(NAME)
 
 %.o: %.c $(INC)
-	@$(eval CNT=$(shell echo "$(CNT) + 1" | bc))
-	@$(eval COLSET=$(shell echo "$(CNT) * 255 / $(QTY)" | bc))
-	@$(eval SIZE=$(shell echo "$(CNT) * 100 / $(QTY) + 1" | bc))
-	@$(eval ASIZE=$(shell echo "100 - $(SIZE)" | bc))
-	@printf "[48;2;255;$(COLSET);0m%$(SIZE)s[0m%$(ASIZE)s $(NAME)     $@          \r" "" "" $(SIZE)
-	@$(CC) -c -o $@ $< -I $(INCDIR) $(CFLAGS)
+	$(CC) -c -o $@ $< -I $(INCDIR) $(CFLAGS)
 
 $(NAME): $(OBJ) $(INC)
-	@printf "\nCreating $(NAME)\r"
-	@ar rc $(NAME) $(OBJ)
-	@ranlib $(NAME)
-	@printf "$(NAME) Created    \n"
+	ar rc $(NAME) $(OBJ)
+	ranlib $(NAME)
 clean:
-	@printf "cleaning $(NAME)\r"
-	@rm -f $(OBJ)
-	@printf "$(NAME) Cleaned     \n"
+	rm -f $(OBJ)
 
 fclean: clean
-	@rm -f $(NAME)
+	rm -f $(NAME)
 re: fclean $(NAME)
 
