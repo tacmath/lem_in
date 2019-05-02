@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:24:10 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/30 16:04:47 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/02 16:50:01 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -110,16 +110,16 @@ static int	ant_init(t_map *map, char ***output)
 int			init_struct(t_map *map, char ***output)
 {
 	pre_init(map);
+	map->nb_path = 0;
+	map->correction = 0;
+	map->start = -1;
+	map->end = -1;
+	map->nb_room = 0;
 	if (!(*output = ft_memalloc(sizeof(char*))))
 		return (0);
 	if (!ant_init(map, output))
 		return (0);
 	if (!(map->ant_progress = malloc(sizeof(int) * map->nb_ant)))
 		return (free_map(map));
-	map->nb_path = 0;
-	map->room = 0;
-	map->correction = 0;
-	map->start = -1;
-	map->end = -1;
 	return (1);
 }

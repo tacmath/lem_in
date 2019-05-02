@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/17 15:21:32 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/30 16:12:18 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/02 16:52:19 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -65,9 +65,9 @@ int			get_all_connection(t_map *map, char *line, char ***output)
 {
 	int ret;
 
-	if ((ret = 0) || !rooms_init(map) || (ft_strchr(line, '-') &&
-		!(ret = get_connection(map, line, output))))
-		return (ret == 0 ? ft_super_free(1, line) : 0);
+	if ((ret = 0) || !rooms_init(map) || (!ft_strchr(line, '-') &&
+				line[0] != '#') || !(ret = get_connection(map, line, output)))
+		return (ft_super_free(1, line));
 	if (ret == -1)
 		return (1);
 	while (get_next_line(0, &line) == 1)
