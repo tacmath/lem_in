@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/14 14:24:10 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/02 16:50:01 by lperron     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/02 17:15:32 by lperron     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -90,8 +90,12 @@ static int	ant_init(t_map *map, char ***output)
 	int		ret;
 
 	ret = 0;
-	if (get_next_line(0, &line) < 1)
-		return (0);
+	line = NULL;
+	while ((ret = get_next_line(0, &line)) == 1 && line[0] == '#')
+		free(line);
+	if (ret < 1)
+		return (ft_super_free(1, line));
+	ret = 0;
 	n = -1;
 	while (line[++n])
 		if (line[n] < '0' || line[n] > '9')
