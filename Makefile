@@ -6,7 +6,7 @@
 #    By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2018/11/05 12:24:50 by mtaquet      #+#   ##    ##    #+#        #
-#    Updated: 2019/04/29 15:53:06 by mtaquet     ###    #+. /#+    ###.fr      #
+#    Updated: 2019/05/02 14:23:56 by lperron     ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -44,7 +44,7 @@ COLSET = 0
 SIZE = 0
 ASIZE = 0
 
-all: lib check visu $(NAME)
+all: lib $(NAME) checku visuu
 
 %.o: %.c $(INC)
 	@$(eval CNT=$(shell echo "$(CNT) + 1" | bc))
@@ -54,19 +54,19 @@ all: lib check visu $(NAME)
 	@printf "[48;2;255;$(COLSET);0m%$(SIZE)s[0m%$(ASIZE)s $(NAME)             \r" "" "" $(SIZE)
 	@gcc -c -o $@ $< $(FLAG)
 
+$(LIB): $(LIBDIR)
+	@make -C $(LIBDIR)
+
 lib: $(LIBDIR)
 	@make -C $(LIBDIR)
-	@printf "\n"
 
-check: $(CHECKDIR)
+checku: $(CHECKDIR)
 	@make -C $(CHECKDIR)
-	@printf "\n"
 
-visu: $(VISUDIR)
+visuu: $(VISUDIR)
 	@make -C $(VISUDIR)
-	@printf "\n"
 
-$(NAME): $(LIB) $(OBJ) $(INC)
+$(NAME): $(LIB) $(OBJ) $(INC) 
 	@printf "\nLinking $(NAME)\r"
 	@gcc -o $@ $(OBJ) $(FLAG) $(LIB) 
 	@printf "$(NAME) Linked     \n"
