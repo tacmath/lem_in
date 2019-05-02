@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/06 18:20:24 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/17 15:08:06 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/02 16:14:47 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -52,11 +52,11 @@ static int	get_path_fetos(t_map *map)
 		map->path[map->nb_path][0] = map->room[map->end].connection[n];
 		map->path_len[map->nb_path++] = 1;
 		map->room[map->end].heat = 1;
-		map->room[map->room[map->end].connection[n]].heat = 1;
+		if (map->room[map->end].connection[n] != map->start)
+			map->room[map->room[map->end].connection[n]].heat = 1;
 	}
-	if (!get_all_path(map, map->nb_path - n))
+	if (!get_all_path(map, map->nb_path - n) && (n = start_of_rev - 1))
 		return (0);
-	n = start_of_rev - 1;
 	while (++n < map->nb_path)
 		rev_path(map, n);
 	return (1);
@@ -77,7 +77,8 @@ int			get_multiple_path(t_map *map)
 		map->path[map->nb_path][0] = map->room[map->start].connection[n];
 		map->path_len[map->nb_path++] = 1;
 		map->room[map->start].heat = 1;
-		map->room[map->room[map->start].connection[n]].heat = 1;
+		if (map->room[map->start].connection[n] != map->end)
+			map->room[map->room[map->start].connection[n]].heat = 1;
 	}
 	if (!get_all_path(map, map->nb_path - n) || !get_path_fetos(map))
 		return (0);
@@ -86,7 +87,6 @@ int			get_multiple_path(t_map *map)
 	if (!get_usable_path(map, -1, 0))
 		return (0);
 	sort_path(map);
-	if (!compatibility_all(map) || !resol(map) || !get_last_path(map))
-		return (0);
-	return (1);
+	return (!compatibility_all(map) ||
+			!resol(map) || !get_last_path(map) ? 0 : 1);
 }

@@ -6,7 +6,7 @@
 /*   By: lperron <lperron@student.le-101.f>         +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/16 17:32:47 by lperron      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/17 15:19:17 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/02 16:15:49 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -41,8 +41,8 @@ static int	get_path(t_map *map, int room, int heat, int *path_len)
 	}
 	while (++n < map->room[room].nb_connection &&
 	(co = map->room[room].connection[n]) == map->room[room].connection[n])
-		if (map->room[co].heat == -1 ||
-				(map->room[co].heat > heat + 1 && map->room[co].heat != 1))
+		if ((map->room[co].heat == -1 || (map->room[co].heat > heat + 1 &&
+				map->room[co].heat != 1)) && !(co == map->end && heat == 0))
 			if (!(co = get_path(map, co, heat + 1, path_len) == 1 && ++ret)
 					&& co == -1)
 				return (-1);
@@ -115,11 +115,11 @@ int			get_last_path(t_map *map)
 		path_len = -1;
 		n = -1;
 		while (++n < map->nb_path && (m = -1) < 0)
-			while (++m < map->path_len[n] - 1)
+			while (map->path[n][0] != map->end && ++m < map->path_len[n] - 1)
 				map->room[map->path[n][m]].heat = 1;
 		if (get_path(map, map->start, 0, &path_len) == -1)
 			return (0);
-		if (path_len < map->best_speed && path_len != -1)
+		if (path_len < map->best_speed && path_len > 1)
 		{
 			map->path[map->nb_path] = map->tmp;
 			map->path_len[map->nb_path++] = path_len;

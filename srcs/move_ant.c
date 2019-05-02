@@ -6,7 +6,7 @@
 /*   By: mtaquet <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/29 13:21:30 by mtaquet      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/29 14:09:05 by mtaquet     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/02 16:16:14 by mtaquet     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -34,6 +34,7 @@ int			how_long(t_map *map)
 {
 	int n;
 	int m;
+	int count;
 	int nb;
 
 	nb = map->path_len[0] - 1;
@@ -41,10 +42,16 @@ int			how_long(t_map *map)
 	while (n > 0)
 	{
 		nb++;
+		count = 0;
 		m = -1;
 		while (++m < map->nb_path)
 			if (map->path_len[m] <= nb)
+			{
+				count++;
 				n--;
+			}
+		if (count == map->nb_path)
+			return (nb + (n - 1) / map->nb_path + 1);
 	}
 	return (nb);
 }
@@ -66,10 +73,9 @@ static int	can_i_go(t_map *map, int ant, char **line, int *line_len)
 				map->ant[n].path = m;
 				map->ant[n].room = map->path[m][0];
 				if (!map->correction &&
-		!add_ant_to_line(line, n, map->room[map->path[m][0]].name, line_len))
+						!add_ant_to_line(line, n,
+							map->room[map->path[m][0]].name, line_len))
 					return (0);
-				if (map->ant[n].room == map->end)
-					map->ant[n].room = -1;
 			}
 			m++;
 		}
